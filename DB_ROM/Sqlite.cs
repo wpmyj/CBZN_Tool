@@ -152,7 +152,9 @@ namespace DB_ROM
                     {
                         foreach (PropertyInfo item in pinfos)
                         {
-                            item.SetValue(t, reader[item.Name], null);
+                            object obj = reader[item.Name];
+                            if (obj == DBNull.Value) continue;
+                            item.SetValue(t, obj, null);
                         }
                     }
                 }
@@ -445,6 +447,8 @@ namespace DB_ROM
                         T t = Activator.CreateInstance<T>();
                         foreach (PropertyInfo item in pinfos)
                         {
+                            object obj = reader[item.Name];
+                            if (obj == DBNull.Value) continue;
                             item.SetValue(t, reader[item.Name], null);
                         }
                         getlist.Add(t);
@@ -506,6 +510,8 @@ namespace DB_ROM
                         T t = Activator.CreateInstance<T>();
                         foreach (PropertyInfo info in pinfos)
                         {
+                            object obj = reader[info.Name];
+                            if (obj == DBNull.Value) continue;
                             info.SetValue(t, reader[info.Name], null);
                         }
                         tlist.Add(t);

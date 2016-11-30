@@ -45,7 +45,8 @@ namespace Bll
 
         private void OnCountChange(List<string> portnames)
         {
-            CountChange?.Invoke(portnames);
+            if (CountChange != null)
+                CountChange(portnames);
         }
 
         public int Count
@@ -74,7 +75,7 @@ namespace Bll
             {
                 _pc = new Computer();
                 _mutex = new Mutex();
-                _tiComPortChange = new System.Timers.Timer(DelayTime) {AutoReset = true};
+                _tiComPortChange = new System.Timers.Timer(DelayTime) { AutoReset = true };
                 _tiComPortChange.Elapsed += _tiComPortChange_Elapsed;
             }
             _tiComPortChange.Start();
@@ -95,7 +96,8 @@ namespace Bll
 
         public void Stop()
         {
-            _tiComPortChange?.Stop();
+            if (_tiComPortChange != null)
+                _tiComPortChange.Stop();
         }
     }
 }

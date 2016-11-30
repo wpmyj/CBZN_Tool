@@ -135,8 +135,10 @@ namespace Bll
 
         public static int HexToInt(int hex1, int hex2)
         {
+            hex1 = AsciiToInt(hex1);
+            hex2 = AsciiToInt(hex2);
             int division = hex1 * 16;
-            int mod = hex1 % 16;
+            int mod = hex2 % 16;
             return division + mod;
         }
 

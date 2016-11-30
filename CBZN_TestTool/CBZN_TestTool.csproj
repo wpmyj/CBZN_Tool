@@ -34,11 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSkin, Version=16.1.14.1, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Design" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -46,6 +44,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeviceEdit.Designer.cs">
+      <DependentUpon>DeviceEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeviceAdd.Designer.cs">
+      <DependentUpon>DeviceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeviceExport.Designer.cs">
+      <DependentUpon>DeviceExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeviceImport.Designer.cs">
+      <DependentUpon>DeviceImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DistanceDelay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DistanceDelay.Designer.cs">
+      <DependentUpon>DistanceDelay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DistanceRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DistanceRegister.Designer.cs">
+      <DependentUpon>DistanceRegister.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +88,24 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DeviceEdit.resx">
+      <DependentUpon>DeviceEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeviceAdd.resx">
+      <DependentUpon>DeviceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeviceExport.resx">
+      <DependentUpon>DeviceExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeviceImport.resx">
+      <DependentUpon>DeviceImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DistanceDelay.resx">
+      <DependentUpon>DistanceDelay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DistanceRegister.resx">
+      <DependentUpon>DistanceRegister.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -113,6 +165,36 @@
       <Project>{59eb14b1-cb68-405a-a3fe-02a088b8f6a2}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OpenLock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LowPower.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Battery.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ViceCard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainCard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\block.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReportLoss.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

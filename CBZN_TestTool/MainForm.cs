@@ -1,13 +1,17 @@
 ﻿using Bll;
 using CCWin.SkinControl;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Reflection;
-using System.Threading;
-using System.Windows.Forms;
 using Dal;
 using Model;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Globalization;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace CBZN_TestTool
 {
@@ -15,10 +19,25 @@ namespace CBZN_TestTool
     {
         #region 变量
 
+        private Dictionary<string, int> _dicDataList = new Dictionary<string, int>();
+
+        private bool _isModuleSet;
+
+        private bool _isReadCard;
+
+        private bool _isThreadClose;
+
         private ComPortHelper _mComPort;
-        private PortHelper _mPort;
-        private System.Timers.Timer _tiConnectionPort;
+
         private Mutex _mMutex;
+
+        private PortHelper _mPort;
+
+        private string _strSearchWhere;
+
+        private System.Timers.Timer _tiConnectionPort;
+
+        private delegate void DefaultShow();
 
         #endregion 变量
 
@@ -27,37 +46,6 @@ namespace CBZN_TestTool
         public MainForm()
         {
             InitializeComponent();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            p_Tap2.Visible = false;
-            p_Tap3.Visible = false;
-            p_Tap4.Visible = false;
-
-            DataValidation.IsProtocol = true;
-            DataValidation.ProtocolHead = 2;
-            DataValidation.ProtocolEnd = 3;
-            DataValidation.IsValidation = true;
-
-        }
-
-        private void MainForm_Shown(object sender, EventArgs e)
-        {
-            _mPort = new PortHelper
-            {
-                PortIsOpenChange = PortOpenAndCloseChange,
-                PortDataReceived = PortDataReceived
-            };
-
-            _mComPort = new ComPortHelper();
-            _mComPort.CountChange += MComPortCountChange;
-        }
-
-        private void p_Title_MouseDown(object sender, MouseEventArgs e)
-        {
-            WinApi.ReleaseCapture();
-            WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
 
         private void btn_Close_Click(object sender, EventArgs e)
@@ -89,6 +77,63 @@ namespace CBZN_TestTool
         private void btn_Tap4_Click(object sender, EventArgs e)
         {
             ShowHideTap(btn_Tap4);
+        }
+
+        private void DrawBorderLine(object sender, PaintEventArgs e)
+        {
+            Panel p = sender as Panel;
+            if (p != null)
+            {
+                Graphics g = e.Graphics;
+                Point[] ps = new Point[]{
+                new Point(0 , p.Height - 1),
+                new Point(p.Width - 1 , p.Height - 1),
+                new Point(p.Width - 1 , 0)
+                };
+                g.DrawLines(new Pen(Brushes.Gray, 1), ps);
+                g.Dispose();
+            }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            p_Tap2.Visible = false;
+            p_Tap3.Visible = false;
+            p_Tap4.Visible = false;
+
+            DataValidation.IsProtocol = true;
+            DataValidation.ProtocolHead = 2;
+            DataValidation.ProtocolEnd = 3;
+            DataValidation.IsValidation = true;
+
+            string path = Environment.CurrentDirectory + "\\Data.db";
+            try
+            {
+                DbHelper.LoadDb(path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            _mPort = new PortHelper
+            {
+                PortIsOpenChange = PortOpenAndCloseChange,
+                PortDataReceived = PortDataReceived
+            };
+
+            _mComPort = new ComPortHelper();
+            _mComPort.CountChange += MComPortCountChange;
+            _mComPort.Start();
+        }
+
+        private void p_Title_MouseDown(object sender, MouseEventArgs e)
+        {
+            WinApi.ReleaseCapture();
+            WinApi.SendMessage(Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
 
         private void ShowHideTap(SkinButton btn)
@@ -136,6 +181,39 @@ namespace CBZN_TestTool
 
         #region 端口事件
 
+        private void _tiConnectionPort_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            _mMutex.WaitOne();
+            if (!_mPort.IsOpen)
+            {
+                foreach (string item in _mComPort.PortNames)
+                {
+                    _mPort.PortName = item;
+                    try
+                    {
+                        _mPort.Open();
+                        _mPort.SetIoctl();
+                        byte[] by = PortAgreement.GetDistanceEncryption("766554");
+                        _mPort.Write(by);
+                        Thread.Sleep(550);
+                        if (_mPort.IsOpen)
+                        {
+                            _tiConnectionPort.Stop();
+                            _tiConnectionPort.Dispose();
+                            break;
+                        }
+                        _mPort.Close();
+                        _mPort.IsOpen = false;
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
+                }
+            }
+            _mMutex.ReleaseMutex();
+        }
+
         private void MComPortCountChange(List<string> portnames)
         {
             if (_mPort.IsOpen)
@@ -158,24 +236,11 @@ namespace CBZN_TestTool
                 if (_tiConnectionPort == null)
                 {
                     _mMutex = new Mutex();
-                    _tiConnectionPort = new System.Timers.Timer(250) {AutoReset = true};
+                    _tiConnectionPort = new System.Timers.Timer(250) { AutoReset = true };
                     _tiConnectionPort.Elapsed += _tiConnectionPort_Elapsed;
                 }
                 _tiConnectionPort.Start();
             }
-        }
-
-        private void _tiConnectionPort_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            _mMutex.WaitOne();
-
-
-            if (_mPort.IsOpen)
-            {
-                _tiConnectionPort.Stop();
-                _tiConnectionPort.Dispose();
-            }
-            _mMutex.ReleaseMutex();
         }
 
         private void PortDataReceived(int port)
@@ -193,7 +258,155 @@ namespace CBZN_TestTool
                     ParsingParameter parameter = DataParsing.ParsingContent(item);
                     switch (parameter.FunctionAddress)
                     {
-                        case 0:
+                        case 65://0x41 定距卡操作
+
+                            #region 定距卡操作
+
+                            DistanceParameter distanceparameter = DataParsing.DistanceParsingContent(parameter.DataContent);
+                            switch (distanceparameter.Command)
+                            {
+                                case 10://0x0A 读所有卡的flash
+
+                                    #region 读所有卡的flash
+
+                                    if (distanceparameter.AuxiliaryCommand == 8)
+                                    {
+                                        DefaultShow ds = delegate
+                                        {
+                                            btn_Read.Enabled = true;
+                                            dgv_DataList_SelectionChanged(null, null);
+                                            l_RecordCount.Text = string.Format("总共 {0} 条记录", dgv_DataList.RowCount);
+                                        };
+                                        btn_Read.Invoke(ds);
+                                    }
+                                    else
+                                    {
+                                        //查询卡号
+                                        CardInfo cardinfo = DbHelper.Db.FirstDefault<CardInfo>(string.Format(" and CardNumber='{0}' ", distanceparameter.CardNumber));
+                                        if (cardinfo == null)
+                                        {
+                                            cardinfo = new CardInfo();
+                                        }
+                                        cardinfo.CardNumber = distanceparameter.CardNumber;
+                                        cardinfo.CardType = (int)distanceparameter.TypeParameter.CardType;
+                                        cardinfo.CardLock = distanceparameter.TypeParameter.Lock;
+                                        cardinfo.CardDistance = distanceparameter.TypeParameter.Distance;
+                                        cardinfo.Electricity = distanceparameter.TypeParameter.Battry;
+                                        if (cardinfo.CardType != 8 || cardinfo.CardType != 15)
+                                        {
+                                            DistanceDataParameter dataparameter =
+                                                    DataParsing.DistanceData(parameter.DataContent);
+                                            if (cardinfo.CardReportLoss == 0)
+                                                cardinfo.CardReportLoss = dataparameter.FunctionByteParameter.Loss;
+                                            cardinfo.Synchronous = dataparameter.FunctionByteParameter.Synchronous;
+                                            cardinfo.InOutState = dataparameter.FunctionByteParameter.InOutState;
+                                            if (cardinfo.Cid > 0)
+                                            {
+                                                cardinfo.CardType = (int)dataparameter.FunctionByteParameter.RegistrationType;
+                                                if (cardinfo.CardType == 1)
+                                                {
+                                                    cardinfo.ParkingRestrictions =
+                                                        dataparameter.FunctionByteParameter.ParkingRestrictions;
+                                                }
+                                            }
+                                            if (cardinfo.CardCount < dataparameter.Count)
+                                            {
+                                                cardinfo.CardCount = dataparameter.Count;
+                                            }
+                                        }
+                                        ShowReadCardInfo(cardinfo);
+                                    }
+
+                                    #endregion 读所有卡的flash
+
+                                    break;
+
+                                case 11://0x0B 写入所有卡的flash
+
+                                    break;
+
+                                case 13://0x0D 修改全部卡密码
+                                    DistanceCardEncryptionResult(distanceparameter);
+                                    break;
+
+                                case 26://0x1A 读某张卡片的flash
+
+                                    break;
+
+                                case 27://0x1B 写某张卡片的flash
+                                    if (DistanceRegister._isShow)
+                                    {
+                                        DistanceRegister dr = DistanceRegister.Instance;
+                                        dr.PortDataRecevied(distanceparameter);
+                                    }
+                                    break;
+
+                                case 160://0xA0 初始化主机参数
+                                    DistanceEncryptionResult(distanceparameter);
+                                    break;
+                            }
+
+                            #endregion 定距卡操作
+
+                            break;
+
+                        case 66://0x42 IC操作
+
+                            #region IC 卡片操作
+
+                            switch (parameter.Command)
+                            {
+                                case 9://读取 IC 卡内容
+                                    IcCardParameter iccardparameter = DataParsing.TemporaryIcCardContent(parameter.DataContent);
+                                    ShowIcCardContent(iccardparameter);
+                                    break;
+
+                                case 204://0x43 0x43 IC卡加密
+                                    TemporaryIcEncryptionResult(parameter);
+                                    break;
+
+                                case 221://0x44 0x44 IC设备加密
+                                    TemporaryEncryptionResult(parameter);
+                                    break;
+                            }
+
+                            #endregion IC 卡片操作
+
+                            break;
+
+                        case 67://0x43 模块操作
+
+                            #region 模块操作
+
+                            switch (parameter.Command)
+                            {
+                                case 9:
+                                    //0x46 F 失败  0x53 S 成功
+                                    _isModuleSet = DataParsing.TemporaryContent(parameter.DataContent) == 83;
+                                    break;
+
+                                case 208://0x44 0x30 设置参数
+                                    if (parameter.DataContent.Length == 15)
+                                    {
+                                        //查询频率
+                                        int frequency = (int)DataParsing.TemporaryContent(parameter.DataContent);
+                                        QueryFrequncy(frequency);
+                                    }
+                                    else if (parameter.DataContent.Length == 22)
+                                    {
+                                        //查询无线ID
+                                        long wirelessiid = DataParsing.TemporaryContent(parameter.DataContent);
+                                        QueryWireless(wirelessiid);
+                                    }
+                                    else
+                                    {
+                                        //0x59 Y 设置成功  0x4E N 设置失败
+                                        _isModuleSet = DataParsing.TemporaryContent(parameter.DataContent) == 89;
+                                    }
+                                    break;
+                            }
+
+                            #endregion 模块操作
 
                             break;
                     }
@@ -207,37 +420,93 @@ namespace CBZN_TestTool
 
         private void PortOpenAndCloseChange(object e, bool value)
         {
-            if (value)
+            DefaultShow ds = delegate
             {
-                btn_Read.Enabled = true;
-                dgv_DataList_SelectionChanged(null, null);
-            }
-            else
-            {
-                btn_Read.Enabled = false;
-                btn_Register.Enabled = false;
-                btn_Registers.Enabled = false;
-                btn_ReportTheLossOf.Enabled = false;
-            }
-
-            btn_DistanceDeviceEnter.Enabled = value;
-            btn_DistanceCardPwdEnter.Enabled = value;
-            btn_TemporaryCardPwdEnter.Enabled = value;
-            btn_TemporaryDevicePwdEnter.Enabled = value;
+                if (value)
+                {
+                    dgv_DataList_SelectionChanged(null, null);
+                }
+                else
+                {
+                    btn_Register.Enabled = false;
+                    btn_Registers.Enabled = false;
+                    btn_ReportTheLossOf.Enabled = false;
+                }
+                btn_Read.Enabled = value;
+                btn_DistanceDeviceEnter.Enabled = value;
+                btn_TemporaryDevicePwdEnter.Enabled = value;
+                btn_TemporaryReadCard.Enabled = value;
+                btn_WirelessSet.Enabled = value;
+                btn_FrequencySearch.Enabled = value;
+                btn_Query.Enabled = value;
+                btn_Test.Enabled = value;
+            };
+            btn_Read.Invoke(ds);
         }
 
         #endregion 端口事件
 
         #region 卡片操作
 
+        private void btn_Next_Click(object sender, EventArgs e)
+        {
+            cb_Page.SelectedIndex += 1;
+        }
+
+        private void btn_Previous_Click(object sender, EventArgs e)
+        {
+            cb_Page.SelectedIndex -= 1;
+        }
+
         private void btn_Read_Click(object sender, EventArgs e)
         {
-            dgv_DataList.Rows.Clear();
+            //dgv_DataList.Rows.Clear();
+            DataTable dt = dgv_DataList.DataSource as DataTable;
+            if (dt != null)
+                dt.Rows.Clear();
+            _dicDataList.Clear();
+
             btn_Read.Enabled = false;
+            cb_Page.Items.Clear();
+            cb_Page.SelectedIndex = -1;
+            try
+            {
+                byte[] by = PortAgreement.GetReadAllCard();
+                _mPort.Write(by);
+            }
+            catch (Exception ex)
+            {
+                btn_Read.Enabled = true;
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btn_Register_Click(object sender, EventArgs e)
         {
+            if (dgv_DataList.SelectedRows.Count == 0) return;
+            int index = dgv_DataList.SelectedRows[0].Index;
+
+            CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
+            List<CardInfo> cardinfos = GetDataInfo<CardInfo>(dgv_DataList);
+            List<CardInfo> viceinfos = new List<CardInfo>();
+            foreach (CardInfo item in cardinfos)
+            {
+                if (item.CardType == 3)
+                {
+                    viceinfos.Add(item);
+                }
+            }
+
+            using (DistanceRegister dr = DistanceRegister.Instance)
+            {
+                dr._mCardInfo = info;
+                dr._mViceCardInfo = viceinfos;
+                dr._mPort = _mPort;
+                dr.ShowDialog();
+                if (dr.Tag == null) return;
+                info = dr.Tag as CardInfo;
+                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
+            }
         }
 
         private void btn_Registers_Click(object sender, EventArgs e)
@@ -248,31 +517,37 @@ namespace CBZN_TestTool
         {
         }
 
+        private void btn_Search_Click(object sender, EventArgs e)
+        {
+            string searchcontent = tb_Search.Text.Trim();
+            if (searchcontent.Length == 0)
+                return;
+            string strwhere = string.Format(" and CardNumber='%{0}%' ", searchcontent);
+            ShowRecord(strwhere);
+        }
+
         private void btn_ShowRecord_Click(object sender, EventArgs e)
         {
-            if (!btn_Read.Enabled)
-            {
-                MessageBox.Show(@"当前正在读取定距卡信息，无法显示注册信息。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
+            ShowRecord(string.Empty);
+        }
+
+        private void cb_Page_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = cb_Page.SelectedIndex;
+
+            btn_Previous.Enabled = index != 0;
+            btn_Next.Enabled = index != cb_Page.Items.Count - 1;
+
             try
             {
-                int count = DbHelper.Db.GetCount<CardInfo>();
-                int page = count / 30;
-                if (page % 30 > 0)
-                    page++;
-                if (page > 0)
+                if (index > -1)
                 {
-                    for (int i = 0; i < page; i++)
-                    {
-                        cb_Page.Items.Add(string.Format("{0}页", i));
-                    }
+                    //dgv_DataList.Rows.Clear();
+                    //List<CardInfo> cardinfos = DbHelper.Db.ToList<CardInfo>(index * 30, 30, _strSearchWhere);
+                    DataTable dt = DbHelper.Db.ToTable<CardInfo>(index * 30, 30, _strSearchWhere);
+                    //AddRange(cardinfos, dgv_DataList);
+                    dgv_DataList.DataSource = dt;
                 }
-                else
-                {
-                    cb_Page.Items.Add("1页");
-                }
-                l_RecordCount.Text = string.Format("总共 {0} 条记录", count);
             }
             catch (Exception ex)
             {
@@ -282,6 +557,96 @@ namespace CBZN_TestTool
 
         private void dgv_DataList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.ColumnIndex == 0)
+            {
+                e.Value = (long)e.Value == 0 ? Properties.Resources.block : Properties.Resources.check;
+            }
+            else if (e.ColumnIndex == 2)
+            {
+                int cardtype = Convert.ToInt32(e.Value);
+                switch ((CardType)cardtype)
+                {
+                    case Bll.CardType.SingleCard:
+                        e.Value = "单卡";
+                        break;
+
+                    case Bll.CardType.CombinationCard:
+                        e.Value = "组合卡";
+                        break;
+
+                    case Bll.CardType.LPRCard:
+                        e.Value = "车牌识别卡";
+                        break;
+
+                    case Bll.CardType.ViceCard:
+                        e.Value = "副卡";
+                        break;
+
+                    case Bll.CardType.CancellationCard:
+                        e.Value = "注销卡";
+                        break;
+
+                    case Bll.CardType.PasswordMistake:
+                        e.Value = "卡片密码错误";
+                        break;
+                }
+            }
+            else if (e.ColumnIndex == 4)
+            {
+                if (Regex.IsMatch(e.Value.ToString(), @"^\d$"))
+                {
+                    int distance = HexadecimalConversion.ObjToInt(e.Value);
+                    if (distance == 0)
+                        e.Value = "读头调节距离";
+                    else if (distance == 1)
+                        e.Value = "1.2 米";
+                    else if (distance == 2)
+                        e.Value = "2.5 米";
+                    else if (distance == 3)
+                        e.Value = "3.8 米";
+                    else if (distance == 4)
+                        e.Value = "5 米";
+                }
+            }
+            else if (e.ColumnIndex == 5)
+            {
+                e.Value = e.Value.Equals(0) ? Properties.Resources.OpenLock : Properties.Resources.Lock;
+            }
+            else if (e.ColumnIndex == 6)
+            {
+                e.Value = e.Value.Equals(0) ? Properties.Resources.block : Properties.Resources.check;
+            }
+            else if (e.ColumnIndex == 7)
+            {
+                e.Value = e.Value.Equals(0) ? Properties.Resources.block : Properties.Resources.check;
+            }
+            else if (e.ColumnIndex == 8)
+            {
+                if (e.Value.Equals(0))
+                {
+                    e.Value = "关闭";
+                }
+                else
+                {
+                    if (Regex.IsMatch(e.Value.ToString(), @"^\d+$"))
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        int partition = HexadecimalConversion.ObjToInt(e.Value);
+                        for (int i = 0; i < 16; i++)
+                        {
+                            if (BinaryHelper.GetIntegerSomeBit(partition, i) == 1)
+                            {
+                                sb.AppendFormat(" {0} 分区", i + 1);
+                            }
+                        }
+                        e.Value = sb.ToString();
+                    }
+                }
+            }
+            else if (e.ColumnIndex == 9)
+            {
+                e.Value = e.Value.Equals(0) ? Properties.Resources.Battery : Properties.Resources.LowPower;
+            }
         }
 
         private void dgv_DataList_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -301,74 +666,59 @@ namespace CBZN_TestTool
         private void dgv_DataList_SelectionChanged(object sender, EventArgs e)
         {
             if (dgv_DataList.RowCount == 0) return;
-            if (btn_Read.Enabled)
-                if (_mPort != null && _mPort.IsOpen)
+            if (!btn_Read.Enabled) return;
+            if (_mPort != null && _mPort.IsOpen)
+            {
+                btn_Registers.Enabled = true;
+                if (dgv_DataList.SelectedRows.Count > 0)
                 {
-                    btn_Register.Enabled = true;
-                    btn_Registers.Enabled = true;
-                    btn_ReportTheLossOf.Enabled = true;
+                    int index = dgv_DataList.SelectedRows[0].Index;
+                    CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
+                    if (info.Cid == 0)
+                    {
+                        btn_Register.Enabled = info.CardType <= 3;
+                        btn_ReportTheLossOf.Enabled = false;
+                    }
+                    else
+                    {
+                        btn_Register.Enabled = info.CardType <= 3;
+                        btn_ReportTheLossOf.Enabled = info.CardReportLoss == 0;
+                    }
                 }
-        }
-
-        private void btn_Previous_Click(object sender, EventArgs e)
-        {
-            cb_Page.SelectedIndex -= 1;
-        }
-
-        private void cb_Page_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = cb_Page.SelectedIndex;
-
-            btn_Previous.Enabled = index != 0;
-            btn_Next.Enabled = index != cb_Page.Items.Count - 1;
-
-            List<CardInfo> cardinfos = DbHelper.Db.ToList<CardInfo>(index * 30, 30);
-            AddRange(cardinfos);
-        }
-
-        private void Add(CardInfo info)
-        {
-            PropertyInfo[] pis =
-                typeof(CardInfo).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            DataGridViewRow dr = new DataGridViewRow();
-            foreach (PropertyInfo item in pis)
-            {
-                dr.Cells[item.Name].Value = item.GetValue(info, null);
-            }
-            dgv_DataList.Rows.Add(dr); ;
-        }
-
-        private void AddRange(List<CardInfo> cardinfos)
-        {
-            PropertyInfo[] pis =
-    typeof(CardInfo).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            List<DataGridViewRow> rows = new List<DataGridViewRow>();
-            foreach (CardInfo item in cardinfos)
-            {
-                DataGridViewRow dr = new DataGridViewRow();
-                foreach (PropertyInfo pi in pis)
-                {
-                    dr.Cells[pi.Name].Value = pi.GetValue(item, null);
-                }
-                rows.Add(dr);
-            }
-            dgv_DataList.Rows.AddRange(rows.ToArray());
-        }
-
-        private void Edit(CardInfo info, int index)
-        {
-            PropertyInfo[] pis =
-    typeof(CardInfo).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            DataGridViewRow dr = dgv_DataList.Rows[index];
-            foreach (PropertyInfo item in pis)
-            {
-                dr.Cells[item.Name].Value = item.GetValue(info, null);
             }
         }
 
-        private void btn_Next_Click(object sender, EventArgs e)
+        private void ShowReadCardInfo(CardInfo info)
         {
-            cb_Page.SelectedIndex += 1;
+            DefaultShow ds = delegate
+            {
+                if (_dicDataList.ContainsKey(info.CardNumber)) return;
+                DataTable dt = dgv_DataList.DataSource as DataTable ?? GetDataTableHead<CardInfo>(dgv_DataList);
+                dt.Rows.Add();
+                DataRow dr = dt.Rows[dt.Rows.Count - 1];
+                UpdateRowData<CardInfo>(info, dr);
+                _dicDataList.Add(info.CardNumber, info.CardType);
+            };
+            dgv_DataList.BeginInvoke(ds);
+        }
+
+        private void ShowRecord(string where)
+        {
+            try
+            {
+                _strSearchWhere = " and Cid > 0 " + where;
+                int count = DbHelper.Db.GetCount<CardInfo>(_strSearchWhere);
+                ShowPage(count, cb_Page, l_RecordCount);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void tb_Search_KeyDown(object sender, KeyEventArgs e)
+        {
+            btn_Search_Click(null, null);
         }
 
         #endregion 卡片操作
@@ -378,19 +728,123 @@ namespace CBZN_TestTool
         private void btn_TapDistanceEncryption_Click(object sender, EventArgs e)
         {
             ShowHideEncryptionTap(btn_TapDistanceEncryption);
+            AcceptButton = btn_DistanceDeviceEnter;
         }
 
         private void btn_TapTemporaryEncryption_Click(object sender, EventArgs e)
         {
             ShowHideEncryptionTap(btn_TapTemporaryEncryption);
+            AcceptButton = btn_TemporaryDevicePwdEnter;
+        }
+
+        private void dgv_pwd_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (AcceptButton == btn_DistanceDeviceEnter)
+                {
+                    btn_DistanceDeviceEnter_Click(null, null);
+                }
+                else if (AcceptButton == btn_TemporaryDevicePwdEnter)
+                {
+                    btn_TemporaryDevicePwdEnter_Click(null, null);
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void dgv_pwd_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            dgv_pwd.FirstDisplayedScrollingRowIndex = e.RowIndex;
         }
 
         private void DrawBorder(object sender, PaintEventArgs e)
         {
             Panel panel = sender as Panel;
             if (panel == null) return;
-            Graphics g = e.Graphics;
-            g.DrawLine(new Pen(Color.Gray), panel.Width - 1, 0, panel.Width - 1, panel.Height);
+            using (Graphics g = e.Graphics)
+            {
+                int x = !btn_TapDistanceEncryption.Enabled ? btn_TapDistanceEncryption.Left : btn_TapTemporaryEncryption.Left;
+                int width = btn_TapDistanceEncryption.Width;
+                x += width / 2;
+                Point[] p =
+                {
+                    new Point(0,10),
+                    new Point (x-5,10),
+                    new Point(x,5),
+                    new Point(x+5,10),
+                    new Point(panel.Width,10),
+                    new Point(panel.Width - 1, 0),
+                    new Point(panel.Width - 1, panel.Height)
+                };
+                g.DrawLines(new Pen(Color.Gray), p);
+            }
+        }
+
+        private void ShowEncryptionMessage(string message, bool isend, int command)
+        {
+            DefaultShow ds = delegate
+            {
+                if (dgv_pwd.RowCount >= 30)
+                    dgv_pwd.Rows.RemoveAt(0);
+                int index = dgv_pwd.Rows.Add(new object[] { message, DateTime.Now });
+                if (command == 160) //0xA0 初始化主机参数
+                {
+                    if (cb_DistanceWay.Checked) //定距卡加密
+                    {
+                        string pwd = tb_DistancePwd.Text;
+                        //发送修改卡片新密码
+                        try
+                        {
+                            if (_mPort.IsOpen)
+                            {
+                                byte[] by = PortAgreement.GetDistanceCardEncryption(pwd);
+                                _mPort.Write(by);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else //定距发卡器加密
+                    {
+                        btn_DistanceDeviceEnter.Enabled = isend;
+                    }
+                }
+                else if (command == 13) //0x0D 修改全部卡密码
+                {
+                    btn_DistanceDeviceEnter.Enabled = isend;
+                }
+                else if (command == 204) //IC卡加密
+                {
+                    btn_TemporaryDevicePwdEnter.Enabled = isend;
+                }
+                else if (command == 221) //IC设备加密
+                {
+                    if (cb_TemporaryWay.Checked)
+                    {
+                        string pwd = tb_TemporaryPwd.Text;
+                        try
+                        {
+                            if (_mPort.IsOpen)
+                            {
+                                byte[] by = PortAgreement.GetTemporaryICEncryption(pwd);
+                                _mPort.Write(by);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        btn_TemporaryDevicePwdEnter.Enabled = isend;
+                    }
+                }
+            };
+            this.Invoke(ds);
         }
 
         private void ShowHideEncryptionTap(SkinButton btn)
@@ -427,104 +881,165 @@ namespace CBZN_TestTool
             }
         }
 
-        private void dgv_pwd_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void dgv_pwd_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            dgv_pwd.FirstDisplayedScrollingRowIndex = e.RowIndex;
-        }
-
         #region 定距加密
-
-        private void btn_DistanceCardPwdEnter_Click(object sender, EventArgs e)
-        {
-            AcceptButton = btn_DistanceCardPwdEnter;
-        }
 
         private void btn_DistanceDeviceEnter_Click(object sender, EventArgs e)
         {
-            AcceptButton = btn_DistanceDeviceEnter;
+            string oldpwd = string.Empty;
+            string pwd = tb_DistancePwd.Text;
+            string confirm = tb_ConfirmDistancePwd.Text;
+
+            #region 验证输入
+
+            if (tb_DistanceOldPwd.Enabled)
+            {
+                oldpwd = tb_DistanceOldPwd.Text;
+                if (oldpwd.Length == 0)
+                {
+                    MessageBox.Show(@" 旧密码不能为空，请重新输入。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    tb_DistanceOldPwd.Focus();
+                    return;
+                }
+                if (oldpwd.Length < tb_DistanceOldPwd.MaxLength)
+                {
+                    MessageBox.Show(@" 旧密码长度不能小于 6 位，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    tb_DistanceOldPwd.Focus();
+                    return;
+                }
+            }
+
+            if (pwd.Length == 0)
+            {
+                MessageBox.Show(@" 新密码不能为空，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_DistancePwd.Focus();
+                return;
+            }
+            if (pwd.Length < tb_DistancePwd.MaxLength)
+            {
+                MessageBox.Show(@" 新密码长度不能小于 6 位，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_DistancePwd.Focus();
+                return;
+            }
+
+            if (confirm.Length == 0)
+            {
+                MessageBox.Show(@" 确认密码不能为空，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_ConfirmDistancePwd.Focus();
+                return;
+            }
+            if (confirm.Length < tb_ConfirmDistancePwd.MaxLength)
+            {
+                MessageBox.Show(@" 确认密码长度不能小于 6 位，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_ConfirmDistancePwd.Focus();
+                return;
+            }
+            if (pwd != confirm)
+            {
+                MessageBox.Show(@" 新密码与确认密码不一致，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_ConfirmDistancePwd.Focus();
+                return;
+            }
+
+            #endregion 验证输入
+
+            btn_DistanceDeviceEnter.Enabled = false;
+            try
+            {
+                byte[] by = PortAgreement.GetDistanceEncryption(!cb_DistanceWay.Checked ? pwd : oldpwd);
+                _mPort.Write(by);
+            }
+            catch (Exception ex)
+            {
+                btn_DistanceDeviceEnter.Enabled = true;
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void cb_DefaultDistanceCardPwd_CheckedChanged(object sender, EventArgs e)
+        private void cb_DefaultDistanOldPwd_CheckedChanged(object sender, EventArgs e)
         {
-            bool result = !cb_DefaultDistanceCardPwd.Checked;
-            tb_DistanceCardpwd.Enabled = result;
-            tb_ConfirmDistanceCardPwd.Enabled = result;
+            bool result = !cb_DefaultDistanOldPwd.Checked;
+            tb_DistanceOldPwd.Enabled = result;
             if (!result)
             {
-                string pwd = "766554";
-                tb_DistanceCardpwd.Text = pwd;
-                tb_ConfirmDistanceCardPwd.Text = pwd;
-                btn_DistanceCardPwdEnter.Focus();
+                tb_DistanceOldPwd.Text = @"766554";
             }
             else
             {
-                tb_DistanceCardpwd.Text = string.Empty;
-                tb_ConfirmDistanceCardPwd.Text = string.Empty;
-                tb_DistanceCardpwd.Focus();
+                tb_DistanceOldPwd.Text = string.Empty;
+                tb_DistanceOldPwd.Focus();
             }
         }
 
-        private void cb_DefaultDistanceDevicePwd_CheckedChanged(object sender, EventArgs e)
+        private void cb_DefaultDistanPwd_CheckedChanged(object sender, EventArgs e)
         {
-            bool result = !cb_DefaultDistanceDevicePwd.Checked;
-            tb_DistanceDevicePwd.Enabled = result;
-            tb_ConfirmDistanceDevicePwd.Enabled = result;
+            bool result = !cb_DefaultDistanPwd.Checked;
+            tb_DistancePwd.Enabled = result;
+            tb_ConfirmDistancePwd.Enabled = result;
             if (!result)
             {
                 string pwd = "766554";
-                tb_DistanceDevicePwd.Text = pwd;
-                tb_ConfirmDistanceDevicePwd.Text = pwd;
+                tb_DistancePwd.Text = pwd;
+                tb_ConfirmDistancePwd.Text = pwd;
                 btn_DistanceDeviceEnter.Focus();
             }
             else
             {
-                tb_DistanceDevicePwd.Text = string.Empty;
-                tb_ConfirmDistanceDevicePwd.Text = string.Empty;
-                tb_DistanceDevicePwd.Focus();
+                tb_DistancePwd.Text = string.Empty;
+                tb_ConfirmDistancePwd.Text = string.Empty;
+                tb_DistancePwd.Focus();
             }
         }
 
-        private void tb_DistanceDevicePwd_KeyUp(object sender, KeyEventArgs e)
+        private void cb_DistanceWay_CheckedChanged(object sender, EventArgs e)
         {
-            DevicePwdKeyUp(sender, e);
+            bool result = cb_DistanceWay.Checked;
+            tb_DistanceOldPwd.Enabled = result;
+            cb_DefaultDistanOldPwd.Enabled = result;
+            gb_Distance.Text = result ? "定距卡加密" : "定距发卡器加密";
         }
 
-        private void tb_ConfirmDistanceDevicePwd_KeyUp(object sender, KeyEventArgs e)
+        private void DistanceCardEncryptionResult(DistanceParameter parameter)
         {
-            DevicePwdKeyUp(sender, e);
-        }
-
-        private void DevicePwdKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
+            if (parameter.AuxiliaryCommand == 0)
             {
-                btn_DistanceDeviceEnter_Click(null, null);
+                //显示成功
+                ShowEncryptionMessage("定距卡 " + parameter.CardNumber + " 加密成功。", false, parameter.Command);
+            }
+            else if (parameter.AuxiliaryCommand == 8)
+            {
+                ShowEncryptionMessage("定距卡加密结束。", true, parameter.Command);
+            }
+            else
+            {
+                ShowEncryptionMessage("定距卡加密失败，请将定距卡放置在读写区域内。", false, parameter.Command);
             }
         }
 
-        private void tb_DistanceCardpwd_KeyUp(object sender, KeyEventArgs e)
+        private void DistanceEncryptionResult(DistanceParameter parameter)
         {
-            DistanceCardPwdKeyUp(sender, e);
+            if (parameter.AuxiliaryCommand == 0)//成功
+            {
+                if (!_mPort.IsOpen)
+                {
+                    _mPort.IsOpen = true;
+                    return;
+                }
+                //显示成功
+                ShowEncryptionMessage("发卡器加密成功。", true, parameter.Command);
+            }
+            else//失败
+            {
+                //显示失败
+                ShowEncryptionMessage("发卡器加密失败，请检测端口通信是否正常。", true, parameter.Command);
+            }
         }
 
-        private void tb_ConfirmDistanceCardPwd_KeyUp(object sender, KeyEventArgs e)
-        {
-            DistanceCardPwdKeyUp(sender, e);
-        }
-
-        private void DistanceCardPwdKeyUp(object sender, KeyEventArgs e)
+        private void DistancePwdKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                btn_DistanceCardPwdEnter_Click(null, null);
+                if (btn_DistanceDeviceEnter.Enabled)
+                    btn_DistanceDeviceEnter_Click(null, null);
             }
         }
 
@@ -533,94 +1048,132 @@ namespace CBZN_TestTool
             DrawBorder(sender, e);
         }
 
+        private void tb_ConfirmDistancePwd_KeyDown(object sender, KeyEventArgs e)
+        {
+            DistancePwdKeyDown(sender, e);
+        }
+
+        private void tb_DistancePwd_KeyDown(object sender, KeyEventArgs e)
+        {
+            DistancePwdKeyDown(sender, e);
+        }
+
         #endregion 定距加密
 
         #region 临时加密
 
-        private void btn_TemporaryCardPwdEnter_Click(object sender, EventArgs e)
-        {
-            AcceptButton = btn_TemporaryCardPwdEnter;
-        }
-
         private void btn_TemporaryDevicePwdEnter_Click(object sender, EventArgs e)
         {
-            AcceptButton = btn_TemporaryDevicePwdEnter;
+            string oldpwd = string.Empty;
+            string pwd = tb_TemporaryPwd.Text;
+            string confirm = tb_ConfirmTemporaryPwd.Text;
+
+            #region 输入验证
+
+            if (tb_TemporaryOldPwd.Enabled)
+            {
+                oldpwd = tb_TemporaryOldPwd.Text;
+                if (oldpwd.Length == 0)
+                {
+                    MessageBox.Show(@" 旧密码不能为空，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    tb_TemporaryOldPwd.Focus();
+                    return;
+                }
+                if (oldpwd.Length < tb_TemporaryOldPwd.MaxLength)
+                {
+                    MessageBox.Show(@" 旧密码长度不能小于 8 位，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    tb_TemporaryOldPwd.Focus();
+                    return;
+                }
+            }
+
+            if (pwd.Length == 0)
+            {
+                MessageBox.Show(@" 新密码不能为空，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_TemporaryPwd.Focus();
+                return;
+            }
+            if (pwd.Length < tb_TemporaryPwd.MaxLength)
+            {
+                MessageBox.Show(@" 新密码长度不能小于 8 位，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_TemporaryPwd.Focus();
+                return;
+            }
+
+            if (confirm.Length == 0)
+            {
+                MessageBox.Show(@" 确认密码不能为空，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_ConfirmTemporaryPwd.Focus();
+                return;
+            }
+            if (confirm.Length < tb_ConfirmTemporaryPwd.MaxLength)
+            {
+                MessageBox.Show(@" 确认密码长度不能小于 8 位，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_ConfirmTemporaryPwd.Focus();
+                return;
+            }
+            if (pwd != confirm)
+            {
+                MessageBox.Show(@" 新密码与确认密码不一致，请重新输入。 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                tb_ConfirmTemporaryPwd.Focus();
+                return;
+            }
+
+            #endregion 输入验证
+
+            btn_TemporaryDevicePwdEnter.Enabled = false;
+            try
+            {
+                byte[] by = PortAgreement.GetTemporaryEncryption(!cb_TemporaryWay.Checked ? pwd : oldpwd);
+                _mPort.Write(by);
+            }
+            catch (Exception ex)
+            {
+                btn_TemporaryDevicePwdEnter.Enabled = true;
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void cb_DefaultTemporaryCardPwd_CheckedChanged(object sender, EventArgs e)
+        private void cb_DefaultTemporaryNewPwd_CheckedChanged(object sender, EventArgs e)
         {
-            bool result = !cb_DefaultTemporaryCardPwd.Checked;
-            tb_TemporaryCardPwd.Enabled = result;
-            tb_ConfirmTemporaryCardPwd.Enabled = result;
+            bool result = !cb_DefaultTemporaryNewPwd.Checked;
+            tb_TemporaryPwd.Enabled = result;
+            tb_ConfirmTemporaryPwd.Enabled = result;
             if (!result)
             {
-                string pwd = "FFFFFF";
-                tb_TemporaryCardPwd.Text = pwd;
-                tb_ConfirmTemporaryCardPwd.Text = pwd;
-                btn_TemporaryCardPwdEnter.Focus();
-            }
-            else
-            {
-                tb_TemporaryCardPwd.Text = string.Empty;
-                tb_ConfirmTemporaryCardPwd.Text = string.Empty;
-                tb_TemporaryCardPwd.Focus();
-            }
-        }
-
-        private void tb_ConfirmTemporaryCardPwd_KeyUp(object sender, KeyEventArgs e)
-        {
-            TemporaryCardPwdKeyUp(sender, e);
-        }
-
-        private void tb_TemporaryCardPwd_KeyUp(object sender, KeyEventArgs e)
-        {
-            TemporaryCardPwdKeyUp(sender, e);
-        }
-
-        private void TemporaryCardPwdKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btn_TemporaryCardPwdEnter_Click(null, null);
-            }
-        }
-
-        private void cb_DefaultTemporaryDevicePwd_CheckedChanged(object sender, EventArgs e)
-        {
-            bool result = !cb_DefaultTemporaryDevicePwd.Checked;
-            tb_TemporaryDevicePwd.Enabled = result;
-            tb_ConfirmTemporaryDevicePwd.Enabled = result;
-            if (!result)
-            {
-                string pwd = "FFFFFF";
-                tb_TemporaryDevicePwd.Text = pwd;
-                tb_ConfirmTemporaryDevicePwd.Text = pwd;
+                string pwd = "FFFFFFFF";
+                tb_TemporaryPwd.Text = pwd;
+                tb_ConfirmTemporaryPwd.Text = pwd;
                 btn_TemporaryDevicePwdEnter.Focus();
             }
             else
             {
-                tb_TemporaryDevicePwd.Text = string.Empty;
-                tb_ConfirmTemporaryDevicePwd.Text = string.Empty;
-                tb_TemporaryDevicePwd.Focus();
+                tb_TemporaryPwd.Text = string.Empty;
+                tb_ConfirmTemporaryPwd.Text = string.Empty;
+                tb_TemporaryPwd.Focus();
             }
         }
 
-        private void tb_ConfirmTemporaryDevicePwd_KeyUp(object sender, KeyEventArgs e)
+        private void cb_DefaultTemporaryOldPwd_CheckedChanged(object sender, EventArgs e)
         {
-            TemporaryDevicePwdKeyUp(sender, e);
-        }
-
-        private void tb_TemporaryDevicePwd_KeyUp(object sender, KeyEventArgs e)
-        {
-            TemporaryDevicePwdKeyUp(sender, e);
-        }
-
-        private void TemporaryDevicePwdKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
+            bool result = !cb_DefaultTemporaryOldPwd.Checked;
+            tb_TemporaryOldPwd.Enabled = result;
+            if (!result)
             {
-                btn_TemporaryDevicePwdEnter_Click(null, null);
+                tb_TemporaryOldPwd.Text = @"FFFFFFFF";
             }
+            else
+            {
+                tb_TemporaryOldPwd.Text = string.Empty;
+                tb_TemporaryOldPwd.Focus();
+            }
+        }
+
+        private void cb_TemporaryWay_CheckedChanged(object sender, EventArgs e)
+        {
+            bool result = cb_TemporaryWay.Checked;
+            tb_TemporaryOldPwd.Enabled = result;
+            cb_DefaultTemporaryOldPwd.Enabled = result;
         }
 
         private void p_TemporaryInterface_Paint(object sender, PaintEventArgs e)
@@ -628,9 +1181,1136 @@ namespace CBZN_TestTool
             DrawBorder(sender, e);
         }
 
+        private void tb_ConfirmTemporaryPwd_KeyDown(object sender, KeyEventArgs e)
+        {
+            TemporaryPwdKeyDown(sender, e);
+        }
+
+        private void tb_TemporaryPwd_KeyDown(object sender, KeyEventArgs e)
+        {
+            TemporaryPwdKeyDown(sender, e);
+        }
+
+        private void TemporaryEncryptionResult(ParsingParameter parameter)
+        {
+            long result = DataParsing.TemporaryContent(parameter.DataContent);
+            if (result == 0)
+            {
+                ShowEncryptionMessage("临时 IC 设备加密成功。", true, parameter.Command);
+            }
+            else
+            {
+                ShowEncryptionMessage("临时 IC 设备加密失败，请确认设备之间的通信是否正常。", true, parameter.Command);
+            }
+        }
+
+        private void TemporaryIcEncryptionResult(ParsingParameter parameter)
+        {
+            long result = DataParsing.TemporaryContent(parameter.DataContent);
+            ShowEncryptionMessage(result == 0 ? "临时 IC 卡加密成功。" : "临时 IC 卡加密失败，请确认旧密码是否正确。", true, parameter.Command);
+        }
+
+        private void TemporaryPwdKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter) return;
+            if (btn_TemporaryDevicePwdEnter.Enabled)
+                btn_TemporaryDevicePwdEnter_Click(null, null);
+        }
+
         #endregion 临时加密
 
         #endregion 加密操作
 
+        #region 参数编录
+
+        private void AddDevice(DeviceInfo dinfo)
+        {
+            DataTable dt = dgv_Device.DataSource as DataTable ?? GetDataTableHead<DeviceInfo>(dgv_Device);
+            dt.Rows.Add();
+            DataRow dr = dt.Rows[dt.Rows.Count - 1];
+            UpdateRowData<DeviceInfo>(dinfo, dr);
+        }
+
+        private void btn_DeviceAdd_Click(object sender, EventArgs e)
+        {
+            using (DeviceAdd da = new DeviceAdd())
+            {
+                da.AddDevice += AddDevice;
+                da.ShowDialog();
+            }
+        }
+
+        private void btn_DeviceDel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int index = dgv_Device.SelectedRows[0].Index;
+                Int64 did = HexadecimalConversion.ObjToInt(dgv_Device.Rows[index].Cells["Did"].Value);
+                DeviceInfo dinfo = DbHelper.Db.FirstDefault<DeviceInfo>(did);
+                if (dinfo == null) return;
+                if (
+                    MessageBox.Show(string.Format("确认删除 {0} 设备信息吗？", dinfo.Did), @"提示", MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Asterisk) != DialogResult.OK) return;
+                DbHelper.Db.Del<DeviceInfo>(did);
+                dgv_Device.Rows.RemoveAt(index);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void btn_DeviceEdit_Click(object sender, EventArgs e)
+        {
+            int index = dgv_Device.SelectedRows[0].Index;
+            Int64 did = HexadecimalConversion.ObjToInt(dgv_Device.Rows[index].Cells["Did"].Value);
+            using (DeviceEdit de = new DeviceEdit(did))
+            {
+                de.ShowDialog();
+                DeviceInfo dinfo = de.Tag as DeviceInfo;
+                if (dinfo != null)
+                {
+                    UpdateRowData<DeviceInfo>(dinfo, dgv_Device.Rows[index]);
+                }
+            }
+        }
+
+        private void btn_DeviceExport_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder(" and ( ");
+            foreach (DataGridViewRow row in dgv_Device.Rows)
+            {
+                object obj = row.Cells["c_Selected"].Value;
+                if (obj == null) continue;
+                if (!Convert.ToBoolean(obj)) continue;
+                int id = Convert.ToInt32(row.Cells["Did"].Value);
+                sb.AppendFormat(" {0} or", id);
+            }
+            sb = sb.Replace("or", ")", sb.Length - 2, 2);
+            using (DeviceExport de = new DeviceExport(sb.ToString()))
+            {
+                de.ShowDialog();
+            }
+        }
+
+        private void btn_DeviceImport_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openfile = new OpenFileDialog())
+            {
+                openfile.Title = @"导入选择";
+                openfile.Filter = @"（文本文件）|*.txt";
+                openfile.Multiselect = true;
+                if (openfile.ShowDialog() != DialogResult.OK) return;
+                using (DeviceImport di = new DeviceImport(openfile.FileNames))
+                {
+                    di.ShowDialog();
+                    btn_ShowDeviceRecord_Click(null, null);
+                }
+            }
+        }
+
+        private void btn_DeviceNext_Click(object sender, EventArgs e)
+        {
+            cb_DevicePage.SelectedIndex += 1;
+        }
+
+        private void btn_DevicePrevious_Click(object sender, EventArgs e)
+        {
+            cb_DevicePage.SelectedIndex -= 1;
+        }
+
+        private void btn_ShowDeviceRecord_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int count = DbHelper.Db.GetCount<DeviceInfo>();
+                ShowPage(count, cb_DevicePage, l_DeviceRecordCount);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void cb_AllSelected_CheckedChanged(object sender, EventArgs e)
+        {
+            bool check = cb_AllSelected.Checked;
+            for (int i = 0; i < dgv_Device.RowCount; i++)
+            {
+                dgv_Device.Rows[i].Cells["c_Selected"].Value = check;
+            }
+        }
+
+        private void cb_DevicePage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = cb_DevicePage.SelectedIndex;
+
+            btn_DevicePrevious.Enabled = index != 0;
+            btn_DeviceNext.Enabled = index != cb_DevicePage.Items.Count - 1;
+
+            try
+            {
+                DataTable dt = DbHelper.Db.ToTable<DeviceInfo>(index * 30, 30);
+                dgv_Device.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void dgv_Device_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > 0)
+            {
+                btn_DeviceEdit_Click(null, null);
+            }
+        }
+
+        private void dgv_Device_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            switch (e.ColumnIndex)
+            {
+                case 3:
+                    e.Value = e.Value.Equals(0) ? "入口" : "出口";
+                    break;
+
+                case 4:
+                    e.Value = e.Value.Equals(0) ? "畅泊道闸" : "非畅泊道闸";
+                    break;
+
+                case 6:
+                    int openmodel = HexadecimalConversion.ObjToInt(e.Value);
+                    if (dgv_Device.Rows[e.RowIndex].Cells["DeviceBrand"].Value.Equals(0))
+                    {
+                        switch (openmodel)
+                        {
+                            case 0:
+                                e.Value = "继电器开闸";
+                                break;
+
+                            case 1:
+                                e.Value = "串口开闸";
+                                break;
+
+                            case 2:
+                                e.Value = "无线开闸";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (openmodel)
+                        {
+                            case 0:
+                                e.Value = "继电器开闸";
+                                break;
+
+                            case 1:
+                                e.Value = "学习遥控器开闸";
+                                break;
+                        }
+                    }
+                    break;
+
+                case 7:
+                    if (CRegex.IsDecimal(e.Value))
+                    {
+                        int dicimal = HexadecimalConversion.ObjToInt(e.Value);
+                        if (dicimal == 0)
+                        {
+                            e.Value = "关闭";
+                        }
+                        else
+                        {
+                            e.Value = dicimal + " 分区";
+                        }
+                    }
+                    break;
+
+                case 8:
+                    e.Value = e.Value.Equals(0) ? "关闭" : "开启";
+                    break;
+
+                case 9:
+                    e.Value = e.Value.Equals(0) ? "关闭" : "开启";
+                    break;
+
+                case 10:
+                    if (CRegex.IsDecimal(e.Value))
+                    {
+                        int distance = HexadecimalConversion.ObjToInt(e.Value);
+                        switch (distance)
+                        {
+                            case 0:
+                                e.Value = "1.2 米";
+                                break;
+
+                            case 1:
+                                e.Value = "2.5 米";
+                                break;
+
+                            case 2:
+                                e.Value = "3.8 米";
+                                break;
+
+                            case 3:
+                                e.Value = "5 米";
+                                break;
+                        }
+                    }
+                    break;
+
+                case 11:
+                    if (CRegex.IsDecimal(e.Value))
+                    {
+                        int delay = HexadecimalConversion.ObjToInt(e.Value);
+                        switch (delay)
+                        {
+                            case 0:
+                                e.Value = "1 秒";
+                                break;
+
+                            case 1:
+                                e.Value = "5 秒";
+                                break;
+
+                            case 2:
+                                e.Value = "10 秒";
+                                break;
+
+                            case 3:
+                                e.Value = "20 秒";
+                                break;
+
+                            case 4:
+                                e.Value = "40 秒";
+                                break;
+
+                            case 5:
+                                e.Value = "80 秒";
+                                break;
+
+                            case 6:
+                                e.Value = "160 秒";
+                                break;
+
+                            case 7:
+                                e.Value = "320 秒";
+                                break;
+                        }
+                    }
+                    break;
+
+                case 12:
+                    e.Value = e.Value.Equals(0) ? "关闭" : "开启";
+                    break;
+
+                case 15:
+                    if (CRegex.IsDecimal(e.Value))
+                    {
+                        int language = HexadecimalConversion.ObjToInt(e.Value);
+                        switch (language)
+                        {
+                            case 0:
+                                e.Value = "普通话";
+                                break;
+
+                            case 1:
+                                e.Value = "东北话";
+                                break;
+
+                            case 2:
+                                e.Value = "四川话";
+                                break;
+
+                            case 3:
+                                e.Value = "湖南话";
+                                break;
+
+                            case 4:
+                                e.Value = "陕西话";
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private void dgv_Device_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 0) return;
+            bool check = Convert.ToBoolean(dgv_Device.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            if (check)
+            {
+                btn_DeviceExport.Enabled = true;
+            }
+            else
+            {
+                foreach (DataGridViewRow row in dgv_Device.Rows)
+                {
+                    object obj = row.Cells[e.ColumnIndex].Value;
+                    if (!(obj is bool)) continue;
+                    if ((bool)obj)
+                    {
+                        btn_DeviceExport.Enabled = true;
+                        return;
+                    }
+                }
+                btn_DeviceExport.Enabled = false;
+            }
+        }
+
+        private void dgv_Device_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgv_Device.IsCurrentCellDirty)
+            {
+                dgv_Device.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void dgv_Device_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                btn_DeviceDel_Click(null, null);
+            }
+        }
+
+        private void dgv_Device_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            btn_DeviceEdit.Enabled = true;
+            btn_DeviceDel.Enabled = true;
+        }
+
+        private void dgv_Device_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            if (dgv_Device.RowCount == 0)
+            {
+                btn_DeviceDel.Enabled = false;
+                btn_DeviceEdit.Enabled = false;
+                btn_DeviceExport.Enabled = false;
+                if (cb_AllSelected.Checked)
+                    cb_AllSelected.Checked = false;
+            }
+        }
+
+        private void dgv_Device_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+            {
+                cb_AllSelected.Location = new Point(7 - e.NewValue, cb_AllSelected.Location.Y);
+            }
+        }
+
+        private void dgv_Device_SelectionChanged(object sender, EventArgs e)
+        {
+            bool result = dgv_Device.SelectedRows.Count > 0;
+            btn_DeviceDel.Enabled = result;
+            btn_DeviceEdit.Enabled = result;
+        }
+
+        #endregion 参数编录
+
+        #region 无线测试
+
+        private void btn_FrequencySearch_Click(object sender, EventArgs e)
+        {
+            btn_FrequencySearch.Enabled = false;
+            btn_WirelessSet.Enabled = false;
+            btn_Test.Enabled = false;
+            btn_Query.Enabled = false;
+            btn_TemporaryReadCard.Enabled = false;
+
+            pb_FrequencySearch.Value = 0;
+            pb_FrequencySearch.Maximum = 64;
+
+            if (btn_FrequencySearch.Tag == null)
+            {
+                Thread thread = new Thread(ThreadSearchFrequency) { Name = "frequencysearch" };
+                thread.Start();
+                btn_FrequencySearch.Text = @"终 止";
+                btn_FrequencySearch.Tag = true;
+                _isReadCard = false;
+            }
+            else
+            {
+                _isThreadClose = true;
+
+                btn_FrequencySearch.Text = @"搜 索";
+                btn_FrequencySearch.Tag = null;
+            }
+
+            System.Timers.Timer timer = new System.Timers.Timer(1500) { AutoReset = false };
+            timer.Elapsed += ControlDelayShow;
+            timer.Start();
+        }
+
+        private void btn_Query_Click(object sender, EventArgs e)
+        {
+            btn_Query.Enabled = false;
+            _isReadCard = false;
+
+            OpenModule();
+
+            ShowWirelessMessage("关闭回传功能");
+            ModuleSetComesBack(0);
+            if (!_isModuleSet)
+            {
+                ModuleSetComesBack(0);
+                if (!_isModuleSet)
+                {
+                    ModuleSetComesBack(0);
+                }
+            }
+
+            CloseModule();
+
+            string str = "AT+FREQ?";
+            byte[] by = PortAgreement.GetSetModule(str);
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(200);
+            }
+
+            str = "AT+TID?";
+            by = PortAgreement.GetSetModule(str);
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(200);
+            }
+
+            btn_Query.Enabled = true;
+            btn_TemporaryReadCard.Enabled = true;
+        }
+
+        private void btn_TemporaryReadCard_Click(object sender, EventArgs e)
+        {
+            btn_TemporaryReadCard.Enabled = false;
+            try
+            {
+                if (_mPort.IsOpen)
+                {
+                    byte[] by = PortAgreement.GetReadTemporaryIC();
+                    _mPort.Write(by);
+                    _isReadCard = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                btn_TemporaryReadCard.Enabled = true;
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btn_Test_Click(object sender, EventArgs e)
+        {
+            btn_Test.Enabled = false;
+            _isReadCard = false;
+
+            try
+            {
+                string str = string.Format("福A00000000{0:yyMMddHHmmss}FF", DateTime.Now);
+                byte[] by = PortAgreement.GetOpenDoor(str);
+                if (_mPort.IsOpen)
+                {
+                    _mPort.Write(by);
+                }
+                btn_Test.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btn_WirelessSet_Click(object sender, EventArgs e)
+        {
+            btn_WirelessSet.Enabled = false;
+            btn_FrequencySearch.Enabled = false;
+            btn_Test.Enabled = false;
+            btn_Query.Enabled = false;
+            btn_TemporaryReadCard.Enabled = false;
+
+            _isReadCard = false;
+            Thread thread = new Thread(ThreadSetModule);
+            thread.Start();
+        }
+
+        private void CloseModule()
+        {
+            ShowWirelessMessage("关闭模块设置");
+            byte[] by = PortAgreement.GetCloseModule();
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(20);
+            }
+        }
+
+        private void ControlDelayShow(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            btn_FrequencySearch.Enabled = true;
+        }
+
+        private void dgv_WirelessDescription_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            dgv_WirelessDescription.FirstDisplayedScrollingRowIndex = e.RowIndex;
+        }
+
+        private void ModuleSetComesBack(int openonclose)
+        {
+            _isModuleSet = false;
+            string str = "AT+BACK=" + openonclose;
+            byte[] by = PortAgreement.GetSetModule(str);
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(200);
+            }
+        }
+
+        private void ModuleSetFrequency(int frequency)
+        {
+            _isModuleSet = false;
+            frequency = 127 - (frequency * 2 - 1);
+            string str = string.Format("AT+FREQ={0:X2}", frequency);
+            byte[] by = PortAgreement.GetSetModule(str);
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(200);
+            }
+        }
+
+        private void ModuleSetRid()
+        {
+            _isModuleSet = false;
+            decimal id = ud_WirelessId.Value;
+            string str = string.Format("AT+RID=01{0}", id.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0'));
+            byte[] by = PortAgreement.GetSetModule(str);
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(200);
+            }
+        }
+
+        private void ModuleSetTid()
+        {
+            _isModuleSet = false;
+            decimal id = ud_WirelessId.Value;
+            string str = string.Format("AT+TID=01{0}", id.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0'));
+            byte[] by = PortAgreement.GetSetModule(str);
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(200);
+            }
+        }
+
+        private void ModuleTest()
+        {
+            _isModuleSet = false;
+            byte[] by = PortAgreement.GetSetModule("ABCDEF");
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(200);
+            }
+        }
+
+        private void OpenModule()
+        {
+            ShowWirelessMessage("打开模块设置");
+            byte[] by = PortAgreement.GetOpenModule();
+            if (_mPort.IsOpen)
+            {
+                _mPort.Write(by);
+                Thread.Sleep(20);
+            }
+        }
+
+        private void p_Tap4_VisibleChanged(object sender, EventArgs e)
+        {
+            if (_mPort != null && _mPort.IsOpen)
+            {
+                if (_isReadCard)
+                {
+                    try
+                    {
+                        byte[] by = PortAgreement.GetCloseModule();
+                        _mPort.Write(by);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        btn_TemporaryReadCard.Enabled = true;
+                    }
+                }
+            }
+        }
+
+        private void p_Wireless_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawLine(new Pen(Brushes.Gray, 1), p_Wireless.Width - 1, 0, p_Wireless.Width - 1, p_Wireless.Height);
+            g.Dispose();
+        }
+
+        private void QueryFrequncy(int frequncy)
+        {
+            DefaultShow ds = delegate
+            {
+                frequncy = 64 - (frequncy / 2);
+                ShowWirelessMessage(string.Format("查询模块频率为:{0} 组", frequncy));
+            };
+            dgv_WirelessDescription.Invoke(ds);
+        }
+
+        private void QueryWireless(long id)
+        {
+            DefaultShow ds = delegate
+            {
+                ShowWirelessMessage(string.Format("查询模块ID为:{0:X8}", id));
+            };
+            dgv_WirelessDescription.Invoke(ds);
+        }
+
+        private void ShowIcCardContent(IcCardParameter info)
+        {
+            DefaultShow ds = delegate
+            {
+                string message = string.Format("IC卡号：{0} 车牌号码：{1} 时间：{2}", info.IcNumber, info.Plate, info.Time);
+                WirelessAddRow(message);
+            };
+            dgv_WirelessDescription.Invoke(ds);
+        }
+
+        private void ShowWirelessMessage(string message)
+        {
+            DefaultShow ds = delegate
+            {
+                WirelessAddRow(message);
+            };
+            dgv_WirelessDescription.Invoke(ds);
+        }
+
+        private void ThreadSearchFrequency()
+        {
+            bool isend;
+            int frequency = 0;
+            bool isback = false;
+            DefaultShow ds;
+            for (int i = 1; i <= 64; i++)
+            {
+                isend = false;
+
+                if (_isThreadClose)
+                {
+                    break;
+                }
+                ds = delegate
+               {
+                   pb_FrequencySearch.PerformStep();
+               };
+                pb_FrequencySearch.Invoke(ds);
+
+                OpenModule();
+
+                #region 频率
+
+                ShowWirelessMessage(string.Format("设置模块第 {0} 组频率", i));
+                ModuleSetFrequency(i);
+                if (!_isModuleSet)
+                {
+                    ShowWirelessMessage("第二次设置模块频率");
+                    ModuleSetFrequency(i);
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第三次设置模块频率");
+                        ModuleSetFrequency(i);
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage(string.Format("第 {0} 组频率设置失败，进行下一组设置", i));
+                            isend = true;
+                        }
+                    }
+                }
+
+                #endregion 频率
+
+                #region 回传
+
+                if (!isend && !isback)
+                {
+                    ModuleSetComesBack(1);
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第二次设置模块回传功能");
+                        ModuleSetComesBack(1);
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage("第三次设置模块回传功能");
+                            ModuleSetComesBack(1);
+                            if (!_isModuleSet)
+                            {
+                                ShowWirelessMessage("模块回传功能设置失败，退出设置");
+                                isend = true;
+                            }
+                            else
+                                isback = true;
+                        }
+                        else
+                            isback = true;
+                    }
+                    else
+                        isback = true;
+                }
+
+                #endregion 回传
+
+                CloseModule();
+
+                #region 测试
+
+                if (!isend)
+                {
+                    ShowWirelessMessage("测试");
+                    ModuleTest();
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第二次测试");
+                        ModuleTest();
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage("第三次测试");
+                            ModuleTest();
+                            if (!_isModuleSet)
+                            {
+                                ShowWirelessMessage("测试失败");
+                                isend = true;
+                            }
+                        }
+                    }
+                }
+
+                #endregion 测试
+
+                if (!isend)
+                {
+                    frequency = i;
+                    break;
+                }
+            }
+
+            ds = delegate
+           {
+               if (frequency > 0)
+               {
+                   ud_WirelessFrequency.Value = frequency;
+                   ShowWirelessMessage(string.Format("频率搜索成功，当前使用第 {0} 组频率", frequency));
+               }
+               else
+               {
+                   ShowWirelessMessage("频率搜索失败，请查看ID是否正确或连接设备是否打开。");
+               }
+               btn_Query.Enabled = true;
+               btn_WirelessSet.Enabled = true;
+               btn_Test.Enabled = true;
+               btn_TemporaryReadCard.Enabled = true;
+           };
+            pb_FrequencySearch.Invoke(ds);
+        }
+
+        private void ThreadSetModule()
+        {
+            bool isend = false;
+            try
+            {
+                OpenModule();
+
+                #region 发送ID
+
+                ShowWirelessMessage("设置模块发送ID");
+                ModuleSetTid();
+                if (!_isModuleSet)
+                {
+                    ShowWirelessMessage("第二次设置模块发送ID");
+                    ModuleSetTid();
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第三次设置模块发送ID");
+                        ModuleSetTid();
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage("模块发送ID设置失败，退出设置");
+                            isend = true;
+                        }
+                    }
+                }
+
+                #endregion 发送ID
+
+                #region 接收ID
+
+                if (!isend)
+                {
+                    ShowWirelessMessage("设置模块接收ID");
+                    ModuleSetRid();
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第二次设置模块接收ID");
+                        ModuleSetRid();
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage("第三次设置模块接收ID");
+                            ModuleSetRid();
+                            if (!_isModuleSet)
+                            {
+                                ShowWirelessMessage("模块接收ID设置失败，退出设置");
+                                isend = true;
+                            }
+                        }
+                    }
+                }
+
+                #endregion 接收ID
+
+                #region 频率
+
+                if (!isend)
+                {
+                    int frequency = (int)ud_WirelessFrequency.Value;
+                    ShowWirelessMessage(string.Format("设置模块第 {0} 组频率", frequency));
+                    ModuleSetFrequency(frequency);
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第二次设置模块频率");
+                        ModuleSetFrequency(frequency);
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage("第三次设置模块频率");
+                            ModuleSetFrequency(frequency);
+                            if (!_isModuleSet)
+                            {
+                                ShowWirelessMessage("模块频率设置失败，退出设置");
+                                isend = true;
+                            }
+                        }
+                    }
+                }
+
+                #endregion 频率
+
+                #region 回传
+
+                if (!isend)
+                {
+                    ShowWirelessMessage("设置模块回传功能");
+                    ModuleSetComesBack(1);
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第二次设置模块回传功能");
+                        ModuleSetComesBack(1);
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage("第三次设置模块回传功能");
+                            ModuleSetComesBack(1);
+                            if (!_isModuleSet)
+                            {
+                                ShowWirelessMessage("模块回传功能设置失败，退出设置");
+                                isend = true;
+                            }
+                        }
+                    }
+                }
+
+                #endregion 回传
+
+                CloseModule();
+
+                #region 发送数据测试
+
+                if (!isend)
+                {
+                    ShowWirelessMessage("测试");
+                    ModuleTest();
+                    if (!_isModuleSet)
+                    {
+                        ShowWirelessMessage("第二次测试");
+                        ModuleTest();
+                        if (!_isModuleSet)
+                        {
+                            ShowWirelessMessage("第三次测试");
+                            ModuleTest();
+                            if (!_isModuleSet)
+                            {
+                                ShowWirelessMessage("测试失败");
+                                isend = true;
+                            }
+                        }
+                    }
+                }
+
+                #endregion 发送数据测试
+            }
+            catch (Exception ex)
+            {
+                ShowWirelessMessage(ex.Message);
+            }
+            finally
+            {
+                DefaultShow ds = delegate
+                {
+                    btn_WirelessSet.Enabled = true;
+                    btn_FrequencySearch.Enabled = true;
+                    btn_Test.Enabled = true;
+                    btn_Query.Enabled = true;
+                    btn_TemporaryReadCard.Enabled = true;
+
+                    btn_WirelessSet.Image = !isend ? Properties.Resources.check : Properties.Resources.block;
+                };
+                btn_WirelessSet.Invoke(ds);
+            }
+        }
+
+        private void WirelessAddRow(string message)
+        {
+            if (dgv_WirelessDescription.RowCount >= 30)
+                dgv_WirelessDescription.Rows.RemoveAt(0);
+            dgv_WirelessDescription.Rows.Add(new object[] { message });
+        }
+
+        #endregion 无线测试
+
+        #region 公共方法
+
+        private void ShowPage(int count, ComboBox cbBox, Label lcount)
+        {
+            cbBox.Items.Clear();
+            int page = count / 30;
+            if (page % 30 > 0)
+                page++;
+            if (page > 0)
+            {
+                for (int i = 0; i < page; i++)
+                {
+                    cbBox.Items.Add(string.Format("{0}页", i));
+                }
+            }
+            else
+            {
+                cbBox.Items.Add("1页");
+            }
+            cbBox.SelectedIndex = 0;
+            lcount.Text = string.Format("总共 {0} 条记录", count);
+        }
+
+        private void AddRange<T>(List<T> cardinfos, DataGridView dgv)
+        {
+            int count = cardinfos.Count;
+            if (count <= 0) return;
+            DataTable dt = dgv.DataSource as DataTable;
+            if (dt == null)
+                dgv.Rows.Add(count);
+            else
+                dt.Rows.Add(count);
+            PropertyInfo[] pis =
+    typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            List<DataGridViewRow> rows = new List<DataGridViewRow>();
+            for (int i = 0; i < count; i++)
+            {
+                if (dt == null)
+                {
+                    DataGridViewRow dr = dgv.Rows[i];
+                    foreach (PropertyInfo pi in pis)
+                    {
+                        dr.Cells[pi.Name].Value = pi.GetValue(cardinfos[i], null);
+                    }
+                }
+                else
+                {
+                    DataRow dr = dt.Rows[i];
+                    foreach (PropertyInfo pi in pis)
+                    {
+                        dr[pi.Name] = pi.GetValue(cardinfos[i], null);
+                    }
+                }
+            }
+        }
+
+        private T GetDataInfo<T>(int index, DataGridView dgv)
+        {
+            DataTable dt = dgv.DataSource as DataTable;
+            PropertyInfo[] pis = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            T t = Activator.CreateInstance<T>();
+            foreach (PropertyInfo item in pis)
+            {
+                if (dt != null)
+                {
+                    object obj = dt.Rows[index][item.Name];
+                    item.SetValue(t, obj, null);
+                }
+            }
+            return t;
+        }
+
+        private List<T> GetDataInfo<T>(DataGridView dgv)
+        {
+            DataTable dt = dgv.DataSource as DataTable;
+            PropertyInfo[] pis = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            List<T> tlist = new List<T>();
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                T t = Activator.CreateInstance<T>();
+                foreach (PropertyInfo item in pis)
+                {
+                    item.SetValue(t, row.Cells[item.Name].Value, null);
+                }
+                tlist.Add(t);
+            }
+            return tlist;
+        }
+
+        private DataTable GetDataTableHead<T>(DataGridView dgv)
+        {
+            DataTable dt = new DataTable();
+            PropertyInfo[] pis =
+                typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            foreach (PropertyInfo item in pis)
+            {
+                dt.Columns.Add(item.Name, item.PropertyType);
+            }
+            dgv.DataSource = dt;
+            return dt;
+        }
+
+        private void UpdateRowData<T>(T info, DataGridViewRow dr)
+        {
+            PropertyInfo[] pis =
+    typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            foreach (PropertyInfo item in pis)
+            {
+                dr.Cells[item.Name].Value = item.GetValue(info, null);
+            }
+        }
+
+        private void UpdateRowData<T>(T info, DataRow dr)
+        {
+            PropertyInfo[] pis =
+                typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            foreach (PropertyInfo item in pis)
+            {
+                dr[item.Name] = item.GetValue(info, null);
+            }
+        }
+
+        #endregion 公共方法
     }
 }
