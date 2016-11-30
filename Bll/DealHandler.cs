@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Bll
 {
@@ -15,6 +14,11 @@ namespace Bll
 
         public int Command { get; set; }
 
+        public byte[] Integration()
+        {
+            return Integration(null);
+        }
+
         public byte[] Integration(byte[] datacontent)
         {
             List<byte> bylist = new List<byte>();
@@ -22,7 +26,8 @@ namespace Bll
             bylist.Add((byte)FunctionAddress);
             bylist.AddRange(HexadecimalConversion.IntToAscii(DeviceAddress));
             bylist.AddRange(HexadecimalConversion.IntToAscii(Command));
-            bylist.AddRange(datacontent);
+            if (datacontent != null)
+                bylist.AddRange(datacontent);
             int xor = DataValidation.Xor(bylist);
             bylist.AddRange(HexadecimalConversion.IntToAscii(xor));
             bylist.Add((byte)End);

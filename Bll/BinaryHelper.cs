@@ -1,4 +1,5 @@
-﻿namespace Bll
+﻿using System;
+namespace Bll
 {
     public class BinaryHelper
     {
@@ -27,9 +28,19 @@
             }
             else
             {
-                num &= (0x1 << mask);
+                num &= ~(0x1 << mask);
             }
             return num;
+        }
+
+        public static int GetBitToInt(int num, int index, int count)
+        {
+            int value = 0;
+            for (int i = 0; i < count; i++)
+            {
+                value += (GetIntegerSomeBit(num, index + i) * (int)Math.Pow(2, i));
+            }
+            return value;
         }
     }
 }

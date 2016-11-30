@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Configuration;
 using System.IO;
 using System.Data.SQLite;
@@ -31,10 +29,18 @@ namespace Dal
             SQLiteConnection.CreateFile(path);
             StringBuilder sb = new StringBuilder();
             sb.Append(@" Create Table UserInfo ( ID integer primary key AUTOINCREMENT ,UserName text , UserNumber int ,Description text, RecordTime datetime );");
+
             sb.Append(@" Create Table NumberLimit ( ID integer primary key autoincrement, LimitNumber int ) ;");
-            sb.Append(@" Insert Into NumberLimit (LimitNumber) values(9887) ");
+            sb.Append(@" Insert Into NumberLimit (LimitNumber) values(9887); ");
+
             sb.Append(
-                @" Create Table CardInfo(ID integer primary key autoincrement,Number NvarChar(10) ,Value1 Int ,Value2 Int, Value3 Int ,Value4 Int, Value5 Int, Value6 Int, Value7 Int");
+                @" Create Table CardInfo(Cid integer primary key autoincrement,CardNumber NvarChar(10) ,CardType Int ,CardTime DateTime, CardDistance Int ,CardLock Int, CardReportLoss Int,Synchronous Int, CardPartition Int, ParkingRestrictions Int ,InOutState Int, Electricity Int, CardCount Int); ");
+
+            sb.Append(@" Create Table BundledInfo(Bid integer primary key autoincrement,Cid integer, HostCardNumber NvarChar(10),Vid integer,ViceCardNumber NvarChar(10) );");
+
+            sb.Append(
+                @" Create Table DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int,DeviceBrand int ,BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int ); ");
+
             Db.ExecuteNonQuery(sb.ToString());
         }
 

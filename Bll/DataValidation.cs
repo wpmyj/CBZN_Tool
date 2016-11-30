@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Bll
 {
@@ -46,9 +47,9 @@ namespace Bll
         private static List<byte[]> GetGroupData(byte[] by)
         {
             List<byte[]> byslist = new List<byte[]>();
+            IncompleteByList.AddRange(by);
             do
             {
-                IncompleteByList.AddRange(by);
                 int start = IncompleteByList.IndexOf((byte)ProtocolHead);
                 if (start > -1)
                 {
@@ -95,8 +96,7 @@ namespace Bll
         private static bool GetValidationResult(byte[] by)
         {
             bool result = false;
-            if (ValidationEnd == 0)
-                ValidationEnd = by.Length - 3;
+            ValidationEnd = by.Length - 3;
             int xorvalue = Xor(by, ValidationHead, ValidationEnd);
             if (ContrastValidation(by, xorvalue, ValidationEnd))
                 result = true;
@@ -106,7 +106,7 @@ namespace Bll
         private static bool ContrastValidation(byte[] by, int contrastvalue, int start)
         {
             int count = 0;
-            byte[] contrastdata =HexadecimalConversion.IntToAscii(contrastvalue);
+            byte[] contrastdata = HexadecimalConversion.IntToAscii(contrastvalue);
             foreach (byte item in contrastdata)
             {
                 if (by[start + count] != item)
@@ -145,8 +145,18 @@ namespace Bll
 
         public static int Xor(int value1, int value2)
         {
-            byte[] by = new byte[2] {(byte)value1, (byte)value2};
+            byte[] by = new byte[2] { (byte)value1, (byte)value2 };
             return Xor(by, 0, by.Length);
+        }
+
+        public static int Xor(string str)
+        {
+            int result = 0;
+            for (int a = 0; a < str.Length; a += 2)
+            {
+                result = result ^ Convert.ToInt32(str.Substring(a, 2), 16);
+            }
+            return result;
         }
     }
 }
