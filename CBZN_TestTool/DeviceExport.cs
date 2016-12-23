@@ -255,8 +255,8 @@ namespace CBZN_TestTool
 
         private void DeviceExport_MouseDown(object sender, MouseEventArgs e)
         {
-            WinApi.ReleaseCapture();
-            WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
+            PcommApi.ReleaseCapture();
+            PcommApi.SendMessage(this.Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
         }
 
         private void TxtKeyPress(object sender, KeyPressEventArgs e)

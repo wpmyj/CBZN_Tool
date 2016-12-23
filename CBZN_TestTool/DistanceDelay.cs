@@ -101,8 +101,8 @@ namespace CBZN_TestTool
 
         private void p_Title_MouseDown(object sender, MouseEventArgs e)
         {
-            WinApi.ReleaseCapture();
-            WinApi.SendMessage(Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
+            PcommApi.ReleaseCapture();
+            PcommApi.SendMessage(Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
         }
           
     }
