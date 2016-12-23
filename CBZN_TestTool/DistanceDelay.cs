@@ -3,6 +3,7 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace CBZN_TestTool
@@ -78,12 +79,15 @@ namespace CBZN_TestTool
 
         private void DistanceDelay_Load(object sender, EventArgs e)
         {
-            dgv_BundledList.Rows.Add(4);
+            dgv_BundledList.Rows.Add(8);
 
-            _mBundledViceCard = Dal.dal_CardInfo.SelectBound(_mCardInfo.Cid);
-            foreach (CardInfo item in _mBundledViceCard)
+            if (_mCardInfo != null)
             {
-                dgv_BundledList.Rows.Add(new object[] { item.CardNumber, item.CardTime, item.CardPartition });
+                _mBundledViceCard = Dal.dal_CardInfo.SelectBound(_mCardInfo.Cid);
+                foreach (CardInfo item in _mBundledViceCard)
+                {
+                    dgv_BundledList.Rows.Add(new object[] { item.CardNumber, item.CardTime, item.CardPartition });
+                }
             }
         }
 
@@ -100,5 +104,6 @@ namespace CBZN_TestTool
             WinApi.ReleaseCapture();
             WinApi.SendMessage(Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
+          
     }
 }

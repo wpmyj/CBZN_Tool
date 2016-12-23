@@ -4,16 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CBZN_TestTool
 {
     public partial class DistanceRegister : Form
     {
-        public static bool _isShow;
+        public static bool IsShow;
 
         private static DistanceRegister _instance;
 
+        private int _lockindex;
+        private CardInfo _mViceCard;
         private System.Timers.Timer _timer;
 
         private DistanceRegister()
@@ -21,7 +24,11 @@ namespace CBZN_TestTool
             InitializeComponent();
         }
 
+        public delegate void ViceCardUpdateHandler(int rowindex, CardInfo info);
+
         private delegate void DefaultShow();
+
+        public event ViceCardUpdateHandler ViceCardUpdate;
 
         public static DistanceRegister Instance
         {
@@ -38,12 +45,12 @@ namespace CBZN_TestTool
         /// <summary>
         /// 副卡列表
         /// </summary>
-        public List<CardInfo> _mViceCardInfo { get; set; }
+        public Dictionary<int, CardInfo> _mViceCardInfo { get; set; }
 
         /// <summary>
         /// 捆绑添加
         /// </summary>
-        private List<CardInfo> _mBoundAdd { get; set; }
+        private Dictionary<int, CardInfo> _mBoundAdd { get; set; }
 
         /// <summary>
         /// 捆绑移除
@@ -53,7 +60,7 @@ namespace CBZN_TestTool
         /// <summary>
         /// 已捆绑列表
         /// </summary>
-        private List<CardInfo> _mBundledCardinfo { get; set; }
+        private Dictionary<int, CardInfo> _mBundledCardinfo { get; set; }
 
         public void PortDataRecevied(DistanceParameter parameter)
         {
@@ -64,9 +71,10 @@ namespace CBZN_TestTool
                     DefaultShow ds = delegate
                     {
                         btn_Enter.Enabled = true;
-                        MessageBox.Show("定距卡发行失败，请将定距卡放置在多功能操作平台上。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        btn_Canel.Enabled = true;
+                        MessageBox.Show(@"定距卡发行失败，请将定距卡放置在多功能操作平台上。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     };
-                    base.Invoke(ds);
+                    Invoke(ds);
                     return;
                 }
             }
@@ -74,37 +82,48 @@ namespace CBZN_TestTool
             if (_mCardInfo.CardType == 1)//组合卡
             {
                 //解锁副卡
-                foreach (CardInfo item in _mBundledCardinfo)
+                foreach (KeyValuePair<int, CardInfo> item in _mBundledCardinfo)
                 {
-                    if (parameter.CardNumber == item.CardNumber)
+                    if (_mViceCard != null && item.Value == _mViceCard)
                     {
-                        if (parameter.AuxiliaryCommand == 0)
-                            Dal.DbHelper.Db.Update<CardInfo>(item);
+                        if (parameter.CardNumber == item.Value.CardNumber)
+                        {
+                            if (parameter.AuxiliaryCommand == 0)
+                            {
+                                item.Value.CardLock = 0;
+                                Dal.DbHelper.Db.Update<CardInfo>(item.Value);
+                                OnViceCardUpdate(item.Key, item.Value);
+                                dgv_BundledList.Rows[_lockindex].Cells["c_LockState"].Value = item.Value.CardLock;
+                            }
+                        }
+                        _mViceCard = null;
+                        continue;
                     }
-                    if (item.CardLock == 1)
+                    if (_mViceCard != null) continue;
+                    _lockindex++;
+                    if (item.Value.CardLock != 1) continue;
+                    _mViceCard = item.Value;
+                    TypeParameter typeparameter = new TypeParameter()
                     {
-                        item.CardLock = 0;
-                        TypeParameter typeparameter = new TypeParameter()
-                        {
-                            Lock = 0,
-                            Distance = 0
-                        };
-                        DistanceParameterContent distanceparameter = new DistanceParameterContent()
-                        {
-                            CardNumber = item.CardNumber,
-                            Type = typeparameter,
-                            Function = null,
-                            Count = 0
-                        };
-                        SingleCardData? singlecarddata = null;
-                        byte[] by = DataCombination.CombinationDistanceCard(distanceparameter, singlecarddata);
-                        if (_mPort.IsOpen)
-                            _mPort.Write(by);
-                        return;
-                    }
+                        Lock = 0,
+                        Distance = 0
+                    };
+                    DistanceParameterContent distanceparameter = new DistanceParameterContent()
+                    {
+                        CardNumber = item.Value.CardNumber,
+                        Type = typeparameter,
+                        Function = null,
+                        Count = 0
+                    };
+                    SingleCardData? singlecarddata = null;
+                    byte[] by = DataCombination.CombinationDistanceCard(distanceparameter, singlecarddata);
+                    if (_mPort.IsOpen)
+                        _mPort.Write(@by);
+                    return;
                 }
             }
 
+            btn_Canel.Enabled = true;
             Close();
         }
 
@@ -116,44 +135,46 @@ namespace CBZN_TestTool
                 return;
             }
 
-            bool isadd;
             for (int i = 0; i < clb_BundledSelected.Items.Count; i++)
             {
-                isadd = false;
-                if (clb_BundledSelected.GetItemChecked(i))
+                bool isadd = false;
+                if (!clb_BundledSelected.GetItemChecked(i)) continue;
+                string cardnumber = clb_BundledSelected.Items[i].ToString();
+                CardInfo info = null;
+                int index = 0;
+                //对比副卡列表找出选择的信息
+                foreach (KeyValuePair<int, CardInfo> item in _mViceCardInfo)
                 {
-                    CardInfo info = _mViceCardInfo[i];
-                    foreach (CardInfo item in _mBundledCardinfo)
-                    {
-                        if (info.CardNumber == item.CardNumber)
-                        {
-                            MessageBox.Show(@"副卡 " + item.CardNumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            return;
-                        }
-                    }
-                    foreach (CardInfo item in _mBoundAdd)
-                    {
-                        if (info.CardNumber == item.CardNumber)
-                        {
-                            MessageBox.Show(@"副卡 " + item.CardNumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            return;
-                        }
-                    }
-
-                    foreach (CardInfo item in _mBoundDel)
-                    {
-                        if (info.CardNumber != item.CardNumber) continue;
-                        _mBundledCardinfo.Add(item);
-                        _mBoundDel.Remove(item);
-                        dgv_BundledList.Rows.Add(new object[] { false, item.CardNumber, item.CardTime, item.ParkingRestrictions });
-                        isadd = true;
-                        break;
-                    }
-
-                    if (isadd) continue;
-                    _mBoundAdd.Add(_mViceCardInfo[i]);
-                    dgv_BundledList.Rows.Add(new object[] { false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
+                    if (item.Value.CardNumber != cardnumber) continue;
+                    index = item.Key;
+                    info = item.Value;
+                    break;
                 }
+                if (info == null)
+                    continue;
+                if (_mBundledCardinfo.ContainsValue(info))
+                {
+                    MessageBox.Show(@"副卡 " + cardnumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                if (_mBoundAdd.ContainsValue(info))
+                {
+                    MessageBox.Show(@"副卡 " + cardnumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                //验证选择的信息是存在删除的信息中
+                if (_mBoundDel.Contains(info))
+                {
+                    _mBundledCardinfo.Add(-1, info);
+                    _mBoundDel.Remove(info);
+                    dgv_BundledList.Rows.Add(new object[] { false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
+                    isadd = true;
+                    break;
+                }
+
+                if (isadd) continue;
+                _mBoundAdd.Add(index, info);
+                dgv_BundledList.Rows.Add(new object[] { false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
             }
         }
 
@@ -172,6 +193,7 @@ namespace CBZN_TestTool
             try
             {
                 btn_Enter.Enabled = false;
+                btn_Canel.Enabled = false;
 
                 UpdateDistanceData();
 
@@ -199,53 +221,57 @@ namespace CBZN_TestTool
                     Count = _mCardInfo.CardCount
                 };
                 byte[] by;
-                if (_mCardInfo.CardType == 0)//单卡
+                switch (_mCardInfo.CardType)
                 {
-                    SingleCardData singlecarddata = new SingleCardData()
-                    {
-                        Time = _mCardInfo.CardTime,
-                        Partition = _mCardInfo.CardPartition
-                    };
-                    by = DataCombination.CombinationDistanceCard(distancecontent, singlecarddata);
-                }
-                else if (_mCardInfo.CardType == 1) //组合卡
-                {
-                    List<ViceCardData> vicecarddatas = new List<ViceCardData>();
-                    foreach (CardInfo item in _mBundledCardinfo)
-                    {
-                        ViceCardData vicecard = new ViceCardData()
+                    case 0:
+                        SingleCardData singlecarddata = new SingleCardData()
                         {
-                            ViceNumber = item.CardNumber,
-                            Time = item.CardTime,
-                            Partition = item.CardPartition,
-                            Count = item.CardCount
+                            Time = _mCardInfo.CardTime,
+                            Partition = _mCardInfo.CardPartition
                         };
-                        vicecarddatas.Add(vicecard);
-                    }
-                    by = DataCombination.CombinationDistanceCard(distancecontent, vicecarddatas);
-                }
-                else //车牌识别卡
-                {
-                    List<PlateCardData> platecarddatas = new List<PlateCardData>();
-                    foreach (CardInfo item in _mBundledCardinfo)
-                    {
-                        PlateCardData platecarddata = new PlateCardData()
+                        by = DataCombination.CombinationDistanceCard(distancecontent, singlecarddata);
+                        break;
+
+                    case 1:
+                        List<ViceCardData> vicecarddatas = new List<ViceCardData>();
+                        foreach (KeyValuePair<int, CardInfo> item in _mBundledCardinfo)
                         {
-                            Plate = item.CardNumber,
-                            Time = item.CardTime,
-                            Partition = item.CardPartition
-                        };
-                        platecarddatas.Add(platecarddata);
-                    }
-                    by = DataCombination.CombinationDistanceCard(distancecontent, platecarddatas);
+                            ViceCardData vicecard = new ViceCardData()
+                            {
+                                ViceNumber = item.Value.CardNumber,
+                                Time = item.Value.CardTime,
+                                Partition = item.Value.CardPartition,
+                                Count = item.Value.CardCount
+                            };
+                            vicecarddatas.Add(vicecard);
+                        }
+                        by = DataCombination.CombinationDistanceCard(distancecontent, vicecarddatas);
+                        break;
+
+                    default:
+                        List<PlateCardData> platecarddatas = new List<PlateCardData>();
+                        foreach (KeyValuePair<int, CardInfo> item in _mBundledCardinfo)
+                        {
+                            PlateCardData platecarddata = new PlateCardData()
+                            {
+                                Plate = item.Value.CardNumber,
+                                Time = item.Value.CardTime,
+                                Partition = item.Value.CardPartition
+                            };
+                            platecarddatas.Add(platecarddata);
+                        }
+                        by = DataCombination.CombinationDistanceCard(distancecontent, platecarddatas);
+                        break;
                 }
                 if (_mPort.IsOpen)
                     _mPort.Write(by);
                 btn_Enter.Tag = _mCardInfo;
+                _lockindex = 0;
             }
             catch (Exception ex)
             {
                 btn_Enter.Enabled = true;
+                btn_Canel.Enabled = true;
                 MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -261,20 +287,20 @@ namespace CBZN_TestTool
             string plate = tb_Plate.Text.Trim();
             if (!IsContainsPlateProvinces(plate))
             {
-                MessageBox.Show("输入的车牌号码无效，请重新输入。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(@"输入的车牌号码无效，请重新输入。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 tb_Plate.Focus();
                 return;
             }
-            foreach (CardInfo item in _mBundledCardinfo)
+            foreach (KeyValuePair<int, CardInfo> item in _mBundledCardinfo)
             {
-                if (plate != item.CardNumber) continue;
-                MessageBox.Show(@"车牌号码 " + item.CardNumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (plate != item.Value.CardNumber) continue;
+                MessageBox.Show(@"车牌号码 " + item.Value.CardNumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            foreach (CardInfo item in _mBoundAdd)
+            foreach (KeyValuePair<int, CardInfo> item in _mBoundAdd)
             {
-                if (plate != item.CardNumber) continue;
-                MessageBox.Show(@"车牌号码 " + item.CardNumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (plate != item.Value.CardNumber) continue;
+                MessageBox.Show(@"车牌号码 " + item.Value.CardNumber + @" 已经捆绑致定距卡中 ", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
@@ -290,7 +316,7 @@ namespace CBZN_TestTool
                 CardTime = DateTime.Now,
                 ParkingRestrictions = 0
             };
-            _mBoundAdd.Add(info);
+            _mBoundAdd.Add(-1, info);
             dgv_BundledList.Rows.Add(new object[] { false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
             tb_Plate.Text = string.Empty;
             tb_Plate.Focus();
@@ -302,24 +328,24 @@ namespace CBZN_TestTool
             {
                 if (!(bool)dgv_BundledList.Rows[i].Cells["c_selected"].Value) continue;
                 string number = dgv_BundledList.Rows[i].Cells["c_Number"].Value.ToString();
-                foreach (CardInfo item in _mBundledCardinfo)
+                foreach (KeyValuePair<int, CardInfo> item in _mBundledCardinfo)
                 {
-                    if (number != item.CardNumber) continue;
-                    _mBoundDel.Add(item);
+                    if (number != item.Value.CardNumber) continue;
+                    _mBoundDel.Add(item.Value);
                     dgv_BundledList.Rows.RemoveAt(i);
-                    if (!_mViceCardInfo.Contains(item))
+                    if (!_mViceCardInfo.ContainsValue(item.Value))
                     {
-                        _mViceCardInfo.Add(item);
-                        clb_BundledSelected.Items.Add(item.CardNumber);
+                        _mViceCardInfo.Add(-1, item.Value);
+                        clb_BundledSelected.Items.Add(item.Value.CardNumber);
                     }
-                    _mBundledCardinfo.Remove(item);
+                    _mBundledCardinfo.Remove(item.Key);
                     break;
                 }
 
-                foreach (CardInfo item in _mBoundAdd)
+                foreach (KeyValuePair<int, CardInfo> item in _mBoundAdd)
                 {
-                    if (number != item.CardNumber) continue;
-                    _mBoundAdd.Remove(item);
+                    if (number != item.Value.CardNumber) continue;
+                    _mBoundAdd.Remove(item.Key);
                     dgv_BundledList.Rows.RemoveAt(i);
                     break;
                 }
@@ -379,7 +405,7 @@ namespace CBZN_TestTool
             if (cb_CardType.SelectedIndex != _mCardInfo.CardType)
             {
                 if (_mBundledCardinfo.Count > 0)
-                    _mBoundDel.AddRange(_mBundledCardinfo);
+                    _mBoundDel.AddRange(_mBundledCardinfo.Values);
                 _mBundledCardinfo.Clear();
                 _mBoundAdd.Clear();
                 dgv_BundledList.Rows.Clear();
@@ -387,7 +413,10 @@ namespace CBZN_TestTool
             else
             {
                 if (_mBoundDel.Count > 0)
-                    _mBundledCardinfo.AddRange(_mBoundDel);
+                    foreach (CardInfo item in _mBoundDel)
+                    {
+                        _mBundledCardinfo.Add(-1, item);
+                    }
                 _mBoundDel.Clear();
                 _mBoundAdd.Clear();
                 ShowViceCardInfo();
@@ -428,21 +457,20 @@ namespace CBZN_TestTool
         {
             btn_Add.Visible = clb_BundledSelected.Visible;
             if (!clb_BundledSelected.Visible || dgv_BundledList.RowCount != 0) return;
-            foreach (CardInfo item in _mViceCardInfo)
+            foreach (KeyValuePair<int, CardInfo> item in _mViceCardInfo)
             {
-                clb_BundledSelected.Items.Add(item.CardNumber);
+                clb_BundledSelected.Items.Add(item.Value.CardNumber);
             }
         }
 
         private void CreateProvinces()
         {
             string[] strplate = Enum.GetNames(typeof(PlateProvinces.Provinces));
-            Button btn;
             int x = 0;
             int y = 0;
             for (int i = 0; i < strplate.Length; i++)
             {
-                btn = new Button
+                Button btn = new Button
                 {
                     Anchor = AnchorStyles.Left | AnchorStyles.Top,
                     Location = new Point(x, y),
@@ -456,6 +484,30 @@ namespace CBZN_TestTool
                 if (btn.Width + x <= p_Provinces.Width) continue;
                 x = 0;
                 y += btn.Height;
+            }
+        }
+
+        private void dgv_BundledList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            switch (e.ColumnIndex)
+            {
+                case 1:
+                    e.Value = e.Value.Equals(0) ? Properties.Resources.check : Properties.Resources.block;
+                    break;
+
+                case 4:
+                    if (!Regex.IsMatch(e.Value.ToString(), @"^\d+$")) return;
+                    StringBuilder sb = new StringBuilder();
+                    int partition = HexadecimalConversion.ObjToInt(e.Value);
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (BinaryHelper.GetIntegerSomeBit(partition, i) == 1)
+                        {
+                            sb.AppendFormat(" {0} 分区", i + 1);
+                        }
+                    }
+                    e.Value = sb.ToString();
+                    break;
             }
         }
 
@@ -497,19 +549,26 @@ namespace CBZN_TestTool
 
         private void DistanceRegister_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _isShow = false;
+            IsShow = false;
             _instance = null;
-            _mPort.PortIsOpenChange -= PortOpenAndCloseChange;
+            if (_mPort != null) _mPort.PortIsOpenChange -= PortOpenAndCloseChange;
         }
 
         private void DistanceRegister_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_mBoundDel.Count > 0 || _mBoundAdd.Count > 0)
+            if (btn_Canel.Enabled)
             {
-                if (MessageBox.Show("当确认操作未成功，是否放弃操作。", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                if (_mBoundDel.Count > 0 || _mBoundAdd.Count > 0)
                 {
-                    e.Cancel = true;
+                    if (MessageBox.Show(@"当确认操作未成功，是否放弃操作。", @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                    {
+                        e.Cancel = true;
+                    }
                 }
+            }
+            else
+            {
+                e.Cancel = true;
             }
         }
 
@@ -521,9 +580,9 @@ namespace CBZN_TestTool
 
         private void DistanceRegister_Load(object sender, EventArgs e)
         {
-            _isShow = true;
-            _mBundledCardinfo = new List<CardInfo>();
-            _mBoundAdd = new List<CardInfo>();
+            IsShow = true;
+            _mBundledCardinfo = new Dictionary<int, CardInfo>();
+            _mBoundAdd = new Dictionary<int, CardInfo>();
             _mBoundDel = new List<CardInfo>();
 
             _mPort.PortIsOpenChange += PortOpenAndCloseChange;
@@ -538,35 +597,35 @@ namespace CBZN_TestTool
             if (cb_CardPartition.Enabled)
                 cb_CardPartition.SelectedIndex = _mCardInfo.CardPartition > 0 ? 1 : 0;
 
-            if (_mCardInfo.Cid > 0)
+            if (_mCardInfo.Cid <= 0) return;
+            try
             {
-                try
+                //显示捆绑的副卡
+                if (cb_CardType.SelectedIndex == 0 || dgv_BundledList.RowCount != 0) return;
+                List<CardInfo> vicecards = Dal.dal_CardInfo.SelectBound(_mCardInfo.Cid);
+                foreach (CardInfo item in vicecards)
                 {
-                    //显示捆绑的副卡
-                    if (cb_CardType.SelectedIndex != 0 && dgv_BundledList.RowCount == 0)
-                    {
-                        _mBundledCardinfo = Dal.dal_CardInfo.SelectBound(_mCardInfo.Cid);
-                        ShowViceCardInfo();
-                    }
+                    _mBundledCardinfo.Add(-1, item);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                ShowViceCardInfo();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void DistanceRegister_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+            Rectangle rect = new Rectangle(0, 0, Width - 1, Height - 1);
             g.DrawRectangle(new Pen(Brushes.Gray, 1), rect);
             g.Dispose();
         }
 
         private void DistanceRegister_Resize(object sender, EventArgs e)
         {
-            this.Refresh();
+            Refresh();
         }
 
         private int GetSelectedPartition()
@@ -595,6 +654,12 @@ namespace CBZN_TestTool
                 }
             }
             return false;
+        }
+
+        private void OnViceCardUpdate(int rowindex, CardInfo info)
+        {
+            if (ViceCardUpdate == null) return;
+            ViceCardUpdate(rowindex, info);
         }
 
         private void p_Bundled_Paint(object sender, PaintEventArgs e)
@@ -674,7 +739,7 @@ namespace CBZN_TestTool
         private void p_Title_MouseDown(object sender, MouseEventArgs e)
         {
             WinApi.ReleaseCapture();
-            WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
+            WinApi.SendMessage(Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
 
         private void PartitionCheckedChanged(object sender, EventArgs e)
@@ -715,6 +780,16 @@ namespace CBZN_TestTool
                     if (cb != null)
                         cb.Checked = true;
                 }
+            }
+        }
+
+        private void SetRowCell(int index)
+        {
+            DataGridViewRow row = dgv_BundledList.Rows[index];
+            for (int i = 0; i < dgv_BundledList.Columns.Count; i++)
+            {
+                string columnname = dgv_BundledList.Columns[i].Name;
+                row.Cells[columnname].ValueType = row.Cells[columnname].Value.GetType();
             }
         }
 
@@ -811,9 +886,10 @@ namespace CBZN_TestTool
         private void ShowViceCardInfo()
         {
             dgv_BundledList.Rows.Clear();
-            foreach (CardInfo item in _mBundledCardinfo)
+            foreach (KeyValuePair<int, CardInfo> item in _mBundledCardinfo)
             {
-                dgv_BundledList.Rows.Add(new object[] { false, item.CardNumber, item.CardTime, item.ParkingRestrictions });
+                int rowindex = dgv_BundledList.Rows.Add(new object[] { false, item.Value.CardLock, item.Value.CardNumber, item.Value.CardTime, item.Value.ParkingRestrictions });
+                SetRowCell(rowindex);
             }
         }
 
@@ -916,18 +992,21 @@ namespace CBZN_TestTool
             List<CardInfo> vicecardadd = new List<CardInfo>();
             List<CardInfo> vicecardupdate = new List<CardInfo>();
             List<BundledInfo> bundledinfos = new List<BundledInfo>();
-            foreach (CardInfo item in _mBoundAdd)
+            foreach (KeyValuePair<int, CardInfo> item in _mBoundAdd)
             {
-                item.CardCount = DataCombination.SetCount(item.CardCount);
-                if (item.Cid == 0)
+                item.Value.CardCount = DataCombination.SetCount(item.Value.CardCount);
+                if (item.Value.Cid == 0)
                 {
-                    vicecardadd.Add(item);
+                    vicecardadd.Add(item.Value);
                 }
                 else
                 {
-                    vicecardupdate.Add(item);
+                    vicecardupdate.Add(item.Value);
                 }
+                _mBundledCardinfo.Add(item.Key, item.Value);
             }
+            _mBoundAdd.Clear();
+
             if (vicecardadd.Count > 0)
                 Dal.DbHelper.Db.Insert<CardInfo>(vicecardadd);
             if (vicecardupdate.Count > 0)
@@ -943,9 +1022,6 @@ namespace CBZN_TestTool
                 });
             }
             Dal.DbHelper.Db.Insert<BundledInfo>(bundledinfos);
-
-            _mBundledCardinfo.AddRange(_mBoundAdd);
-            _mBoundAdd.Clear();
         }
     }
 }

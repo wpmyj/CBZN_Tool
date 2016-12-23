@@ -334,7 +334,7 @@ namespace CBZN_TestTool
                                     break;
 
                                 case 27://0x1B 写某张卡片的flash
-                                    if (DistanceRegister._isShow)
+                                    if (DistanceRegister.IsShow)
                                     {
                                         DistanceRegister dr = DistanceRegister.Instance;
                                         dr.PortDataRecevied(distanceparameter);
@@ -487,13 +487,13 @@ namespace CBZN_TestTool
             int index = dgv_DataList.SelectedRows[0].Index;
 
             CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
-            List<CardInfo> cardinfos = GetDataInfo<CardInfo>(dgv_DataList);
-            List<CardInfo> viceinfos = new List<CardInfo>();
-            foreach (CardInfo item in cardinfos)
+            Dictionary<int, CardInfo> datalistinfo = GetDataInfo<CardInfo>(dgv_DataList);
+            Dictionary<int, CardInfo> viceinfos = new Dictionary<int, CardInfo>();
+            foreach (KeyValuePair<int, CardInfo> item in datalistinfo)
             {
-                if (item.CardType == 3)
+                if (item.Value.CardType == 3)
                 {
-                    viceinfos.Add(item);
+                    viceinfos.Add(item.Key, item.Value);
                 }
             }
 
@@ -502,6 +502,7 @@ namespace CBZN_TestTool
                 dr._mCardInfo = info;
                 dr._mViceCardInfo = viceinfos;
                 dr._mPort = _mPort;
+                dr.ViceCardUpdate += Dr_ViceCardUpdate;
                 dr.ShowDialog();
                 if (dr.Tag == null) return;
                 info = dr.Tag as CardInfo;
@@ -509,8 +510,36 @@ namespace CBZN_TestTool
             }
         }
 
+        private void Dr_ViceCardUpdate(int rowindex, CardInfo info)
+        {
+            if (rowindex > 0 && rowindex < dgv_DataList.RowCount)
+            {
+                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[rowindex]);
+            }
+        }
+
         private void btn_Registers_Click(object sender, EventArgs e)
         {
+            Dictionary<int, CardInfo> datalistinfo = GetDataInfo<CardInfo>(dgv_DataList);
+            Dictionary<int, CardInfo> registerlist = new Dictionary<int, CardInfo>();
+            foreach (KeyValuePair<int, CardInfo> item in datalistinfo)
+            {
+                if (item.Value.Cid > 0) continue;
+                if (item.Value.CardType > 4) continue;
+                if (item.Value.ParkingRestrictions == 1) continue;
+                registerlist.Add(item.Key, item.Value);
+            }
+            if (registerlist.Count > 0)
+            {
+                using (BatchRegister br = new BatchRegister(registerlist))
+                {
+                    br.ShowDialog();
+                }
+            }
+            else
+            {
+                MessageBox.Show(@"列表中无需注册的定距卡", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void btn_ReportTheLossOf_Click(object sender, EventArgs e)
@@ -2261,11 +2290,11 @@ namespace CBZN_TestTool
             return t;
         }
 
-        private List<T> GetDataInfo<T>(DataGridView dgv)
+        private Dictionary<int, T> GetDataInfo<T>(DataGridView dgv)
         {
             DataTable dt = dgv.DataSource as DataTable;
             PropertyInfo[] pis = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            List<T> tlist = new List<T>();
+            Dictionary<int, T> dic = new Dictionary<int, T>();
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 T t = Activator.CreateInstance<T>();
@@ -2273,9 +2302,9 @@ namespace CBZN_TestTool
                 {
                     item.SetValue(t, row.Cells[item.Name].Value, null);
                 }
-                tlist.Add(t);
+                dic.Add(row.Index, t);
             }
-            return tlist;
+            return dic;
         }
 
         private DataTable GetDataTableHead<T>(DataGridView dgv)

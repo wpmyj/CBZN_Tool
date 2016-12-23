@@ -75,6 +75,7 @@
             this.l_BundledTitle = new System.Windows.Forms.Label();
             this.dgv_BundledList = new System.Windows.Forms.DataGridView();
             this.c_selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.c_LockState = new System.Windows.Forms.DataGridViewImageColumn();
             this.c_Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -658,6 +659,7 @@
             this.dgv_BundledList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_BundledList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_selected,
+            this.c_LockState,
             this.c_Number,
             this.Time,
             this.Column4});
@@ -680,6 +682,7 @@
             this.dgv_BundledList.Size = new System.Drawing.Size(440, 116);
             this.dgv_BundledList.TabIndex = 0;
             this.dgv_BundledList.TabStop = false;
+            this.dgv_BundledList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_BundledList_CellFormatting);
             this.dgv_BundledList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_BundledList_CellValueChanged);
             this.dgv_BundledList.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgv_BundledList_CurrentCellDirtyStateChanged);
             // 
@@ -689,6 +692,13 @@
             this.c_selected.Name = "c_selected";
             this.c_selected.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.c_selected.Width = 30;
+            // 
+            // c_LockState
+            // 
+            this.c_LockState.HeaderText = "解锁状态";
+            this.c_LockState.Image = global::CBZN_TestTool.Properties.Resources.block;
+            this.c_LockState.Name = "c_LockState";
+            this.c_LockState.Width = 80;
             // 
             // c_Number
             // 
@@ -925,6 +935,7 @@
         private System.Windows.Forms.Panel p_Provinces;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewCheckBoxColumn c_selected;
+        private System.Windows.Forms.DataGridViewImageColumn c_LockState;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
