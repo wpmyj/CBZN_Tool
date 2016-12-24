@@ -40,6 +40,7 @@
     <Compile Include="BundledInfo.cs" />
     <Compile Include="CardInfo.cs" />
     <Compile Include="DeviceInfo.cs" />
+    <Compile Include="ModuleNumber.cs" />
     <Compile Include="NumberLimit.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

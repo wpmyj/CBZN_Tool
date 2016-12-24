@@ -7,13 +7,21 @@ namespace Bll
     {
 
         private static readonly List<byte> IncompleteByList = new List<byte>();
-
+        /// <summary>
+        /// 是否有数据头数据尾
+        /// </summary>
         public static bool IsProtocol { get; set; }
-
+        /// <summary>
+        /// 数据头
+        /// </summary>
         public static int ProtocolHead { get; set; }
-
+        /// <summary>
+        /// 数据尾
+        /// </summary>
         public static int ProtocolEnd { get; set; }
-
+        /// <summary>
+        /// 是否校验
+        /// </summary>
         public static bool IsValidation { get; set; }
 
         public static int ValidationHead { get; set; }

@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{69F97F0F-FF19-4154-9EB4-EDE962D3FF74}</ProjectGuid>
+    <ProjectGuid>{5348394A-3D46-4E63-9EF7-410C019FC0CB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CBZN_TestTool</RootNamespace>
-    <AssemblyName>CBZN_TestTool</AssemblyName>
+    <RootNamespace>CBZN_ModuleTool</RootNamespace>
+    <AssemblyName>CBZN_ModuleTool</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -33,13 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSkin, Version=16.1.14.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="CSkin">
       <HintPath>..\build\CSkin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
-    <Reference Include="System.Design" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -47,42 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeviceEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DeviceEdit.Designer.cs">
-      <DependentUpon>DeviceEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DeviceAdd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DeviceAdd.Designer.cs">
-      <DependentUpon>DeviceAdd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DeviceExport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DeviceExport.Designer.cs">
-      <DependentUpon>DeviceExport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DeviceImport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DeviceImport.Designer.cs">
-      <DependentUpon>DeviceImport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DistanceDelay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DistanceDelay.Designer.cs">
-      <DependentUpon>DistanceDelay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DistanceRegister.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DistanceRegister.Designer.cs">
-      <DependentUpon>DistanceRegister.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,24 +51,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DeviceEdit.resx">
-      <DependentUpon>DeviceEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DeviceAdd.resx">
-      <DependentUpon>DeviceAdd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DeviceExport.resx">
-      <DependentUpon>DeviceExport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DeviceImport.resx">
-      <DependentUpon>DeviceImport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DistanceDelay.resx">
-      <DependentUpon>DistanceDelay.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DistanceRegister.resx">
-      <DependentUpon>DistanceRegister.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,7 +64,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -132,6 +73,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NoneMin.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\DownClose.png" />
@@ -147,9 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\NoneClose.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\NoneMin.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bll\Bll.csproj">
@@ -170,34 +111,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\OpenLock.png" />
+    <None Include="Resources\down.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Lock.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LowPower.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Battery.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ViceCard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MainCard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\check.png" />
+    <None Include="Resources\top.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\block.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ReportLoss.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Search.png" />
+    <None Include="Resources\check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
