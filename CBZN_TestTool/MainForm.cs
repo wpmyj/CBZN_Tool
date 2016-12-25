@@ -1,5 +1,4 @@
 ﻿using Bll;
-using CCWin.SkinControl;
 using Dal;
 using Model;
 using System;
@@ -20,48 +19,32 @@ namespace CBZN_TestTool
     {
         #region 变量
 
-        private Dictionary<string, int> _dicDataList = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> _dicDataList = new Dictionary<string, int>();
 
+        private bool _isLossMouseDown;
+        private bool _isLossMouseEnter;
+        private Point _LossMousePoint;
         private bool _isModuleSet;
-
-        private bool _isReadCard;
-
-        private bool _isThreadClose;
-
-        private bool _isMouseEnter1;
-
         private bool _isMouseDown1;
-
-        private bool _isMouseEnter2;
-
         private bool _isMouseDown2;
-
-        private bool _isMouseEnter3;
-
         private bool _isMouseDown3;
-
-        private bool _isMouseEnter4;
-
         private bool _isMouseDown4;
-
-        private bool _isMouseEnter5;
-
         private bool _isMouseDown5;
-
-        private bool _isMouseEnter6;
-
         private bool _isMouseDown6;
-
+        private bool _isMouseEnter1;
+        private bool _isMouseEnter2;
+        private bool _isMouseEnter3;
+        private bool _isMouseEnter4;
+        private bool _isMouseEnter5;
+        private bool _isMouseEnter6;
+        private bool _isReadCard;
+        private bool _isThreadClose;
+        private int _lossCount = 0;
         private ComPortHelper _mComPort;
-
         private Mutex _mMutex;
-
         private PortHelper _mPort;
-
-        private string _strSearchWhere;
-
         private RegisterParam? _registerParam;
-
+        private string _strSearchWhere;
         private System.Timers.Timer _tiConnectionPort;
 
         private delegate void DefaultShow();
@@ -101,14 +84,14 @@ namespace CBZN_TestTool
             _isMouseEnter1 = true;
         }
 
-        private void btn_Tap1_MouseUp(object sender, MouseEventArgs e)
-        {
-            _isMouseDown1 = false;
-        }
-
         private void btn_Tap1_MouseLeave(object sender, EventArgs e)
         {
             _isMouseEnter1 = false;
+            _isMouseDown1 = false;
+        }
+
+        private void btn_Tap1_MouseUp(object sender, MouseEventArgs e)
+        {
             _isMouseDown1 = false;
         }
 
@@ -218,6 +201,35 @@ namespace CBZN_TestTool
             DrawRightSelect(g, rect, btn_Tap4.Enabled);
         }
 
+        private void DrawBorderLine(object sender, PaintEventArgs e)
+        {
+            Panel p = sender as Panel;
+            if (p == null) return;
+            Graphics g = e.Graphics;
+            Point[] ps = new Point[]{
+                new Point(0 , p.Height - 1),
+                new Point(p.Width - 1 , p.Height - 1),
+                new Point(p.Width - 1 , 0)
+            };
+            g.DrawLines(new Pen(Brushes.Gray, 1), ps);
+            g.Dispose();
+        }
+
+        private void DrawBottomSelect(Graphics g, Rectangle rect, bool enabled)
+        {
+            if (enabled) return;
+            GraphicsPath path = new GraphicsPath();
+            int width = rect.Width / 2;
+            path.AddLines(new Point[]
+            {
+                new Point(width, rect.Height-5),
+                new Point(width+5,rect.Height),
+                new Point(width-5,rect.Height),
+                new Point(width,rect.Height- 5)
+            });
+            g.FillPath(Brushes.White, path);
+        }
+
         private Rectangle DrawButton(Graphics g, Button btn, bool isdown, bool isenter)
         {
             SolidBrush backcolor = new SolidBrush(btn.BackColor);
@@ -245,52 +257,22 @@ namespace CBZN_TestTool
 
         private void DrawRightSelect(Graphics g, Rectangle rect, bool enabled)
         {
-            if (!enabled)
+            if (enabled) return;
+            GraphicsPath path = new GraphicsPath();
+            int height = rect.Height / 2;
+            path.AddLines(new Point[]
             {
-                GraphicsPath path = new GraphicsPath();
-                int height = rect.Height / 2;
-                path.AddLines(new Point[]
-                {
-                    new Point(rect.Width-10,height),
-                    new Point(rect.Width,height-10),
-                    new Point(rect.Width,height+10),
-                    new Point(rect.Width-10,height)
-                });
-                g.FillPath(Brushes.White, path);
-            }
+                new Point(rect.Width-10,height),
+                new Point(rect.Width,height-10),
+                new Point(rect.Width,height+10),
+                new Point(rect.Width-10,height)
+            });
+            g.FillPath(Brushes.White, path);
         }
 
-        private void DrawBottomSelect(Graphics g, Rectangle rect, bool enabled)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!enabled)
-            {
-                GraphicsPath path = new GraphicsPath();
-                int width = rect.Width / 2;
-                path.AddLines(new Point[] 
-                { 
-                    new Point(width, rect.Height-5),
-                    new Point(width+5,rect.Height),
-                    new Point(width-5,rect.Height),
-                    new Point(width,rect.Height- 5)
-                });
-                g.FillPath(Brushes.White, path);
-            }
-        }
-
-        private void DrawBorderLine(object sender, PaintEventArgs e)
-        {
-            Panel p = sender as Panel;
-            if (p != null)
-            {
-                Graphics g = e.Graphics;
-                Point[] ps = new Point[]{
-                    new Point(0 , p.Height - 1),
-                    new Point(p.Width - 1 , p.Height - 1),
-                    new Point(p.Width - 1 , 0)
-                };
-                g.DrawLines(new Pen(Brushes.Gray, 1), ps);
-                g.Dispose();
-            }
+            p_Tap4_VisibleChanged(null, null);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -642,6 +624,14 @@ namespace CBZN_TestTool
 
         #region 卡片操作
 
+        private void br_Registercomplete(int index, CardInfo info)
+        {
+            if (index > -1 && index < dgv_DataList.RowCount)
+            {
+                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
+            }
+        }
+
         private void btn_Next_Click(object sender, EventArgs e)
         {
             cb_Page.SelectedIndex += 1;
@@ -704,14 +694,6 @@ namespace CBZN_TestTool
             }
         }
 
-        private void Dr_ViceCardUpdate(int rowindex, CardInfo info)
-        {
-            if (rowindex > -1 && rowindex < dgv_DataList.RowCount)
-            {
-                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[rowindex]);
-            }
-        }
-
         private void btn_Registers_Click(object sender, EventArgs e)
         {
             Dictionary<int, CardInfo> datalistinfo = GetDataInfo<CardInfo>(dgv_DataList);
@@ -731,11 +713,9 @@ namespace CBZN_TestTool
                     br.Port = _mPort;
                     br.Registercomplete += br_Registercomplete;
                     br.ShowDialog();
-                    if (br.Tag != null)
-                    {
-                        RegisterParam rp = (RegisterParam)br.Tag;
-                        _registerParam = rp;
-                    }
+                    if (br.Tag == null) return;
+                    RegisterParam rp = (RegisterParam)br.Tag;
+                    _registerParam = rp;
                 }
             }
             else
@@ -744,16 +724,119 @@ namespace CBZN_TestTool
             }
         }
 
-        void br_Registercomplete(int index, CardInfo info)
+        private void btn_ReportTheLossOf_Click(object sender, EventArgs e)
         {
-            if (index > -1 && index < dgv_DataList.RowCount)
+            int height = btn_ReportTheLossOf.Height;
+            Rectangle leftrect = new Rectangle(0, 0, 100, height);
+            Rectangle rightrect = new Rectangle(100, 0, 50, height);
+
+            CardLoss cl = CardLoss.CurrentForm;
+            if (leftrect.Contains(_LossMousePoint))
             {
-                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
+                int index = dgv_DataList.SelectedRows[0].Index;
+                CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
+                cl.AddLossInfo(info);
+            }
+            else if (rightrect.Contains(_LossMousePoint))
+            {
+                Point screenpoint = this.PointToScreen(btn_ReportTheLossOf.Location);
+                cl.LossCountChange += cl_LossCountChange;
+                cl.Show();
+                cl.Location = new Point(screenpoint.X + 115, screenpoint.Y + 80);
             }
         }
 
-        private void btn_ReportTheLossOf_Click(object sender, EventArgs e)
+        private void cl_LossCountChange(int count)
         {
+            _lossCount = count;
+            btn_ReportTheLossOf.Invalidate();
+        }
+
+        private void btn_ReportTheLossOf_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isLossMouseDown = true;
+        }
+
+        private void btn_ReportTheLossOf_MouseEnter(object sender, EventArgs e)
+        {
+            _isLossMouseEnter = true;
+        }
+
+        private void btn_ReportTheLossOf_MouseLeave(object sender, EventArgs e)
+        {
+            _isLossMouseDown = false;
+            _isLossMouseEnter = false;
+        }
+
+        private void btn_ReportTheLossOf_MouseMove(object sender, MouseEventArgs e)
+        {
+            _LossMousePoint = e.Location;
+
+            btn_ReportTheLossOf.Invalidate();
+        }
+
+        private void btn_ReportTheLossOf_MouseUp(object sender, MouseEventArgs e)
+        {
+            _isLossMouseDown = false;
+        }
+
+        private void btn_ReportTheLossOf_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+
+            Color leftcolor = btn_ReportTheLossOf.BackColor;
+            Color rightcolor = btn_ReportTheLossOf.BackColor;
+
+            int height = btn_ReportTheLossOf.Height;
+
+            Rectangle leftrect = new Rectangle(0, 0, 100, height);
+            Rectangle rightrect = new Rectangle(100, 0, 50, height);
+
+            if (!btn_ReportTheLossOf.Enabled)
+            {
+                leftcolor = Color.FromArgb(160, 160, 160);
+                rightcolor = leftcolor;
+            }
+            else
+            {
+                if (_isLossMouseDown)
+                {
+                    leftcolor = btn_ReportTheLossOf.FlatAppearance.MouseDownBackColor;
+                    rightcolor = leftcolor;
+                }
+                else if (_isLossMouseEnter)
+                {
+                    leftcolor = btn_ReportTheLossOf.FlatAppearance.MouseOverBackColor;
+                    rightcolor = leftcolor;
+                }
+
+                if (leftrect.Contains(_LossMousePoint))
+                {
+                    rightcolor = btn_ReportTheLossOf.BackColor;
+                }
+                else if (rightrect.Contains(_LossMousePoint))
+                {
+                    leftcolor = btn_ReportTheLossOf.BackColor;
+                }
+            }
+
+            g.FillRectangle(new SolidBrush(leftcolor), leftrect);
+            g.FillRectangle(new SolidBrush(rightcolor), rightrect);
+
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+
+            g.DrawString(btn_ReportTheLossOf.Text, btn_ReportTheLossOf.Font, new SolidBrush(btn_ReportTheLossOf.ForeColor), leftrect, sf);
+
+            g.DrawLine(new Pen(Color.Gray, 1), 100, 0, 100, leftrect.Height);
+
+            leftcolor = _lossCount > 0 ? Color.FromArgb(240, 60, 0) : Color.FromArgb(160, 160, 160);
+
+            g.FillPie(new SolidBrush(leftcolor), new Rectangle(leftrect.Width + rightrect.Width / 2 - 12, height / 2 - 12, 24, 24), 0, 360);
+
+            g.DrawString(_lossCount.ToString(), btn_ReportTheLossOf.Font, new SolidBrush(btn_ReportTheLossOf.ForeColor), rightrect, sf);
         }
 
         private void btn_Search_Click(object sender, EventArgs e)
@@ -921,9 +1004,17 @@ namespace CBZN_TestTool
                     else
                     {
                         btn_Register.Enabled = true;
-                        btn_ReportTheLossOf.Enabled = info.Cid == 0 ? false : (info.CardReportLoss == 0);
+                        btn_ReportTheLossOf.Enabled = info.Cid != 0 && (info.CardReportLoss == 0);
                     }
                 }
+            }
+        }
+
+        private void Dr_ViceCardUpdate(int rowindex, CardInfo info)
+        {
+            if (rowindex > -1 && rowindex < dgv_DataList.RowCount)
+            {
+                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[rowindex]);
             }
         }
 
@@ -970,28 +1061,28 @@ namespace CBZN_TestTool
             AcceptButton = btn_DistanceDeviceEnter;
         }
 
-        void btn_TapDistanceEncryption_MouseLeave(object sender, System.EventArgs e)
+        private void btn_TapDistanceEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            _isMouseDown5 = true;
+        }
+
+        private void btn_TapDistanceEncryption_MouseEnter(object sender, System.EventArgs e)
+        {
+            _isMouseEnter5 = true;
+        }
+
+        private void btn_TapDistanceEncryption_MouseLeave(object sender, System.EventArgs e)
         {
             _isMouseDown5 = false;
             _isMouseEnter5 = false;
         }
 
-        void btn_TapDistanceEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void btn_TapDistanceEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             _isMouseDown5 = false;
         }
 
-        void btn_TapDistanceEncryption_MouseEnter(object sender, System.EventArgs e)
-        {
-            _isMouseEnter5 = true;
-        }
-
-        void btn_TapDistanceEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            _isMouseDown5 = true;
-        }
-
-        void btn_TapDistanceEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        private void btn_TapDistanceEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Rectangle rect = DrawButton(g, btn_TapDistanceEncryption, _isMouseDown5, _isMouseEnter5);
@@ -1004,28 +1095,28 @@ namespace CBZN_TestTool
             AcceptButton = btn_TemporaryDevicePwdEnter;
         }
 
-        void btn_TapTemporaryEncryption_MouseLeave(object sender, System.EventArgs e)
+        private void btn_TapTemporaryEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            _isMouseDown6 = true;
+        }
+
+        private void btn_TapTemporaryEncryption_MouseEnter(object sender, System.EventArgs e)
+        {
+            _isMouseEnter6 = true;
+        }
+
+        private void btn_TapTemporaryEncryption_MouseLeave(object sender, System.EventArgs e)
         {
             _isMouseDown6 = false;
             _isMouseEnter6 = false;
         }
 
-        void btn_TapTemporaryEncryption_MouseEnter(object sender, System.EventArgs e)
-        {
-            _isMouseEnter6 = true;
-        }
-
-        void btn_TapTemporaryEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void btn_TapTemporaryEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             _isMouseDown6 = false;
         }
 
-        void btn_TapTemporaryEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            _isMouseDown6 = true;
-        }
-
-        void btn_TapTemporaryEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        private void btn_TapTemporaryEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Rectangle rect = DrawButton(g, btn_TapTemporaryEncryption, _isMouseDown6, _isMouseEnter6);
@@ -1034,18 +1125,16 @@ namespace CBZN_TestTool
 
         private void dgv_pwd_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode != Keys.Enter) return;
+            if (AcceptButton == btn_DistanceDeviceEnter)
             {
-                if (AcceptButton == btn_DistanceDeviceEnter)
-                {
-                    btn_DistanceDeviceEnter_Click(null, null);
-                }
-                else if (AcceptButton == btn_TemporaryDevicePwdEnter)
-                {
-                    btn_TemporaryDevicePwdEnter_Click(null, null);
-                }
-                e.Handled = true;
+                btn_DistanceDeviceEnter_Click(null, null);
             }
+            else if (AcceptButton == btn_TemporaryDevicePwdEnter)
+            {
+                btn_TemporaryDevicePwdEnter_Click(null, null);
+            }
+            e.Handled = true;
         }
 
         private void dgv_pwd_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -1084,60 +1173,62 @@ namespace CBZN_TestTool
                 if (dgv_pwd.RowCount >= 30)
                     dgv_pwd.Rows.RemoveAt(0);
                 int index = dgv_pwd.Rows.Add(new object[] { message, DateTime.Now });
-                if (command == 160) //0xA0 初始化主机参数
+                switch (command)
                 {
-                    if (cb_DistanceWay.Checked) //定距卡加密
-                    {
-                        string pwd = tb_DistancePwd.Text;
-                        //发送修改卡片新密码
-                        try
+                    case 160:
+                        if (cb_DistanceWay.Checked) //定距卡加密
                         {
-                            if (_mPort.IsOpen)
+                            string pwd = tb_DistancePwd.Text;
+                            //发送修改卡片新密码
+                            try
                             {
-                                byte[] by = PortAgreement.GetDistanceCardEncryption(pwd);
-                                _mPort.Write(by);
+                                if (_mPort.IsOpen)
+                                {
+                                    byte[] by = PortAgreement.GetDistanceCardEncryption(pwd);
+                                    _mPort.Write(@by);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        catch (Exception ex)
+                        else //定距发卡器加密
                         {
-                            MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            btn_DistanceDeviceEnter.Enabled = isend;
                         }
-                    }
-                    else //定距发卡器加密
-                    {
+                        break;
+
+                    case 13:
                         btn_DistanceDeviceEnter.Enabled = isend;
-                    }
-                }
-                else if (command == 13) //0x0D 修改全部卡密码
-                {
-                    btn_DistanceDeviceEnter.Enabled = isend;
-                }
-                else if (command == 204) //IC卡加密
-                {
-                    btn_TemporaryDevicePwdEnter.Enabled = isend;
-                }
-                else if (command == 221) //IC设备加密
-                {
-                    if (cb_TemporaryWay.Checked)
-                    {
-                        string pwd = tb_TemporaryPwd.Text;
-                        try
+                        break;
+
+                    case 204:
+                        btn_TemporaryDevicePwdEnter.Enabled = isend;
+                        break;
+
+                    case 221:
+                        if (cb_TemporaryWay.Checked)
                         {
-                            if (_mPort.IsOpen)
+                            string pwd = tb_TemporaryPwd.Text;
+                            try
                             {
-                                byte[] by = PortAgreement.GetTemporaryICEncryption(pwd);
-                                _mPort.Write(by);
+                                if (_mPort.IsOpen)
+                                {
+                                    byte[] by = PortAgreement.GetTemporaryICEncryption(pwd);
+                                    _mPort.Write(@by);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            btn_TemporaryDevicePwdEnter.Enabled = isend;
                         }
-                    }
-                    else
-                    {
-                        btn_TemporaryDevicePwdEnter.Enabled = isend;
-                    }
+                        break;
                 }
             };
             this.Invoke(ds);
@@ -1294,18 +1385,20 @@ namespace CBZN_TestTool
 
         private void DistanceCardEncryptionResult(DistanceParameter parameter)
         {
-            if (parameter.AuxiliaryCommand == 0)
+            switch (parameter.AuxiliaryCommand)
             {
-                //显示成功
-                ShowEncryptionMessage("定距卡 " + parameter.CardNumber + " 加密成功。", false, parameter.Command);
-            }
-            else if (parameter.AuxiliaryCommand == 8)
-            {
-                ShowEncryptionMessage("定距卡加密结束。", true, parameter.Command);
-            }
-            else
-            {
-                ShowEncryptionMessage("定距卡加密失败，请将定距卡放置在读写区域内。", false, parameter.Command);
+                case 0:
+                    //显示成功
+                    ShowEncryptionMessage("定距卡 " + parameter.CardNumber + " 加密成功。", false, parameter.Command);
+                    break;
+
+                case 8:
+                    ShowEncryptionMessage("定距卡加密结束。", true, parameter.Command);
+                    break;
+
+                default:
+                    ShowEncryptionMessage("定距卡加密失败，请将定距卡放置在读写区域内。", false, parameter.Command);
+                    break;
             }
         }
 
@@ -1330,11 +1423,9 @@ namespace CBZN_TestTool
 
         private void DistancePwdKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                if (btn_DistanceDeviceEnter.Enabled)
-                    btn_DistanceDeviceEnter_Click(null, null);
-            }
+            if (e.KeyCode != Keys.Enter) return;
+            if (btn_DistanceDeviceEnter.Enabled)
+                btn_DistanceDeviceEnter_Click(null, null);
         }
 
         private void p_DistanceInterface_Paint(object sender, PaintEventArgs e)
@@ -2129,24 +2220,20 @@ namespace CBZN_TestTool
 
         private void p_Tap4_VisibleChanged(object sender, EventArgs e)
         {
-            if (_mPort != null && _mPort.IsOpen)
+            if (_mPort == null || !_mPort.IsOpen) return;
+            if (!_isReadCard) return;
+            try
             {
-                if (_isReadCard)
-                {
-                    try
-                    {
-                        byte[] by = PortAgreement.GetCloseModule();
-                        _mPort.Write(by);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    finally
-                    {
-                        btn_TemporaryReadCard.Enabled = true;
-                    }
-                }
+                byte[] by = PortAgreement.GetCloseModule();
+                _mPort.Write(@by);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btn_TemporaryReadCard.Enabled = true;
             }
         }
 
@@ -2485,27 +2572,6 @@ namespace CBZN_TestTool
 
         #region 公共方法
 
-        private void ShowPage(int count, ComboBox cbBox, Label lcount)
-        {
-            cbBox.Items.Clear();
-            int page = count / 30;
-            if (page % 30 > 0)
-                page++;
-            if (page > 0)
-            {
-                for (int i = 0; i < page; i++)
-                {
-                    cbBox.Items.Add(string.Format("{0}页", i));
-                }
-            }
-            else
-            {
-                cbBox.Items.Add("1页");
-            }
-            cbBox.SelectedIndex = 0;
-            lcount.Text = string.Format("总共 {0} 条记录", count);
-        }
-
         private void AddRange<T>(List<T> cardinfos, DataGridView dgv)
         {
             int count = cardinfos.Count;
@@ -2585,6 +2651,27 @@ namespace CBZN_TestTool
             return dt;
         }
 
+        private void ShowPage(int count, ComboBox cbBox, Label lcount)
+        {
+            cbBox.Items.Clear();
+            int page = count / 30;
+            if (page % 30 > 0)
+                page++;
+            if (page > 0)
+            {
+                for (int i = 0; i < page; i++)
+                {
+                    cbBox.Items.Add(string.Format("{0}页", i));
+                }
+            }
+            else
+            {
+                cbBox.Items.Add("1页");
+            }
+            cbBox.SelectedIndex = 0;
+            lcount.Text = string.Format("总共 {0} 条记录", count);
+        }
+
         private void UpdateRowData<T>(T info, DataGridViewRow dr)
         {
             PropertyInfo[] pis =
@@ -2606,7 +2693,6 @@ namespace CBZN_TestTool
         }
 
         #endregion 公共方法
-
 
     }
 }

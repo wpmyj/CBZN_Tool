@@ -53,6 +53,12 @@
     <Compile Include="BatchRegister.Designer.cs">
       <DependentUpon>BatchRegister.cs</DependentUpon>
     </Compile>
+    <Compile Include="CardLoss.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CardLoss.Designer.cs">
+      <DependentUpon>CardLoss.cs</DependentUpon>
+    </Compile>
     <Compile Include="DeviceEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +111,9 @@
     </Compile>
     <EmbeddedResource Include="BatchRegister.resx">
       <DependentUpon>BatchRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CardLoss.resx">
+      <DependentUpon>CardLoss.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DeviceEdit.resx">
       <DependentUpon>DeviceEdit.cs</DependentUpon>
