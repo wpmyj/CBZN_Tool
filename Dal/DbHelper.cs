@@ -13,14 +13,12 @@ namespace Dal
 
         public static void LoadDb(string path)
         {
-            if (Db == null)
+            if (Db != null) return;
+            string connectionstring = string.Format(ConfigurationManager.ConnectionStrings["SqliteConnection"].ConnectionString, path);
+            Db = new Sqlite(connectionstring);
+            if (!File.Exists(path))
             {
-                string connectionstring = string.Format(ConfigurationManager.ConnectionStrings["SqliteConnection"].ConnectionString, path);
-                Db = new Sqlite(connectionstring);
-                if (!File.Exists(path))
-                {
-                    CreateDb(path);
-                }
+                CreateDb(path);
             }
         }
 
@@ -40,6 +38,8 @@ namespace Dal
 
             sb.Append(
                 @" Create Table DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int,DeviceBrand int ,BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int ); ");
+
+            sb.Append(@" Create Table ModuleNumber (Mid integer Primary key AUTOINCREMENT, Number Int) ");
 
             Db.ExecuteNonQuery(sb.ToString());
         }

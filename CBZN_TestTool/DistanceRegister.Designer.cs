@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.p_Title = new System.Windows.Forms.Panel();
             this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
@@ -75,6 +75,7 @@
             this.l_BundledTitle = new System.Windows.Forms.Label();
             this.dgv_BundledList = new System.Windows.Forms.DataGridView();
             this.c_selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.c_LockState = new System.Windows.Forms.DataGridViewImageColumn();
             this.c_Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -647,28 +648,29 @@
             this.dgv_BundledList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_BundledList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgv_BundledList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle31.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle31.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_BundledList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_BundledList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_BundledList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_BundledList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_selected,
+            this.c_LockState,
             this.c_Number,
             this.Time,
             this.Column4});
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle33.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_BundledList.DefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_BundledList.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgv_BundledList.EnableHeadersVisualStyles = false;
             this.dgv_BundledList.Location = new System.Drawing.Point(0, 35);
             this.dgv_BundledList.MultiSelect = false;
@@ -680,6 +682,7 @@
             this.dgv_BundledList.Size = new System.Drawing.Size(440, 116);
             this.dgv_BundledList.TabIndex = 0;
             this.dgv_BundledList.TabStop = false;
+            this.dgv_BundledList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_BundledList_CellFormatting);
             this.dgv_BundledList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_BundledList_CellValueChanged);
             this.dgv_BundledList.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgv_BundledList_CurrentCellDirtyStateChanged);
             // 
@@ -689,6 +692,13 @@
             this.c_selected.Name = "c_selected";
             this.c_selected.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.c_selected.Width = 30;
+            // 
+            // c_LockState
+            // 
+            this.c_LockState.HeaderText = "解锁状态";
+            this.c_LockState.Image = global::CBZN_TestTool.Properties.Resources.block;
+            this.c_LockState.Name = "c_LockState";
+            this.c_LockState.Width = 80;
             // 
             // c_Number
             // 
@@ -700,9 +710,9 @@
             // 
             // Time
             // 
-            dataGridViewCellStyle32.Format = "D";
-            dataGridViewCellStyle32.NullValue = null;
-            this.Time.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle2.Format = "D";
+            dataGridViewCellStyle2.NullValue = null;
+            this.Time.DefaultCellStyle = dataGridViewCellStyle2;
             this.Time.HeaderText = "副卡有效期限";
             this.Time.Name = "Time";
             this.Time.ReadOnly = true;
@@ -847,8 +857,8 @@
             this.Controls.Add(this.tb_CardNumber);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.p_Title);
-            this.Controls.Add(this.p_Bundled);
             this.Controls.Add(this.p_CardPartition);
+            this.Controls.Add(this.p_Bundled);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "DistanceRegister";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -925,6 +935,7 @@
         private System.Windows.Forms.Panel p_Provinces;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewCheckBoxColumn c_selected;
+        private System.Windows.Forms.DataGridViewImageColumn c_LockState;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;

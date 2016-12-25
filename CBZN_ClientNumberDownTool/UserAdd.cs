@@ -40,8 +40,8 @@ namespace CBZN_ClientNumberDownTool
 
         private void UserAdd_MouseDown(object sender, MouseEventArgs e)
         {
-            WinApi.ReleaseCapture();
-            WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
+            PcommApi.ReleaseCapture();
+            PcommApi.SendMessage(this.Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
         }
 
         private void UserAdd_Load(object sender, EventArgs e)

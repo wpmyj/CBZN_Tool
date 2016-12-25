@@ -1,8 +1,8 @@
 # CBZN_Tool
- 是一整套的CBZN工具软件
-# CBZN_ClientNumberDownTool
-  客户编号软件
+  是公司的一整套的测试管理工具
+# CNZN_ClientNumberDownTool
+  是用于下载和管理客户的编号工具
 # CBZN_ModuleTool
-  模块编号下载软件
+  是用于无线通信模块编号管理工具
 # CBZN_TestTool
-  注册工具
+  是用于产品生产过程中测试工具

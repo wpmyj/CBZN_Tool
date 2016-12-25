@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Bll
 {
-    public class WinApi
+    public class PcommApi
     {
         public const int WM_SYSCOMMAND = 0x0112;
         public const int SC_MOVE = 0xF010;

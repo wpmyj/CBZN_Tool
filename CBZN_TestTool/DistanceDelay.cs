@@ -3,6 +3,7 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace CBZN_TestTool
@@ -29,11 +30,36 @@ namespace CBZN_TestTool
             Close();
         }
 
+        private void cb_DelaySelected_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cb_DelaySelected.SelectedIndex)
+            {
+                case 0:
+                    l_DelayValueTitle.Text = @"延期天数";
+                    break;
+
+                case 1:
+                    l_DelayValueTitle.Text = @"延期月数";
+                    break;
+
+                case 2:
+                    l_DelayValueTitle.Text = @"延期季数";
+                    break;
+
+                case 3:
+                    l_DelayValueTitle.Text = @"延期年数";
+                    break;
+            }
+
+            bool result = cb_DelaySelected.SelectedIndex > 3;
+            t_NewTime.Enabled = !result;
+            ud_DelayValue.Enabled = result;
+        }
+
         private void dgv_BundledList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex == 2)
             {
-
             }
         }
 
@@ -53,12 +79,15 @@ namespace CBZN_TestTool
 
         private void DistanceDelay_Load(object sender, EventArgs e)
         {
-            dgv_BundledList.Rows.Add(4);
+            dgv_BundledList.Rows.Add(8);
 
-            _mBundledViceCard = Dal.dal_CardInfo.SelectBound(_mCardInfo.Cid);
-            foreach (CardInfo item in _mBundledViceCard)
+            if (_mCardInfo != null)
             {
-                dgv_BundledList.Rows.Add(new object[] { item.CardNumber, item.CardTime, item.CardPartition });
+                _mBundledViceCard = Dal.dal_CardInfo.SelectBound(_mCardInfo.Cid);
+                foreach (CardInfo item in _mBundledViceCard)
+                {
+                    dgv_BundledList.Rows.Add(new object[] { item.CardNumber, item.CardTime, item.CardPartition });
+                }
             }
         }
 
@@ -72,31 +101,9 @@ namespace CBZN_TestTool
 
         private void p_Title_MouseDown(object sender, MouseEventArgs e)
         {
-            WinApi.ReleaseCapture();
-            WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
+            PcommApi.ReleaseCapture();
+            PcommApi.SendMessage(Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
         }
-
-        private void cb_DelaySelected_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (cb_DelaySelected.SelectedIndex)
-            {
-                case 0:
-                    l_DelayValueTitle.Text = "延期天数";
-                    break;
-                case 1:
-                    l_DelayValueTitle.Text = "延期月数";
-                    break;
-                case 2:
-                    l_DelayValueTitle.Text = "延期季数";
-                    break;
-                case 3:
-                    l_DelayValueTitle.Text = "延期年数";
-                    break;
-            }
-
-            bool result = cb_DelaySelected.SelectedIndex > 3;
-            t_NewTime.Enabled = !result;
-            ud_DelayValue.Enabled = result;
-        }
+          
     }
 }

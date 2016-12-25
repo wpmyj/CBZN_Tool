@@ -36,41 +36,41 @@ namespace Bll
             }
         }
 
-        private WinApi.BaudRate baudrate = WinApi.BaudRate.BaudRate19200;
+        private PcommApi.BaudRate baudrate = PcommApi.BaudRate.BaudRate19200;
         /// <summary>
         /// 波特率
         /// </summary>
-        public WinApi.BaudRate BaudRate
+        public PcommApi.BaudRate BaudRate
         {
             get { return baudrate; }
             set { baudrate = value; }
         }
 
-        private WinApi.DataBit databit = WinApi.DataBit.DataBit8;
+        private PcommApi.DataBit databit = PcommApi.DataBit.DataBit8;
         /// <summary>
         /// 数据位
         /// </summary>
-        public WinApi.DataBit DataBit
+        public PcommApi.DataBit DataBit
         {
             get { return databit; }
             set { databit = value; }
         }
 
-        private WinApi.StopBit stopbit = WinApi.StopBit.StopBit0;
+        private PcommApi.StopBit stopbit = PcommApi.StopBit.StopBit0;
         /// <summary>
         /// 停止位
         /// </summary>
-        public WinApi.StopBit StopBit
+        public PcommApi.StopBit StopBit
         {
             get { return stopbit; }
             set { stopbit = value; }
         }
 
-        private WinApi.Parity parity = WinApi.Parity.ParityN;
+        private PcommApi.Parity parity = PcommApi.Parity.ParityN;
         /// <summary>
         /// 检验位
         /// </summary>
-        public WinApi.Parity Parity
+        public PcommApi.Parity Parity
         {
             get { return parity; }
             set { parity = value; }
@@ -94,11 +94,11 @@ namespace Bll
             }
         }
 
-        private WinApi.DataReceivedHandler portdatareceived;
+        private PcommApi.DataReceivedHandler portdatareceived;
         /// <summary>
         /// 接收端口数据的回调方法
         /// </summary>
-        public WinApi.DataReceivedHandler PortDataReceived
+        public PcommApi.DataReceivedHandler PortDataReceived
         {
             get { return portdatareceived; }
             set { portdatareceived = value; }
@@ -120,7 +120,7 @@ namespace Bll
         /// <returns></returns>
         public int GetBytesToRead()
         {
-            return WinApi.sio_iqueue(PortIndex);
+            return PcommApi.sio_iqueue(PortIndex);
         }
 
         /// <summary>
@@ -134,13 +134,13 @@ namespace Bll
                 {
                     throw new ArgumentOutOfRangeException("PortIndex");
                 }
-                int result = WinApi.sio_open(PortIndex);
+                int result = PcommApi.sio_open(PortIndex);
                 GetErrorCode(result);
                 SetIoctl();
                 //result = WinApi.sio_SetWriteTimeouts(PortIndex, 100);
                 //GetErrorCode(result);
                 if (portdatareceived != null)
-                    WinApi.sio_cnt_irq(PortIndex, portdatareceived, 1);
+                    PcommApi.sio_cnt_irq(PortIndex, portdatareceived, 1);
             }
             catch (Exception ex)
             {
@@ -157,7 +157,7 @@ namespace Bll
         {
             try
             {
-                int result = WinApi.sio_read(PortIndex, by, len);
+                int result = PcommApi.sio_read(PortIndex, by, len);
                 GetErrorCode(result);
             }
             catch (Exception ex)
@@ -202,7 +202,7 @@ namespace Bll
         {
             try
             {
-                int result = WinApi.sio_write(PortIndex, by, len);
+                int result = PcommApi.sio_write(PortIndex, by, len);
                 GetErrorCode(result);
             }
             catch (Exception ex)
@@ -219,7 +219,7 @@ namespace Bll
             try
             {
                 if (PortIndex == -1) return;
-                int result = WinApi.sio_close(PortIndex);
+                int result = PcommApi.sio_close(PortIndex);
                 GetErrorCode(result);
                 PortIndex = -1;
                 _portname = string.Empty;
@@ -237,7 +237,7 @@ namespace Bll
         {
             try
             {
-                int result = WinApi.sio_ioctl(PortIndex, (int)baudrate, (int)databit | (int)stopbit | (int)parity);
+                int result = PcommApi.sio_ioctl(PortIndex, (int)baudrate, (int)databit | (int)stopbit | (int)parity);
                 GetErrorCode(result);
             }
             catch (Exception ex)
@@ -254,7 +254,7 @@ namespace Bll
         {
             try
             {
-                int result = WinApi.sio_flush(PortIndex, func);
+                int result = PcommApi.sio_flush(PortIndex, func);
                 GetErrorCode(result);
             }
             catch (Exception ex)
@@ -270,31 +270,31 @@ namespace Bll
         /// <param name="value"></param>
         private void GetErrorCode(int value)
         {
-            switch ((WinApi.ErrorCode)value)
+            switch ((PcommApi.ErrorCode)value)
             {
-                case WinApi.ErrorCode.SIO_OK:
+                case PcommApi.ErrorCode.SIO_OK:
                     break;
-                case WinApi.ErrorCode.SIO_BADPORT:
+                case PcommApi.ErrorCode.SIO_BADPORT:
                     throw new ArgumentException("没有此端口或端口未打开");
-                case WinApi.ErrorCode.SIO_OUTCONTROL:
+                case PcommApi.ErrorCode.SIO_OUTCONTROL:
                     throw new ArgumentException("无法控制此板");
-                case WinApi.ErrorCode.SIO_NODATA:
+                case PcommApi.ErrorCode.SIO_NODATA:
                     throw new ArgumentException("没有数据代读取或没有缓冲区供写");
-                case WinApi.ErrorCode.SIO_OPENFAIL:
+                case PcommApi.ErrorCode.SIO_OPENFAIL:
                     throw new ArgumentException("没有此端口或端口已打开");
-                case WinApi.ErrorCode.SIO_RTS_BY_HW:
+                case PcommApi.ErrorCode.SIO_RTS_BY_HW:
                     throw new ArgumentException("因为H/W流量控制而不能设置");
-                case WinApi.ErrorCode.SIO_BADPARM:
+                case PcommApi.ErrorCode.SIO_BADPARM:
                     throw new ArgumentException("无效参数");
-                case WinApi.ErrorCode.SIO_WIN32FAIL:
+                case PcommApi.ErrorCode.SIO_WIN32FAIL:
                     throw new ArgumentException("调用win32函数失败请调用GetLastError函数以获取错误代码");
-                case WinApi.ErrorCode.SIO_BOARDNOTSUPPORT:
+                case PcommApi.ErrorCode.SIO_BOARDNOTSUPPORT:
                     throw new ArgumentException("此版本不支持这个函数");
-                case WinApi.ErrorCode.SIO_FAIL:
+                case PcommApi.ErrorCode.SIO_FAIL:
                     throw new ArgumentException("PCOMM函数运行结果失败");
-                case WinApi.ErrorCode.SIO_ABORT_WRITE:
+                case PcommApi.ErrorCode.SIO_ABORT_WRITE:
                     throw new ArgumentException("写入已被锁定，用户已放弃写入");
-                case WinApi.ErrorCode.SIO_WRITETIMEOUT:
+                case PcommApi.ErrorCode.SIO_WRITETIMEOUT:
                     throw new ArgumentException("已发生写入超时");
             }
         }

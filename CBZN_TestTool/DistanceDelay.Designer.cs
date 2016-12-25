@@ -29,13 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.p_Title = new System.Windows.Forms.Panel();
             this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.dgv_BundledList = new System.Windows.Forms.DataGridView();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.t_OldTime = new System.Windows.Forms.DateTimePicker();
@@ -44,10 +49,6 @@
             this.cb_DelaySelected = new System.Windows.Forms.ComboBox();
             this.l_DelayValueTitle = new System.Windows.Forms.Label();
             this.ud_DelayValue = new System.Windows.Forms.NumericUpDown();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.p_Title.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BundledList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_DelayValue)).BeginInit();
@@ -105,14 +106,14 @@
             this.dgv_BundledList.BackgroundColor = System.Drawing.Color.White;
             this.dgv_BundledList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_BundledList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_BundledList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_BundledList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_BundledList.ColumnHeadersHeight = 40;
             this.dgv_BundledList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_BundledList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -120,20 +121,30 @@
             this.Column3,
             this.Column1,
             this.Column4});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_BundledList.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_BundledList.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgv_BundledList.Dock = System.Windows.Forms.DockStyle.Top;
             this.dgv_BundledList.EnableHeadersVisualStyles = false;
             this.dgv_BundledList.Location = new System.Drawing.Point(0, 40);
             this.dgv_BundledList.MultiSelect = false;
             this.dgv_BundledList.Name = "dgv_BundledList";
-            this.dgv_BundledList.RowHeadersVisible = false;
+            this.dgv_BundledList.ReadOnly = true;
+            this.dgv_BundledList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_BundledList.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgv_BundledList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgv_BundledList.RowTemplate.Height = 36;
             this.dgv_BundledList.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgv_BundledList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -143,11 +154,50 @@
             this.dgv_BundledList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_BundledList_CellFormatting);
             this.dgv_BundledList.Paint += new System.Windows.Forms.PaintEventHandler(this.dgv_BundledList_Paint);
             // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "定距卡号或车牌号码";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column2.Width = 150;
+            // 
+            // Column3
+            // 
+            dataGridViewCellStyle2.Format = "D";
+            dataGridViewCellStyle2.NullValue = null;
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Column3.HeaderText = "有效期限";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column3.Width = 140;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "延期期限";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column1.Width = 140;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "场分区";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column4.Width = 210;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(56, 252);
+            this.label1.Location = new System.Drawing.Point(60, 422);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 17);
             this.label1.TabIndex = 6;
@@ -157,7 +207,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(56, 295);
+            this.label2.Location = new System.Drawing.Point(60, 465);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 17);
             this.label2.TabIndex = 6;
@@ -169,7 +219,7 @@
             this.t_OldTime.Enabled = false;
             this.t_OldTime.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.t_OldTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.t_OldTime.Location = new System.Drawing.Point(130, 247);
+            this.t_OldTime.Location = new System.Drawing.Point(134, 417);
             this.t_OldTime.Name = "t_OldTime";
             this.t_OldTime.Size = new System.Drawing.Size(150, 26);
             this.t_OldTime.TabIndex = 7;
@@ -180,7 +230,7 @@
             this.t_NewTime.Enabled = false;
             this.t_NewTime.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.t_NewTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.t_NewTime.Location = new System.Drawing.Point(130, 290);
+            this.t_NewTime.Location = new System.Drawing.Point(134, 460);
             this.t_NewTime.Name = "t_NewTime";
             this.t_NewTime.Size = new System.Drawing.Size(150, 26);
             this.t_NewTime.TabIndex = 8;
@@ -189,7 +239,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(320, 253);
+            this.label3.Location = new System.Drawing.Point(324, 423);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 9;
@@ -206,7 +256,7 @@
             "按季延期",
             "按年延期",
             "选择延期"});
-            this.cb_DelaySelected.Location = new System.Drawing.Point(394, 247);
+            this.cb_DelaySelected.Location = new System.Drawing.Point(398, 417);
             this.cb_DelaySelected.Name = "cb_DelaySelected";
             this.cb_DelaySelected.Size = new System.Drawing.Size(150, 28);
             this.cb_DelaySelected.TabIndex = 10;
@@ -216,7 +266,7 @@
             // 
             this.l_DelayValueTitle.AutoSize = true;
             this.l_DelayValueTitle.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_DelayValueTitle.Location = new System.Drawing.Point(320, 295);
+            this.l_DelayValueTitle.Location = new System.Drawing.Point(324, 465);
             this.l_DelayValueTitle.Name = "l_DelayValueTitle";
             this.l_DelayValueTitle.Size = new System.Drawing.Size(68, 17);
             this.l_DelayValueTitle.TabIndex = 11;
@@ -226,7 +276,7 @@
             // 
             this.ud_DelayValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ud_DelayValue.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ud_DelayValue.Location = new System.Drawing.Point(394, 290);
+            this.ud_DelayValue.Location = new System.Drawing.Point(398, 460);
             this.ud_DelayValue.Maximum = new decimal(new int[] {
             356,
             0,
@@ -245,41 +295,6 @@
             0,
             0,
             0});
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "定距卡号或车牌号码";
-            this.Column2.Name = "Column2";
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column2.Width = 150;
-            // 
-            // Column3
-            // 
-            dataGridViewCellStyle5.Format = "D";
-            dataGridViewCellStyle5.NullValue = null;
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle5;
-            this.Column3.HeaderText = "有效期限";
-            this.Column3.Name = "Column3";
-            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column3.Width = 140;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "延期期限";
-            this.Column1.Name = "Column1";
-            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column1.Width = 140;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "场分区";
-            this.Column4.Name = "Column4";
-            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column4.Width = 210;
             // 
             // DistanceDelay
             // 

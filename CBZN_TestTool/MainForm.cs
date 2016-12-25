@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -34,7 +33,7 @@ namespace CBZN_TestTool
 
         private PortHelper _mPort;
 
-        private string _strSearchWhere = " and CardCount>0 ";
+        private string _strSearchWhere;
 
         private System.Timers.Timer _tiConnectionPort;
 
@@ -133,8 +132,8 @@ namespace CBZN_TestTool
 
         private void p_Title_MouseDown(object sender, MouseEventArgs e)
         {
-            WinApi.ReleaseCapture();
-            WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
+            PcommApi.ReleaseCapture();
+            PcommApi.SendMessage(Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
         }
 
         private void ShowHideTap(SkinButton btn)
@@ -206,8 +205,9 @@ namespace CBZN_TestTool
                         _mPort.Close();
                         _mPort.IsOpen = false;
                     }
-                    catch
+                    catch (Exception)
                     {
+                        // ignored
                     }
                 }
             }
@@ -334,7 +334,7 @@ namespace CBZN_TestTool
                                     break;
 
                                 case 27://0x1B 写某张卡片的flash
-                                    if (DistanceRegister._isShow)
+                                    if (DistanceRegister.IsShow)
                                     {
                                         DistanceRegister dr = DistanceRegister.Instance;
                                         dr.PortDataRecevied(distanceparameter);
@@ -362,7 +362,7 @@ namespace CBZN_TestTool
                                     break;
 
                                 case 204://0x43 0x43 IC卡加密
-                                    TemporaryICEncryptionResult(parameter);
+                                    TemporaryIcEncryptionResult(parameter);
                                     break;
 
                                 case 221://0x44 0x44 IC设备加密
@@ -380,7 +380,7 @@ namespace CBZN_TestTool
 
                             switch (parameter.Command)
                             {
-                                case 207:
+                                case 9:
                                     //0x46 F 失败  0x53 S 成功
                                     _isModuleSet = DataParsing.TemporaryContent(parameter.DataContent) == 83;
                                     break;
@@ -487,13 +487,13 @@ namespace CBZN_TestTool
             int index = dgv_DataList.SelectedRows[0].Index;
 
             CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
-            List<CardInfo> cardinfos = GetDataInfo<CardInfo>(dgv_DataList);
-            List<CardInfo> viceinfos = new List<CardInfo>();
-            foreach (CardInfo item in cardinfos)
+            Dictionary<int, CardInfo> datalistinfo = GetDataInfo<CardInfo>(dgv_DataList);
+            Dictionary<int, CardInfo> viceinfos = new Dictionary<int, CardInfo>();
+            foreach (KeyValuePair<int, CardInfo> item in datalistinfo)
             {
-                if (item.CardType == 3)
+                if (item.Value.CardType == 3)
                 {
-                    viceinfos.Add(item);
+                    viceinfos.Add(item.Key, item.Value);
                 }
             }
 
@@ -502,17 +502,44 @@ namespace CBZN_TestTool
                 dr._mCardInfo = info;
                 dr._mViceCardInfo = viceinfos;
                 dr._mPort = _mPort;
+                dr.ViceCardUpdate += Dr_ViceCardUpdate;
                 dr.ShowDialog();
-                if (dr.Tag != null)
-                {
-                    info = dr.Tag as CardInfo;
-                    UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
-                }
+                if (dr.Tag == null) return;
+                info = dr.Tag as CardInfo;
+                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
+            }
+        }
+
+        private void Dr_ViceCardUpdate(int rowindex, CardInfo info)
+        {
+            if (rowindex > 0 && rowindex < dgv_DataList.RowCount)
+            {
+                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[rowindex]);
             }
         }
 
         private void btn_Registers_Click(object sender, EventArgs e)
         {
+            Dictionary<int, CardInfo> datalistinfo = GetDataInfo<CardInfo>(dgv_DataList);
+            Dictionary<int, CardInfo> registerlist = new Dictionary<int, CardInfo>();
+            foreach (KeyValuePair<int, CardInfo> item in datalistinfo)
+            {
+                if (item.Value.Cid > 0) continue;
+                if (item.Value.CardType > 4) continue;
+                if (item.Value.ParkingRestrictions == 1) continue;
+                registerlist.Add(item.Key, item.Value);
+            }
+            if (registerlist.Count > 0)
+            {
+                using (BatchRegister br = new BatchRegister(registerlist))
+                {
+                    br.ShowDialog();
+                }
+            }
+            else
+            {
+                MessageBox.Show(@"列表中无需注册的定距卡", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void btn_ReportTheLossOf_Click(object sender, EventArgs e)
@@ -561,12 +588,12 @@ namespace CBZN_TestTool
         {
             if (e.ColumnIndex == 0)
             {
-                e.Value = (Int64)e.Value == 0 ? Properties.Resources.block : Properties.Resources.check;
+                e.Value = (long)e.Value == 0 ? Properties.Resources.block : Properties.Resources.check;
             }
             else if (e.ColumnIndex == 2)
             {
                 int cardtype = Convert.ToInt32(e.Value);
-                switch ((Bll.CardType)cardtype)
+                switch ((CardType)cardtype)
                 {
                     case Bll.CardType.SingleCard:
                         e.Value = "单卡";
@@ -708,7 +735,7 @@ namespace CBZN_TestTool
         {
             try
             {
-                _strSearchWhere = where;
+                _strSearchWhere = " and Cid > 0 " + where;
                 int count = DbHelper.Db.GetCount<CardInfo>(_strSearchWhere);
                 ShowPage(count, cb_Page, l_RecordCount);
             }
@@ -806,7 +833,7 @@ namespace CBZN_TestTool
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     else //定距发卡器加密
@@ -837,7 +864,7 @@ namespace CBZN_TestTool
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     else
@@ -1206,7 +1233,7 @@ namespace CBZN_TestTool
             }
         }
 
-        private void TemporaryICEncryptionResult(ParsingParameter parameter)
+        private void TemporaryIcEncryptionResult(ParsingParameter parameter)
         {
             long result = DataParsing.TemporaryContent(parameter.DataContent);
             ShowEncryptionMessage(result == 0 ? "临时 IC 卡加密成功。" : "临时 IC 卡加密失败，请确认旧密码是否正确。", true, parameter.Command);
@@ -2193,7 +2220,7 @@ namespace CBZN_TestTool
 
         #region 公共方法
 
-        private static void ShowPage(int count, ComboBox cbBox, Label lcount)
+        private void ShowPage(int count, ComboBox cbBox, Label lcount)
         {
             cbBox.Items.Clear();
             int page = count / 30;
@@ -2263,11 +2290,11 @@ namespace CBZN_TestTool
             return t;
         }
 
-        private List<T> GetDataInfo<T>(DataGridView dgv)
+        private Dictionary<int, T> GetDataInfo<T>(DataGridView dgv)
         {
             DataTable dt = dgv.DataSource as DataTable;
             PropertyInfo[] pis = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            List<T> tlist = new List<T>();
+            Dictionary<int, T> dic = new Dictionary<int, T>();
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 T t = Activator.CreateInstance<T>();
@@ -2275,9 +2302,9 @@ namespace CBZN_TestTool
                 {
                     item.SetValue(t, row.Cells[item.Name].Value, null);
                 }
-                tlist.Add(t);
+                dic.Add(row.Index, t);
             }
-            return tlist;
+            return dic;
         }
 
         private DataTable GetDataTableHead<T>(DataGridView dgv)
@@ -2314,6 +2341,5 @@ namespace CBZN_TestTool
         }
 
         #endregion 公共方法
-
     }
 }
