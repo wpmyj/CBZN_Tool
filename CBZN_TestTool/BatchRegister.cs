@@ -4,30 +4,76 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Dal;
 
 namespace CBZN_TestTool
 {
     public partial class BatchRegister : Form
     {
-        private Dictionary<int, CardInfo> _dicRegisterList;
+        private RegisterParam? _registerParam;
 
-        public BatchRegister()
+        public delegate void RegisterCompleteHandler(int index, CardInfo info);
+        public event RegisterCompleteHandler Registercomplete;
+
+        private void OnRegisterComplete(int index, CardInfo info)
         {
-            InitializeComponent();
+            if (Registercomplete == null) return;
+            Registercomplete(index, info);
         }
 
-        public BatchRegister(Dictionary<int, CardInfo> registerlist)
+        public PortHelper Port { get; set; }
+
+        public Dictionary<int, CardInfo> DicRegisterList;
+
+        private int _rowIndex = 0;
+
+        public static bool IsShow { get; set; }
+
+        private static BatchRegister _currentForm;
+
+        public static BatchRegister CurrentForm
+        {
+            get
+            {
+                if (_currentForm == null)
+                    _currentForm = new BatchRegister();
+                return _currentForm;
+            }
+        }
+
+        private BatchRegister()
         {
             InitializeComponent();
-            _dicRegisterList = registerlist;
+            this.FormClosing += BatchRegister_FormClosing;
+        }
+
+        private void BatchRegister_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!btn_Enter.Enabled)
+            {
+                MessageBox.Show(@"正在批量发行定距卡，无法退出操作，请稍后。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                e.Cancel = true;
+            }
+        }
+
+        internal void PortDataReceived(DistanceParameter param)
+        {
+            RegisterCards(param.CardNumber, param.AuxiliaryCommand);
         }
 
         private void BatchRegister_Load(object sender, EventArgs e)
         {
-            foreach (KeyValuePair<int, CardInfo> item in _dicRegisterList)
+            Port.PortIsOpenChange += PortOpenAndCloseChange;
+
+            foreach (KeyValuePair<int, CardInfo> item in DicRegisterList)
             {
-                dgv_RegisterList.Rows.Add(false, item.Value.CardNumber);
+                dgv_RegisterList.Rows.Add(Properties.Resources.block, item.Value.CardNumber);
             }
+        }
+
+        private void PortOpenAndCloseChange(object e, bool flag)
+        {
+            btn_Enter.Enabled = flag;
         }
 
         private void BatchRegister_Paint(object sender, PaintEventArgs e)
@@ -66,10 +112,157 @@ namespace CBZN_TestTool
 
         private void BatchRegister_Shown(object sender, EventArgs e)
         {
+            IsShow = true;
+            if (_registerParam == null)
+            {
+                SetReisterParam();
+            }
+            else
+            {
+                if (MessageBox.Show(@"是否使用已保存的批量参数进行批量发行操作。", @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    SetReisterParam();
+                }
+            }
+        }
+
+        private void SetReisterParam()
+        {
             using (RegisterParameter rp = new RegisterParameter())
             {
                 rp.ShowDialog();
+                if (rp.Tag != null)
+                {
+                    RegisterParam param = (RegisterParam)rp.Tag;
+                    _registerParam = param;
+                    this.Tag = param;
+                }
             }
         }
+
+        private void btn_Enter_Click(object sender, EventArgs e)
+        {
+            btn_Enter.Enabled = false;
+            btn_Param.Enabled = false;
+            _rowIndex = 0;
+            foreach (KeyValuePair<int, CardInfo> item in DicRegisterList)
+            {
+                if (item.Value.Cid == 0)
+                {
+                    item.Value.CardLock = 0;
+                    item.Value.CardReportLoss = 0;
+                    item.Value.CardType = 0;
+                    item.Value.ParkingRestrictions = 0;
+                    item.Value.CardDistance = _registerParam.Value.Distance;
+                    item.Value.CardPartition = _registerParam.Value.Paratition;
+                    item.Value.CardTime = _registerParam.Value.Time;
+                }
+            }
+            RegisterCards(string.Empty, -1);
+        }
+
+        private void RegisterCards(string cardnumber, int auxiliarycommand)
+        {
+            foreach (KeyValuePair<int, CardInfo> item in DicRegisterList)
+            {
+                if (!string.IsNullOrEmpty(cardnumber) && cardnumber == item.Value.CardNumber)
+                {
+                    if (auxiliarycommand == 0)
+                    {
+                        item.Value.Cid = DbHelper.Db.Insert<CardInfo>(item.Value);
+                        OnRegisterComplete(item.Key, item.Value);
+                        dgv_RegisterList.Rows[_rowIndex].Cells["c_State"].Value = Properties.Resources.check;
+                    }
+                    _rowIndex++;
+                    cardnumber = string.Empty;
+                    continue;
+                }
+
+                if (!string.IsNullOrEmpty(cardnumber)) continue;
+                if (item.Value.Cid > 0)
+                {
+                    _rowIndex++;
+                    continue;
+                }
+                TypeParameter typeparam = new TypeParameter()
+                {
+                    Lock = item.Value.CardLock,
+                    Distance = item.Value.CardDistance
+                };
+
+                FunctionByteParameter functionparam = new FunctionByteParameter()
+                {
+                    Loss = item.Value.CardReportLoss,
+                    InOutState = item.Value.InOutState,
+                    ParkingRestrictions = item.Value.ParkingRestrictions,
+                    RegistrationType = (CardType)item.Value.CardType,
+                    Synchronous = item.Value.Synchronous,
+                    ViceCardCount = 0
+                };
+
+                DistanceParameterContent parameter = new DistanceParameterContent()
+                {
+                    CardNumber = item.Value.CardNumber,
+                    Count = item.Value.CardCount++,
+                    Function = functionparam,
+                    Type = typeparam
+                };
+
+                SingleCardData singlecard = new SingleCardData()
+                {
+                    Partition = item.Value.CardPartition,
+                    Time = item.Value.CardTime
+                };
+
+                byte[] by = DataCombination.CombinationDistanceCard(parameter, singlecard);
+                if (Port.IsOpen)
+                {
+                    Port.Write(by);
+                    return;
+                }
+            }
+
+
+            btn_Enter.Enabled = true;
+            btn_Param.Enabled = true;
+            if (GetIsCompleteRegister())
+            {
+                Close();
+            }
+        }
+
+        private bool GetIsCompleteRegister()
+        {
+            foreach (KeyValuePair<int, CardInfo> item in DicRegisterList)
+            {
+                if (item.Value.Cid == 0)
+                    return false;
+            }
+            return true;
+        }
+
+        private void btn_Canel_Click(object sender, EventArgs e)
+        {
+            btn_Enter.Enabled = true;
+            Close();
+        }
+
+        private void btn_Param_Click(object sender, EventArgs e)
+        {
+            SetReisterParam();
+        }
+
+        private void BatchRegister_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            IsShow = false;
+            Port.PortIsOpenChange -= PortOpenAndCloseChange;
+        }
+
+        private void dgv_RegisterList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+
+        }
+
+
     }
 }

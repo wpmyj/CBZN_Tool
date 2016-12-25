@@ -14,7 +14,7 @@ namespace CBZN_TestTool
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DistanceDelay());
+            Application.Run(new MainForm());
         }
     }
 }

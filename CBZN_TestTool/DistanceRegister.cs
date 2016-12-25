@@ -62,7 +62,7 @@ namespace CBZN_TestTool
         /// </summary>
         private Dictionary<int, CardInfo> _mBundledCardinfo { get; set; }
 
-        public void PortDataRecevied(DistanceParameter parameter)
+        public void PortDataReceived(DistanceParameter parameter)
         {
             if (parameter.CardNumber == _mCardInfo.CardNumber)
             {
@@ -71,7 +71,6 @@ namespace CBZN_TestTool
                     DefaultShow ds = delegate
                     {
                         btn_Enter.Enabled = true;
-                        btn_Canel.Enabled = true;
                         MessageBox.Show(@"定距卡发行失败，请将定距卡放置在多功能操作平台上。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     };
                     Invoke(ds);
@@ -123,7 +122,7 @@ namespace CBZN_TestTool
                 }
             }
 
-            btn_Canel.Enabled = true;
+            btn_Enter.Enabled = true;
             Close();
         }
 
@@ -193,7 +192,6 @@ namespace CBZN_TestTool
             try
             {
                 btn_Enter.Enabled = false;
-                btn_Canel.Enabled = false;
 
                 UpdateDistanceData();
 
@@ -265,13 +263,12 @@ namespace CBZN_TestTool
                 }
                 if (_mPort.IsOpen)
                     _mPort.Write(by);
-                btn_Enter.Tag = _mCardInfo;
+                this.Tag = _mCardInfo;
                 _lockindex = 0;
             }
             catch (Exception ex)
             {
                 btn_Enter.Enabled = true;
-                btn_Canel.Enabled = true;
                 MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -307,7 +304,7 @@ namespace CBZN_TestTool
             foreach (CardInfo item in _mBoundDel)
             {
                 if (plate != item.CardNumber) continue;
-                dgv_BundledList.Rows.Add(new object[] { false, item.CardNumber, item.CardTime, item.ParkingRestrictions });
+                dgv_BundledList.Rows.Add(new object[] { false, Properties.Resources.block, item.CardNumber, item.CardTime, item.ParkingRestrictions });
                 return;
             }
             CardInfo info = new CardInfo()
@@ -317,7 +314,7 @@ namespace CBZN_TestTool
                 ParkingRestrictions = 0
             };
             _mBoundAdd.Add(-1, info);
-            dgv_BundledList.Rows.Add(new object[] { false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
+            dgv_BundledList.Rows.Add(new object[] { false, Properties.Resources.block, info.CardNumber, info.CardTime, info.ParkingRestrictions });
             tb_Plate.Text = string.Empty;
             tb_Plate.Focus();
         }
@@ -350,6 +347,7 @@ namespace CBZN_TestTool
                     break;
                 }
             }
+            btn_Remove.Enabled = false;
         }
 
         private void cb_AllSelected_CheckedChanged(object sender, EventArgs e)
@@ -431,9 +429,11 @@ namespace CBZN_TestTool
             {
                 p_Bundled.Visible = false;
                 cb_CardPartition.Enabled = true;
+                cb_ParkingRestrictions.Enabled = false;
             }
             else
             {
+                cb_ParkingRestrictions.Enabled = true;
                 cb_CardPartition.SelectedIndex = 0;
                 cb_CardPartition.Enabled = false;
                 p_Plate.Visible = false;
@@ -496,6 +496,7 @@ namespace CBZN_TestTool
                     break;
 
                 case 4:
+                    if (e.Value == null) return;
                     if (!Regex.IsMatch(e.Value.ToString(), @"^\d+$")) return;
                     StringBuilder sb = new StringBuilder();
                     int partition = HexadecimalConversion.ObjToInt(e.Value);
@@ -556,7 +557,7 @@ namespace CBZN_TestTool
 
         private void DistanceRegister_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (btn_Canel.Enabled)
+            if (btn_Enter.Enabled)
             {
                 if (_mBoundDel.Count > 0 || _mBoundAdd.Count > 0)
                 {
@@ -625,7 +626,7 @@ namespace CBZN_TestTool
 
         private void DistanceRegister_Resize(object sender, EventArgs e)
         {
-            Refresh();
+            this.Invalidate(new Rectangle(0, cb_CardType.Bottom, this.Width, this.Height - cb_CardType.Bottom));
         }
 
         private int GetSelectedPartition()
@@ -724,7 +725,7 @@ namespace CBZN_TestTool
 
         private void p_Plate_Resize(object sender, EventArgs e)
         {
-            p_Plate.Invalidate();
+            p_Plate.Invalidate(new Rectangle(0, 0, p_Plate.Width, p_Plate.Height));
         }
 
         private void p_Provinces_VisibleChanged(object sender, EventArgs e)
@@ -749,6 +750,7 @@ namespace CBZN_TestTool
             if (!cb_AllSelected.Checked) return;
             cb_AllSelected.Tag = true;
             cb_AllSelected.Checked = false;
+            cb_AllSelected.Tag = null;
         }
 
         private void PortOpenAndCloseChange(object e, bool value)
@@ -801,7 +803,7 @@ namespace CBZN_TestTool
                 {
                     if (Height <= 250)
                     {
-                        StopTimer(sender);
+                        StopTimer();
                         Height = 250;
                         return;
                     }
@@ -811,7 +813,7 @@ namespace CBZN_TestTool
                 {
                     if (Height >= 410)
                     {
-                        StopTimer(sender);
+                        StopTimer();
                         Height = 410;
                         p_CardPartition.Visible = true;
                         return;
@@ -823,7 +825,7 @@ namespace CBZN_TestTool
             {
                 if (Height >= 540 && Height <= 560)
                 {
-                    StopTimer(sender);
+                    StopTimer();
                     Height = 550;
                     p_Bundled.Height = 297;
                     p_Bundled.Visible = true;
@@ -847,7 +849,7 @@ namespace CBZN_TestTool
                 {
                     if (Height >= 490 && Height <= 510)
                     {
-                        StopTimer(sender);
+                        StopTimer();
                         Height = 500;
                         p_Bundled.Height = 235;
                         p_Plate.Visible = true;
@@ -869,7 +871,7 @@ namespace CBZN_TestTool
                 {
                     if (Height >= 600)
                     {
-                        StopTimer(sender);
+                        StopTimer();
                         Height = 600;
                         p_Bundled.Height = 340;
                         p_Bundled.Visible = true;
@@ -893,12 +895,10 @@ namespace CBZN_TestTool
             }
         }
 
-        private void StopTimer(object sender)
+        private void StopTimer()
         {
-            System.Timers.Timer timer = sender as System.Timers.Timer;
-            if (timer == null) return;
-            timer.Stop();
-            timer.Dispose();
+            _timer.Stop();
+            _timer.Dispose();
             _timer = null;
         }
 
@@ -918,16 +918,16 @@ namespace CBZN_TestTool
 
         private void tb_Plate_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Back)
-                e.Handled = false;
-            else if (e.KeyChar >= 48 && e.KeyChar <= 57)
-                e.Handled = false;
-            else if (e.KeyChar >= 65 && e.KeyChar <= 90)
-                e.Handled = false;
-            else if (e.KeyChar >= 97 && e.KeyChar <= 122)
-                e.Handled = false;
-            else
-                e.Handled = true;
+            //if (e.KeyChar == (char)Keys.Back)
+            //    e.Handled = false;
+            //else if (e.KeyChar >= 48 && e.KeyChar <= 57)
+            //    e.Handled = false;
+            //else if (e.KeyChar >= 65 && e.KeyChar <= 90)
+            //    e.Handled = false;
+            //else if (e.KeyChar >= 97 && e.KeyChar <= 122)
+            //    e.Handled = false;
+            //else
+            //    e.Handled = true;
         }
 
         private void tb_Plate_Leave(object sender, EventArgs e)

@@ -34,8 +34,6 @@
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.cb_CardPartition = new System.Windows.Forms.ComboBox();
             this.l_CardPartition = new System.Windows.Forms.Label();
-            this.cb_ParkingRestrictions = new System.Windows.Forms.ComboBox();
-            this.l_ParkingRestrictions = new System.Windows.Forms.Label();
             this.t_CardTime = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.cb_CardDistance = new System.Windows.Forms.ComboBox();
@@ -88,6 +86,7 @@
             this.l_Title.TabIndex = 4;
             this.l_Title.Text = "批量发行参数";
             this.l_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.l_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.l_Title_MouseDown);
             // 
             // btn_Close
             // 
@@ -104,6 +103,7 @@
             this.btn_Close.TabIndex = 0;
             this.btn_Close.TabStop = false;
             this.btn_Close.UseVisualStyleBackColor = false;
+            this.btn_Close.Click += new System.EventHandler(this.btn_Close_Click);
             // 
             // cb_CardPartition
             // 
@@ -113,7 +113,7 @@
             this.cb_CardPartition.Items.AddRange(new object[] {
             "关闭",
             "开启"});
-            this.cb_CardPartition.Location = new System.Drawing.Point(323, 116);
+            this.cb_CardPartition.Location = new System.Drawing.Point(93, 115);
             this.cb_CardPartition.Name = "cb_CardPartition";
             this.cb_CardPartition.Size = new System.Drawing.Size(130, 28);
             this.cb_CardPartition.TabIndex = 19;
@@ -123,34 +123,11 @@
             // 
             this.l_CardPartition.AutoSize = true;
             this.l_CardPartition.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_CardPartition.Location = new System.Drawing.Point(249, 122);
+            this.l_CardPartition.Location = new System.Drawing.Point(19, 121);
             this.l_CardPartition.Name = "l_CardPartition";
             this.l_CardPartition.Size = new System.Drawing.Size(68, 17);
             this.l_CardPartition.TabIndex = 23;
             this.l_CardPartition.Text = "车场分区：";
-            // 
-            // cb_ParkingRestrictions
-            // 
-            this.cb_ParkingRestrictions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_ParkingRestrictions.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cb_ParkingRestrictions.FormattingEnabled = true;
-            this.cb_ParkingRestrictions.Items.AddRange(new object[] {
-            "关闭",
-            "开启"});
-            this.cb_ParkingRestrictions.Location = new System.Drawing.Point(323, 63);
-            this.cb_ParkingRestrictions.Name = "cb_ParkingRestrictions";
-            this.cb_ParkingRestrictions.Size = new System.Drawing.Size(130, 28);
-            this.cb_ParkingRestrictions.TabIndex = 18;
-            // 
-            // l_ParkingRestrictions
-            // 
-            this.l_ParkingRestrictions.AutoSize = true;
-            this.l_ParkingRestrictions.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_ParkingRestrictions.Location = new System.Drawing.Point(249, 69);
-            this.l_ParkingRestrictions.Name = "l_ParkingRestrictions";
-            this.l_ParkingRestrictions.Size = new System.Drawing.Size(68, 17);
-            this.l_ParkingRestrictions.TabIndex = 22;
-            this.l_ParkingRestrictions.Text = "车位限制：";
             // 
             // t_CardTime
             // 
@@ -183,7 +160,7 @@
             "2.5 米",
             "3.8 米",
             "5 米"});
-            this.cb_CardDistance.Location = new System.Drawing.Point(93, 116);
+            this.cb_CardDistance.Location = new System.Drawing.Point(326, 64);
             this.cb_CardDistance.Name = "cb_CardDistance";
             this.cb_CardDistance.Size = new System.Drawing.Size(130, 28);
             this.cb_CardDistance.TabIndex = 16;
@@ -192,7 +169,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(19, 122);
+            this.label3.Location = new System.Drawing.Point(252, 70);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 20;
@@ -223,6 +200,7 @@
             this.p_CardPartition.Name = "p_CardPartition";
             this.p_CardPartition.Size = new System.Drawing.Size(440, 155);
             this.p_CardPartition.TabIndex = 24;
+            this.p_CardPartition.Paint += new System.Windows.Forms.PaintEventHandler(this.p_CardPartition_Paint);
             // 
             // cb_Partition16
             // 
@@ -233,6 +211,7 @@
             this.cb_Partition16.TabIndex = 16;
             this.cb_Partition16.Text = "16 分区";
             this.cb_Partition16.UseVisualStyleBackColor = true;
+            this.cb_Partition16.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition15
             // 
@@ -243,6 +222,7 @@
             this.cb_Partition15.TabIndex = 15;
             this.cb_Partition15.Text = "15 分区";
             this.cb_Partition15.UseVisualStyleBackColor = true;
+            this.cb_Partition15.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition14
             // 
@@ -253,6 +233,7 @@
             this.cb_Partition14.TabIndex = 14;
             this.cb_Partition14.Text = "14 分区";
             this.cb_Partition14.UseVisualStyleBackColor = true;
+            this.cb_Partition14.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition13
             // 
@@ -263,6 +244,7 @@
             this.cb_Partition13.TabIndex = 13;
             this.cb_Partition13.Text = "13 分区";
             this.cb_Partition13.UseVisualStyleBackColor = true;
+            this.cb_Partition13.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition12
             // 
@@ -273,6 +255,7 @@
             this.cb_Partition12.TabIndex = 12;
             this.cb_Partition12.Text = "12 分区";
             this.cb_Partition12.UseVisualStyleBackColor = true;
+            this.cb_Partition12.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition11
             // 
@@ -283,6 +266,7 @@
             this.cb_Partition11.TabIndex = 11;
             this.cb_Partition11.Text = "11 分区";
             this.cb_Partition11.UseVisualStyleBackColor = true;
+            this.cb_Partition11.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition10
             // 
@@ -293,6 +277,7 @@
             this.cb_Partition10.TabIndex = 10;
             this.cb_Partition10.Text = "10 分区";
             this.cb_Partition10.UseVisualStyleBackColor = true;
+            this.cb_Partition10.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition9
             // 
@@ -303,6 +288,7 @@
             this.cb_Partition9.TabIndex = 9;
             this.cb_Partition9.Text = "9 分区";
             this.cb_Partition9.UseVisualStyleBackColor = true;
+            this.cb_Partition9.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition8
             // 
@@ -313,6 +299,7 @@
             this.cb_Partition8.TabIndex = 8;
             this.cb_Partition8.Text = "8 分区";
             this.cb_Partition8.UseVisualStyleBackColor = true;
+            this.cb_Partition8.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition7
             // 
@@ -323,6 +310,7 @@
             this.cb_Partition7.TabIndex = 7;
             this.cb_Partition7.Text = "7 分区";
             this.cb_Partition7.UseVisualStyleBackColor = true;
+            this.cb_Partition7.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition6
             // 
@@ -333,6 +321,7 @@
             this.cb_Partition6.TabIndex = 6;
             this.cb_Partition6.Text = "6 分区";
             this.cb_Partition6.UseVisualStyleBackColor = true;
+            this.cb_Partition6.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition5
             // 
@@ -343,6 +332,7 @@
             this.cb_Partition5.TabIndex = 5;
             this.cb_Partition5.Text = "5 分区";
             this.cb_Partition5.UseVisualStyleBackColor = true;
+            this.cb_Partition5.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition4
             // 
@@ -353,6 +343,7 @@
             this.cb_Partition4.TabIndex = 4;
             this.cb_Partition4.Text = "4 分区";
             this.cb_Partition4.UseVisualStyleBackColor = true;
+            this.cb_Partition4.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition3
             // 
@@ -363,6 +354,7 @@
             this.cb_Partition3.TabIndex = 3;
             this.cb_Partition3.Text = "3 分区";
             this.cb_Partition3.UseVisualStyleBackColor = true;
+            this.cb_Partition3.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition2
             // 
@@ -373,6 +365,7 @@
             this.cb_Partition2.TabIndex = 2;
             this.cb_Partition2.Text = "2 分区";
             this.cb_Partition2.UseVisualStyleBackColor = true;
+            this.cb_Partition2.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_Partition1
             // 
@@ -383,6 +376,7 @@
             this.cb_Partition1.TabIndex = 1;
             this.cb_Partition1.Text = "1 分区";
             this.cb_Partition1.UseVisualStyleBackColor = true;
+            this.cb_Partition1.CheckedChanged += new System.EventHandler(this.cb_Partition_CheckedChanged);
             // 
             // cb_AllSelected
             // 
@@ -393,6 +387,7 @@
             this.cb_AllSelected.TabIndex = 0;
             this.cb_AllSelected.Text = "全选或反选";
             this.cb_AllSelected.UseVisualStyleBackColor = true;
+            this.cb_AllSelected.CheckedChanged += new System.EventHandler(this.cb_AllSelected_CheckedChanged);
             // 
             // label7
             // 
@@ -428,6 +423,7 @@
             this.btn_Canel.TabStop = false;
             this.btn_Canel.Text = "取 消";
             this.btn_Canel.UseVisualStyleBackColor = false;
+            this.btn_Canel.Click += new System.EventHandler(this.btn_Canel_Click);
             // 
             // btn_Enter
             // 
@@ -452,20 +448,21 @@
             this.btn_Enter.TabStop = false;
             this.btn_Enter.Text = "确 认";
             this.btn_Enter.UseVisualStyleBackColor = false;
+            this.btn_Enter.Click += new System.EventHandler(this.btn_Enter_Click);
             // 
             // RegisterParameter
             // 
+            this.AcceptButton = this.btn_Enter;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.CancelButton = this.btn_Canel;
             this.ClientSize = new System.Drawing.Size(472, 370);
             this.Controls.Add(this.btn_Canel);
             this.Controls.Add(this.btn_Enter);
             this.Controls.Add(this.p_CardPartition);
             this.Controls.Add(this.cb_CardPartition);
             this.Controls.Add(this.l_CardPartition);
-            this.Controls.Add(this.cb_ParkingRestrictions);
-            this.Controls.Add(this.l_ParkingRestrictions);
             this.Controls.Add(this.t_CardTime);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cb_CardDistance);
@@ -489,8 +486,6 @@
         private CCWin.SkinControl.SkinButton btn_Close;
         private System.Windows.Forms.ComboBox cb_CardPartition;
         private System.Windows.Forms.Label l_CardPartition;
-        private System.Windows.Forms.ComboBox cb_ParkingRestrictions;
-        private System.Windows.Forms.Label l_ParkingRestrictions;
         private System.Windows.Forms.DateTimePicker t_CardTime;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cb_CardDistance;

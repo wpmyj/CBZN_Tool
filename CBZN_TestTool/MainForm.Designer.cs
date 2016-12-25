@@ -29,25 +29,38 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
             this.p_Title = new System.Windows.Forms.Panel();
             this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.btn_Min = new CCWin.SkinControl.SkinButton();
             this.p_Left = new System.Windows.Forms.Panel();
-            this.btn_Tap4 = new CCWin.SkinControl.SkinButton();
-            this.btn_Tap3 = new CCWin.SkinControl.SkinButton();
-            this.btn_Tap1 = new CCWin.SkinControl.SkinButton();
-            this.btn_Tap2 = new CCWin.SkinControl.SkinButton();
+            this.btn_Tap4 = new System.Windows.Forms.Button();
+            this.btn_Tap3 = new System.Windows.Forms.Button();
+            this.btn_Tap1 = new System.Windows.Forms.Button();
+            this.btn_Tap2 = new System.Windows.Forms.Button();
             this.p_Tap1 = new System.Windows.Forms.Panel();
             this.dgv_DataList = new System.Windows.Forms.DataGridView();
+            this.Cid = new System.Windows.Forms.DataGridViewImageColumn();
+            this.CardNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardDistance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardLock = new System.Windows.Forms.DataGridViewImageColumn();
+            this.CardReportLoss = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Synchronous = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ParkingRestrictions = new System.Windows.Forms.DataGridViewImageColumn();
+            this.CardPartition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.InOutState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Electricity = new System.Windows.Forms.DataGridViewImageColumn();
+            this.CardCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn_Search = new CCWin.SkinControl.SkinButton();
             this.tb_Search = new System.Windows.Forms.TextBox();
@@ -83,8 +96,8 @@
             this.c_descript2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.c_time2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btn_TapTemporaryEncryption = new CCWin.SkinControl.SkinButton();
-            this.btn_TapDistanceEncryption = new CCWin.SkinControl.SkinButton();
+            this.btn_TapTemporaryEncryption = new System.Windows.Forms.Button();
+            this.btn_TapDistanceEncryption = new System.Windows.Forms.Button();
             this.p_TemporaryInterface = new System.Windows.Forms.Panel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cb_TemporaryWay = new System.Windows.Forms.CheckBox();
@@ -145,19 +158,6 @@
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn4 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn5 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Cid = new System.Windows.Forms.DataGridViewImageColumn();
-            this.CardNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardDistance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardLock = new System.Windows.Forms.DataGridViewImageColumn();
-            this.CardReportLoss = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Synchronous = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ParkingRestrictions = new System.Windows.Forms.DataGridViewImageColumn();
-            this.CardPartition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.InOutState = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Electricity = new System.Windows.Forms.DataGridViewImageColumn();
-            this.CardCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.p_Title.SuspendLayout();
             this.p_Left.SuspendLayout();
             this.p_Tap1.SuspendLayout();
@@ -261,104 +261,96 @@
             // 
             // btn_Tap4
             // 
-            this.btn_Tap4.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Tap4.BaseColor = System.Drawing.Color.Transparent;
-            this.btn_Tap4.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Tap4.DownBack = null;
-            this.btn_Tap4.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Tap4.FadeGlow = false;
+            this.btn_Tap4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
+            this.btn_Tap4.FlatAppearance.BorderSize = 0;
+            this.btn_Tap4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Tap4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Tap4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Tap4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Tap4.ForeColor = System.Drawing.Color.White;
-            this.btn_Tap4.IsDrawBorder = false;
-            this.btn_Tap4.IsDrawGlass = false;
-            this.btn_Tap4.IsEnabledDraw = false;
             this.btn_Tap4.Location = new System.Drawing.Point(0, 447);
-            this.btn_Tap4.MouseBack = null;
-            this.btn_Tap4.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Tap4.Name = "btn_Tap4";
-            this.btn_Tap4.NormlBack = null;
             this.btn_Tap4.Size = new System.Drawing.Size(150, 100);
             this.btn_Tap4.TabIndex = 2;
             this.btn_Tap4.TabStop = false;
             this.btn_Tap4.Text = "无线测试";
             this.btn_Tap4.UseVisualStyleBackColor = false;
             this.btn_Tap4.Click += new System.EventHandler(this.btn_Tap4_Click);
+            this.btn_Tap4.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap4_Paint);
+            this.btn_Tap4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap4_MouseDown);
+            this.btn_Tap4.MouseEnter += new System.EventHandler(this.btn_Tap4_MouseEnter);
+            this.btn_Tap4.MouseLeave += new System.EventHandler(this.btn_Tap4_MouseLeave);
+            this.btn_Tap4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap4_MouseUp);
             // 
             // btn_Tap3
             // 
-            this.btn_Tap3.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Tap3.BaseColor = System.Drawing.Color.Transparent;
-            this.btn_Tap3.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Tap3.DownBack = null;
-            this.btn_Tap3.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Tap3.FadeGlow = false;
+            this.btn_Tap3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
+            this.btn_Tap3.FlatAppearance.BorderSize = 0;
+            this.btn_Tap3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Tap3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Tap3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Tap3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Tap3.ForeColor = System.Drawing.Color.White;
-            this.btn_Tap3.IsDrawBorder = false;
-            this.btn_Tap3.IsDrawGlass = false;
-            this.btn_Tap3.IsEnabledDraw = false;
             this.btn_Tap3.Location = new System.Drawing.Point(0, 346);
-            this.btn_Tap3.MouseBack = null;
-            this.btn_Tap3.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Tap3.Name = "btn_Tap3";
-            this.btn_Tap3.NormlBack = null;
             this.btn_Tap3.Size = new System.Drawing.Size(150, 100);
             this.btn_Tap3.TabIndex = 2;
             this.btn_Tap3.TabStop = false;
             this.btn_Tap3.Text = "参数编录";
             this.btn_Tap3.UseVisualStyleBackColor = false;
             this.btn_Tap3.Click += new System.EventHandler(this.btn_Tap3_Click);
+            this.btn_Tap3.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap3_Paint);
+            this.btn_Tap3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap3_MouseDown);
+            this.btn_Tap3.MouseEnter += new System.EventHandler(this.btn_Tap3_MouseEnter);
+            this.btn_Tap3.MouseLeave += new System.EventHandler(this.btn_Tap3_MouseLeave);
+            this.btn_Tap3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap3_MouseUp);
             // 
             // btn_Tap1
             // 
-            this.btn_Tap1.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Tap1.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Tap1.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Tap1.DownBack = null;
-            this.btn_Tap1.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Tap1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
             this.btn_Tap1.Enabled = false;
-            this.btn_Tap1.FadeGlow = false;
+            this.btn_Tap1.FlatAppearance.BorderSize = 0;
+            this.btn_Tap1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Tap1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Tap1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Tap1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Tap1.ForeColor = System.Drawing.Color.White;
-            this.btn_Tap1.IsDrawBorder = false;
-            this.btn_Tap1.IsDrawGlass = false;
-            this.btn_Tap1.IsEnabledDraw = false;
             this.btn_Tap1.Location = new System.Drawing.Point(0, 144);
-            this.btn_Tap1.MouseBack = null;
-            this.btn_Tap1.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Tap1.Name = "btn_Tap1";
-            this.btn_Tap1.NormlBack = null;
             this.btn_Tap1.Size = new System.Drawing.Size(150, 100);
             this.btn_Tap1.TabIndex = 1;
             this.btn_Tap1.TabStop = false;
             this.btn_Tap1.Text = "卡片操作";
             this.btn_Tap1.UseVisualStyleBackColor = false;
             this.btn_Tap1.Click += new System.EventHandler(this.btn_Tap1_Click);
+            this.btn_Tap1.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap1_Paint);
+            this.btn_Tap1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap1_MouseDown);
+            this.btn_Tap1.MouseEnter += new System.EventHandler(this.btn_Tap1_MouseEnter);
+            this.btn_Tap1.MouseLeave += new System.EventHandler(this.btn_Tap1_MouseLeave);
+            this.btn_Tap1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap1_MouseUp);
             // 
             // btn_Tap2
             // 
-            this.btn_Tap2.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Tap2.BaseColor = System.Drawing.Color.Transparent;
-            this.btn_Tap2.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Tap2.DownBack = null;
-            this.btn_Tap2.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Tap2.FadeGlow = false;
+            this.btn_Tap2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
+            this.btn_Tap2.FlatAppearance.BorderSize = 0;
+            this.btn_Tap2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Tap2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Tap2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Tap2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Tap2.ForeColor = System.Drawing.Color.White;
-            this.btn_Tap2.IsDrawBorder = false;
-            this.btn_Tap2.IsDrawGlass = false;
-            this.btn_Tap2.IsEnabledDraw = false;
             this.btn_Tap2.Location = new System.Drawing.Point(0, 245);
-            this.btn_Tap2.MouseBack = null;
-            this.btn_Tap2.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Tap2.Name = "btn_Tap2";
-            this.btn_Tap2.NormlBack = null;
             this.btn_Tap2.Size = new System.Drawing.Size(150, 100);
             this.btn_Tap2.TabIndex = 0;
             this.btn_Tap2.TabStop = false;
             this.btn_Tap2.Text = "加密操作";
             this.btn_Tap2.UseVisualStyleBackColor = false;
             this.btn_Tap2.Click += new System.EventHandler(this.btn_Tap2_Click);
+            this.btn_Tap2.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap2_Paint);
+            this.btn_Tap2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap2_MouseDown);
+            this.btn_Tap2.MouseEnter += new System.EventHandler(this.btn_Tap2_MouseEnter);
+            this.btn_Tap2.MouseLeave += new System.EventHandler(this.btn_Tap2_MouseLeave);
+            this.btn_Tap2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap2_MouseUp);
             // 
             // p_Tap1
             // 
@@ -383,14 +375,14 @@
             this.dgv_DataList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_DataList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_DataList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_DataList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_DataList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
             this.dgv_DataList.ColumnHeadersHeight = 40;
             this.dgv_DataList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_DataList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -407,14 +399,14 @@
             this.InOutState,
             this.Electricity,
             this.CardCount});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_DataList.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_DataList.DefaultCellStyle = dataGridViewCellStyle19;
             this.dgv_DataList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_DataList.EnableHeadersVisualStyles = false;
             this.dgv_DataList.Location = new System.Drawing.Point(0, 50);
@@ -431,6 +423,118 @@
             this.dgv_DataList.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgv_DataList_RowsAdded);
             this.dgv_DataList.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgv_DataList_RowsRemoved);
             this.dgv_DataList.SelectionChanged += new System.EventHandler(this.dgv_DataList_SelectionChanged);
+            // 
+            // Cid
+            // 
+            this.Cid.DataPropertyName = "Cid";
+            this.Cid.HeaderText = "注册状态";
+            this.Cid.Image = global::CBZN_TestTool.Properties.Resources.check;
+            this.Cid.Name = "Cid";
+            this.Cid.ReadOnly = true;
+            this.Cid.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Cid.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // CardNumber
+            // 
+            this.CardNumber.DataPropertyName = "CardNumber";
+            this.CardNumber.HeaderText = "卡 号";
+            this.CardNumber.Name = "CardNumber";
+            this.CardNumber.ReadOnly = true;
+            this.CardNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CardType
+            // 
+            this.CardType.DataPropertyName = "CardType";
+            this.CardType.HeaderText = "类 型";
+            this.CardType.Name = "CardType";
+            this.CardType.ReadOnly = true;
+            this.CardType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.CardType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CardTime
+            // 
+            this.CardTime.DataPropertyName = "CardTime";
+            dataGridViewCellStyle18.Format = "D";
+            dataGridViewCellStyle18.NullValue = null;
+            this.CardTime.DefaultCellStyle = dataGridViewCellStyle18;
+            this.CardTime.HeaderText = "时 间";
+            this.CardTime.Name = "CardTime";
+            this.CardTime.ReadOnly = true;
+            this.CardTime.Width = 140;
+            // 
+            // CardDistance
+            // 
+            this.CardDistance.DataPropertyName = "CardDistance";
+            this.CardDistance.HeaderText = "距 离";
+            this.CardDistance.Name = "CardDistance";
+            this.CardDistance.ReadOnly = true;
+            this.CardDistance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CardLock
+            // 
+            this.CardLock.DataPropertyName = "CardLock";
+            this.CardLock.HeaderText = "解锁状态";
+            this.CardLock.Image = global::CBZN_TestTool.Properties.Resources.OpenLock;
+            this.CardLock.Name = "CardLock";
+            this.CardLock.ReadOnly = true;
+            // 
+            // CardReportLoss
+            // 
+            this.CardReportLoss.DataPropertyName = "CardReportLoss";
+            this.CardReportLoss.HeaderText = "挂失状态";
+            this.CardReportLoss.Image = global::CBZN_TestTool.Properties.Resources.block;
+            this.CardReportLoss.Name = "CardReportLoss";
+            this.CardReportLoss.ReadOnly = true;
+            // 
+            // Synchronous
+            // 
+            this.Synchronous.DataPropertyName = "Synchronous";
+            this.Synchronous.HeaderText = "Synchronous";
+            this.Synchronous.Name = "Synchronous";
+            this.Synchronous.ReadOnly = true;
+            this.Synchronous.Visible = false;
+            // 
+            // ParkingRestrictions
+            // 
+            this.ParkingRestrictions.DataPropertyName = "ParkingRestrictions";
+            this.ParkingRestrictions.HeaderText = "车位限制";
+            this.ParkingRestrictions.Image = global::CBZN_TestTool.Properties.Resources.block;
+            this.ParkingRestrictions.Name = "ParkingRestrictions";
+            this.ParkingRestrictions.ReadOnly = true;
+            this.ParkingRestrictions.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // CardPartition
+            // 
+            this.CardPartition.DataPropertyName = "CardPartition";
+            this.CardPartition.HeaderText = "场分区";
+            this.CardPartition.Name = "CardPartition";
+            this.CardPartition.ReadOnly = true;
+            this.CardPartition.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // InOutState
+            // 
+            this.InOutState.DataPropertyName = "InOutState";
+            this.InOutState.HeaderText = "InOutState";
+            this.InOutState.Name = "InOutState";
+            this.InOutState.ReadOnly = true;
+            this.InOutState.Visible = false;
+            // 
+            // Electricity
+            // 
+            this.Electricity.DataPropertyName = "Electricity";
+            this.Electricity.HeaderText = "电 量";
+            this.Electricity.Image = global::CBZN_TestTool.Properties.Resources.Battery;
+            this.Electricity.Name = "Electricity";
+            this.Electricity.ReadOnly = true;
+            this.Electricity.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // CardCount
+            // 
+            this.CardCount.DataPropertyName = "CardCount";
+            this.CardCount.HeaderText = "CardCount";
+            this.CardCount.Name = "CardCount";
+            this.CardCount.ReadOnly = true;
+            this.CardCount.Visible = false;
             // 
             // panel1
             // 
@@ -712,14 +816,14 @@
             this.dgv_WirelessDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_WirelessDescription.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_WirelessDescription.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_WirelessDescription.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_WirelessDescription.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle20;
             this.dgv_WirelessDescription.ColumnHeadersHeight = 40;
             this.dgv_WirelessDescription.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_description3});
@@ -1020,14 +1124,14 @@
             this.dgv_pwd.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_pwd.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_pwd.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_pwd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle21.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_pwd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
             this.dgv_pwd.ColumnHeadersHeight = 40;
             this.dgv_pwd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_descript2,
@@ -1058,9 +1162,9 @@
             // 
             // c_time2
             // 
-            dataGridViewCellStyle6.Format = "G";
-            dataGridViewCellStyle6.NullValue = null;
-            this.c_time2.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle22.Format = "G";
+            dataGridViewCellStyle22.NullValue = null;
+            this.c_time2.DefaultCellStyle = dataGridViewCellStyle22;
             this.c_time2.HeaderText = "时 间";
             this.c_time2.Name = "c_time2";
             this.c_time2.ReadOnly = true;
@@ -1082,53 +1186,49 @@
             // btn_TapTemporaryEncryption
             // 
             this.btn_TapTemporaryEncryption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
-            this.btn_TapTemporaryEncryption.BaseColor = System.Drawing.Color.Transparent;
-            this.btn_TapTemporaryEncryption.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_TapTemporaryEncryption.DownBack = null;
-            this.btn_TapTemporaryEncryption.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_TapTemporaryEncryption.FadeGlow = false;
+            this.btn_TapTemporaryEncryption.FlatAppearance.BorderSize = 0;
+            this.btn_TapTemporaryEncryption.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_TapTemporaryEncryption.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_TapTemporaryEncryption.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_TapTemporaryEncryption.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_TapTemporaryEncryption.ForeColor = System.Drawing.Color.White;
-            this.btn_TapTemporaryEncryption.IsDrawBorder = false;
-            this.btn_TapTemporaryEncryption.IsDrawGlass = false;
-            this.btn_TapTemporaryEncryption.IsEnabledDraw = false;
             this.btn_TapTemporaryEncryption.Location = new System.Drawing.Point(120, 0);
-            this.btn_TapTemporaryEncryption.MouseBack = null;
-            this.btn_TapTemporaryEncryption.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_TapTemporaryEncryption.Name = "btn_TapTemporaryEncryption";
-            this.btn_TapTemporaryEncryption.NormlBack = null;
             this.btn_TapTemporaryEncryption.Size = new System.Drawing.Size(120, 45);
             this.btn_TapTemporaryEncryption.TabIndex = 1;
             this.btn_TapTemporaryEncryption.TabStop = false;
             this.btn_TapTemporaryEncryption.Text = "临时加密";
             this.btn_TapTemporaryEncryption.UseVisualStyleBackColor = false;
             this.btn_TapTemporaryEncryption.Click += new System.EventHandler(this.btn_TapTemporaryEncryption_Click);
+            this.btn_TapTemporaryEncryption.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_TapTemporaryEncryption_MouseDown);
+            this.btn_TapTemporaryEncryption.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_TapTemporaryEncryption_MouseUp);
+            this.btn_TapTemporaryEncryption.MouseEnter += new System.EventHandler(this.btn_TapTemporaryEncryption_MouseEnter);
+            this.btn_TapTemporaryEncryption.MouseLeave += new System.EventHandler(this.btn_TapTemporaryEncryption_MouseLeave);
+            this.btn_TapTemporaryEncryption.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_TapTemporaryEncryption_Paint);
             // 
             // btn_TapDistanceEncryption
             // 
             this.btn_TapDistanceEncryption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
-            this.btn_TapDistanceEncryption.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_TapDistanceEncryption.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_TapDistanceEncryption.DownBack = null;
-            this.btn_TapDistanceEncryption.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_TapDistanceEncryption.Enabled = false;
-            this.btn_TapDistanceEncryption.FadeGlow = false;
+            this.btn_TapDistanceEncryption.FlatAppearance.BorderSize = 0;
+            this.btn_TapDistanceEncryption.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_TapDistanceEncryption.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_TapDistanceEncryption.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_TapDistanceEncryption.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_TapDistanceEncryption.ForeColor = System.Drawing.Color.White;
-            this.btn_TapDistanceEncryption.IsDrawBorder = false;
-            this.btn_TapDistanceEncryption.IsDrawGlass = false;
-            this.btn_TapDistanceEncryption.IsEnabledDraw = false;
             this.btn_TapDistanceEncryption.Location = new System.Drawing.Point(0, 0);
-            this.btn_TapDistanceEncryption.MouseBack = null;
-            this.btn_TapDistanceEncryption.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_TapDistanceEncryption.Name = "btn_TapDistanceEncryption";
-            this.btn_TapDistanceEncryption.NormlBack = null;
             this.btn_TapDistanceEncryption.Size = new System.Drawing.Size(120, 45);
             this.btn_TapDistanceEncryption.TabIndex = 0;
             this.btn_TapDistanceEncryption.TabStop = false;
             this.btn_TapDistanceEncryption.Text = "定距加密";
             this.btn_TapDistanceEncryption.UseVisualStyleBackColor = false;
             this.btn_TapDistanceEncryption.Click += new System.EventHandler(this.btn_TapDistanceEncryption_Click);
+            this.btn_TapDistanceEncryption.MouseLeave += new System.EventHandler(this.btn_TapDistanceEncryption_MouseLeave);
+            this.btn_TapDistanceEncryption.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_TapDistanceEncryption_MouseDown);
+            this.btn_TapDistanceEncryption.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_TapDistanceEncryption_MouseUp);
+            this.btn_TapDistanceEncryption.MouseEnter += new System.EventHandler(this.btn_TapDistanceEncryption_MouseEnter);
+            this.btn_TapDistanceEncryption.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_TapDistanceEncryption_Paint);
             // 
             // p_TemporaryInterface
             // 
@@ -1476,14 +1576,14 @@
             this.dgv_Device.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_Device.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_Device.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_Device.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle23.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle23.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_Device.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle23;
             this.dgv_Device.ColumnHeadersHeight = 40;
             this.dgv_Device.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_Selected,
@@ -1502,14 +1602,14 @@
             this.WirelessNumber,
             this.FrequencyOffset,
             this.Language});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_Device.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_Device.DefaultCellStyle = dataGridViewCellStyle24;
             this.dgv_Device.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_Device.EnableHeadersVisualStyles = false;
             this.dgv_Device.Location = new System.Drawing.Point(0, 50);
@@ -1945,126 +2045,14 @@
             this.dataGridViewImageColumn5.ReadOnly = true;
             this.dataGridViewImageColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // Cid
-            // 
-            this.Cid.DataPropertyName = "Cid";
-            this.Cid.HeaderText = "注册状态";
-            this.Cid.Image = global::CBZN_TestTool.Properties.Resources.check;
-            this.Cid.Name = "Cid";
-            this.Cid.ReadOnly = true;
-            this.Cid.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Cid.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // CardNumber
-            // 
-            this.CardNumber.DataPropertyName = "CardNumber";
-            this.CardNumber.HeaderText = "卡 号";
-            this.CardNumber.Name = "CardNumber";
-            this.CardNumber.ReadOnly = true;
-            this.CardNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // CardType
-            // 
-            this.CardType.DataPropertyName = "CardType";
-            this.CardType.HeaderText = "类 型";
-            this.CardType.Name = "CardType";
-            this.CardType.ReadOnly = true;
-            this.CardType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CardType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // CardTime
-            // 
-            this.CardTime.DataPropertyName = "CardTime";
-            dataGridViewCellStyle2.Format = "D";
-            dataGridViewCellStyle2.NullValue = null;
-            this.CardTime.DefaultCellStyle = dataGridViewCellStyle2;
-            this.CardTime.HeaderText = "时 间";
-            this.CardTime.Name = "CardTime";
-            this.CardTime.ReadOnly = true;
-            this.CardTime.Width = 140;
-            // 
-            // CardDistance
-            // 
-            this.CardDistance.DataPropertyName = "CardDistance";
-            this.CardDistance.HeaderText = "距 离";
-            this.CardDistance.Name = "CardDistance";
-            this.CardDistance.ReadOnly = true;
-            this.CardDistance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // CardLock
-            // 
-            this.CardLock.DataPropertyName = "CardLock";
-            this.CardLock.HeaderText = "解锁状态";
-            this.CardLock.Image = global::CBZN_TestTool.Properties.Resources.OpenLock;
-            this.CardLock.Name = "CardLock";
-            this.CardLock.ReadOnly = true;
-            // 
-            // CardReportLoss
-            // 
-            this.CardReportLoss.DataPropertyName = "CardReportLoss";
-            this.CardReportLoss.HeaderText = "挂失状态";
-            this.CardReportLoss.Image = global::CBZN_TestTool.Properties.Resources.block;
-            this.CardReportLoss.Name = "CardReportLoss";
-            this.CardReportLoss.ReadOnly = true;
-            // 
-            // Synchronous
-            // 
-            this.Synchronous.DataPropertyName = "Synchronous";
-            this.Synchronous.HeaderText = "Synchronous";
-            this.Synchronous.Name = "Synchronous";
-            this.Synchronous.ReadOnly = true;
-            this.Synchronous.Visible = false;
-            // 
-            // ParkingRestrictions
-            // 
-            this.ParkingRestrictions.DataPropertyName = "ParkingRestrictions";
-            this.ParkingRestrictions.HeaderText = "车位限制";
-            this.ParkingRestrictions.Image = global::CBZN_TestTool.Properties.Resources.block;
-            this.ParkingRestrictions.Name = "ParkingRestrictions";
-            this.ParkingRestrictions.ReadOnly = true;
-            this.ParkingRestrictions.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // CardPartition
-            // 
-            this.CardPartition.DataPropertyName = "CardPartition";
-            this.CardPartition.HeaderText = "场分区";
-            this.CardPartition.Name = "CardPartition";
-            this.CardPartition.ReadOnly = true;
-            this.CardPartition.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // InOutState
-            // 
-            this.InOutState.DataPropertyName = "InOutState";
-            this.InOutState.HeaderText = "InOutState";
-            this.InOutState.Name = "InOutState";
-            this.InOutState.ReadOnly = true;
-            this.InOutState.Visible = false;
-            // 
-            // Electricity
-            // 
-            this.Electricity.DataPropertyName = "Electricity";
-            this.Electricity.HeaderText = "电 量";
-            this.Electricity.Image = global::CBZN_TestTool.Properties.Resources.Battery;
-            this.Electricity.Name = "Electricity";
-            this.Electricity.ReadOnly = true;
-            this.Electricity.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // CardCount
-            // 
-            this.CardCount.DataPropertyName = "CardCount";
-            this.CardCount.HeaderText = "CardCount";
-            this.CardCount.Name = "CardCount";
-            this.CardCount.ReadOnly = true;
-            this.CardCount.Visible = false;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1000, 550);
-            this.Controls.Add(this.p_Tap1);
             this.Controls.Add(this.p_Tap2);
+            this.Controls.Add(this.p_Tap1);
             this.Controls.Add(this.p_Tap3);
             this.Controls.Add(this.p_Tap4);
             this.Controls.Add(this.p_Title);
@@ -2117,13 +2105,13 @@
         private System.Windows.Forms.Panel p_Left;
         private System.Windows.Forms.Label l_Title;
         private System.Windows.Forms.Panel p_Tap1;
-        private CCWin.SkinControl.SkinButton btn_Tap2;
-        private CCWin.SkinControl.SkinButton btn_Tap1;
-        private CCWin.SkinControl.SkinButton btn_Tap3;
+        private System.Windows.Forms.Button btn_Tap2;
+        private System.Windows.Forms.Button btn_Tap1;
+        private System.Windows.Forms.Button btn_Tap3;
         private System.Windows.Forms.Panel p_Tap2;
         private System.Windows.Forms.Panel p_Tap3;
         private System.Windows.Forms.Panel p_Tap4;
-        private CCWin.SkinControl.SkinButton btn_Tap4;
+        private System.Windows.Forms.Button btn_Tap4;
         private System.Windows.Forms.DataGridView dgv_DataList;
         private CCWin.SkinControl.SkinButton btn_Read;
         private System.Windows.Forms.Panel panel1;
@@ -2145,8 +2133,8 @@
         private System.Windows.Forms.TextBox tb_DistancePwd;
         private CCWin.SkinControl.SkinButton btn_DistanceDeviceEnter;
         private System.Windows.Forms.CheckBox cb_DefaultDistanPwd;
-        private CCWin.SkinControl.SkinButton btn_TapDistanceEncryption;
-        private CCWin.SkinControl.SkinButton btn_TapTemporaryEncryption;
+        private System.Windows.Forms.Button btn_TapDistanceEncryption;
+        private System.Windows.Forms.Button btn_TapTemporaryEncryption;
         private System.Windows.Forms.Panel p_DistanceInterface;
         private System.Windows.Forms.Panel p_TemporaryInterface;
         private System.Windows.Forms.GroupBox groupBox4;

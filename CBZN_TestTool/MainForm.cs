@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -27,6 +28,30 @@ namespace CBZN_TestTool
 
         private bool _isThreadClose;
 
+        private bool _isMouseEnter1;
+
+        private bool _isMouseDown1;
+
+        private bool _isMouseEnter2;
+
+        private bool _isMouseDown2;
+
+        private bool _isMouseEnter3;
+
+        private bool _isMouseDown3;
+
+        private bool _isMouseEnter4;
+
+        private bool _isMouseDown4;
+
+        private bool _isMouseEnter5;
+
+        private bool _isMouseDown5;
+
+        private bool _isMouseEnter6;
+
+        private bool _isMouseDown6;
+
         private ComPortHelper _mComPort;
 
         private Mutex _mMutex;
@@ -34,6 +59,8 @@ namespace CBZN_TestTool
         private PortHelper _mPort;
 
         private string _strSearchWhere;
+
+        private RegisterParam? _registerParam;
 
         private System.Timers.Timer _tiConnectionPort;
 
@@ -64,9 +91,65 @@ namespace CBZN_TestTool
             ShowHideTap(btn_Tap1);
         }
 
+        private void btn_Tap1_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isMouseDown1 = true;
+        }
+
+        private void btn_Tap1_MouseEnter(object sender, EventArgs e)
+        {
+            _isMouseEnter1 = true;
+        }
+
+        private void btn_Tap1_MouseUp(object sender, MouseEventArgs e)
+        {
+            _isMouseDown1 = false;
+        }
+
+        private void btn_Tap1_MouseLeave(object sender, EventArgs e)
+        {
+            _isMouseEnter1 = false;
+            _isMouseDown1 = false;
+        }
+
+        private void btn_Tap1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = DrawButton(g, btn_Tap1, _isMouseDown1, _isMouseEnter1);
+            DrawRightSelect(g, rect, btn_Tap1.Enabled);
+        }
+
         private void btn_Tap2_Click(object sender, EventArgs e)
         {
             ShowHideTap(btn_Tap2);
+        }
+
+        private void btn_Tap2_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isMouseDown2 = true;
+        }
+
+        private void btn_Tap2_MouseEnter(object sender, EventArgs e)
+        {
+            _isMouseEnter2 = true;
+        }
+
+        private void btn_Tap2_MouseLeave(object sender, EventArgs e)
+        {
+            _isMouseDown2 = false;
+            _isMouseEnter2 = false;
+        }
+
+        private void btn_Tap2_MouseUp(object sender, MouseEventArgs e)
+        {
+            _isMouseDown2 = false;
+        }
+
+        private void btn_Tap2_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = DrawButton(g, btn_Tap2, _isMouseDown2, _isMouseEnter2);
+            DrawRightSelect(g, rect, btn_Tap2.Enabled);
         }
 
         private void btn_Tap3_Click(object sender, EventArgs e)
@@ -74,9 +157,124 @@ namespace CBZN_TestTool
             ShowHideTap(btn_Tap3);
         }
 
+        private void btn_Tap3_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isMouseDown3 = true;
+        }
+
+        private void btn_Tap3_MouseEnter(object sender, EventArgs e)
+        {
+            _isMouseEnter3 = true;
+        }
+
+        private void btn_Tap3_MouseLeave(object sender, EventArgs e)
+        {
+            _isMouseEnter3 = false;
+            _isMouseDown3 = false;
+        }
+
+        private void btn_Tap3_MouseUp(object sender, MouseEventArgs e)
+        {
+            _isMouseDown3 = false;
+        }
+
+        private void btn_Tap3_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = DrawButton(g, btn_Tap3, _isMouseDown3, _isMouseEnter3);
+            DrawRightSelect(g, rect, btn_Tap3.Enabled);
+        }
+
         private void btn_Tap4_Click(object sender, EventArgs e)
         {
             ShowHideTap(btn_Tap4);
+        }
+
+        private void btn_Tap4_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isMouseDown4 = true;
+        }
+
+        private void btn_Tap4_MouseEnter(object sender, EventArgs e)
+        {
+            _isMouseEnter4 = true;
+        }
+
+        private void btn_Tap4_MouseLeave(object sender, EventArgs e)
+        {
+            _isMouseDown4 = false;
+            _isMouseEnter4 = false;
+        }
+
+        private void btn_Tap4_MouseUp(object sender, MouseEventArgs e)
+        {
+            _isMouseDown4 = false;
+        }
+
+        private void btn_Tap4_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = DrawButton(g, btn_Tap4, _isMouseDown4, _isMouseEnter4);
+            DrawRightSelect(g, rect, btn_Tap4.Enabled);
+        }
+
+        private Rectangle DrawButton(Graphics g, Button btn, bool isdown, bool isenter)
+        {
+            SolidBrush backcolor = new SolidBrush(btn.BackColor);
+            if (isdown || !btn.Enabled)
+            {
+                backcolor = new SolidBrush(btn.FlatAppearance.MouseDownBackColor);
+            }
+            else if (isenter)
+            {
+                backcolor = new SolidBrush(btn.FlatAppearance.MouseOverBackColor);
+            }
+
+            Rectangle rect = new Rectangle(0, 0, btn.Width, btn.Height);
+            g.FillRectangle(backcolor, rect);
+
+            StringFormat sf = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+            g.DrawString(btn.Text, btn.Font, new SolidBrush(btn.ForeColor), rect, sf);
+
+            return rect;
+        }
+
+        private void DrawRightSelect(Graphics g, Rectangle rect, bool enabled)
+        {
+            if (!enabled)
+            {
+                GraphicsPath path = new GraphicsPath();
+                int height = rect.Height / 2;
+                path.AddLines(new Point[]
+                {
+                    new Point(rect.Width-10,height),
+                    new Point(rect.Width,height-10),
+                    new Point(rect.Width,height+10),
+                    new Point(rect.Width-10,height)
+                });
+                g.FillPath(Brushes.White, path);
+            }
+        }
+
+        private void DrawBottomSelect(Graphics g, Rectangle rect, bool enabled)
+        {
+            if (!enabled)
+            {
+                GraphicsPath path = new GraphicsPath();
+                int width = rect.Width / 2;
+                path.AddLines(new Point[] 
+                { 
+                    new Point(width, rect.Height-5),
+                    new Point(width+5,rect.Height),
+                    new Point(width-5,rect.Height),
+                    new Point(width,rect.Height- 5)
+                });
+                g.FillPath(Brushes.White, path);
+            }
         }
 
         private void DrawBorderLine(object sender, PaintEventArgs e)
@@ -86,9 +284,9 @@ namespace CBZN_TestTool
             {
                 Graphics g = e.Graphics;
                 Point[] ps = new Point[]{
-                new Point(0 , p.Height - 1),
-                new Point(p.Width - 1 , p.Height - 1),
-                new Point(p.Width - 1 , 0)
+                    new Point(0 , p.Height - 1),
+                    new Point(p.Width - 1 , p.Height - 1),
+                    new Point(p.Width - 1 , 0)
                 };
                 g.DrawLines(new Pen(Brushes.Gray, 1), ps);
                 g.Dispose();
@@ -136,7 +334,7 @@ namespace CBZN_TestTool
             PcommApi.SendMessage(Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
         }
 
-        private void ShowHideTap(SkinButton btn)
+        private void ShowHideTap(Button btn)
         {
             ShowSelectedEffect(btn);
             p_Tap1.Visible = btn == btn_Tap1;
@@ -145,36 +343,27 @@ namespace CBZN_TestTool
             p_Tap4.Visible = btn == btn_Tap4;
         }
 
-        private void ShowSelectedEffect(SkinButton btn)
+        private void ShowSelectedEffect(Button btn)
         {
             Color c = Color.Transparent;
             if (!btn_Tap1.Enabled)
             {
-                c = ToEnableThe(btn_Tap1);
+                btn_Tap1.Enabled = true;
             }
             if (!btn_Tap2.Enabled)
             {
-                c = ToEnableThe(btn_Tap2);
+                btn_Tap2.Enabled = true;
             }
             if (!btn_Tap3.Enabled)
             {
-                c = ToEnableThe(btn_Tap3);
+                btn_Tap3.Enabled = true;
             }
             if (!btn_Tap4.Enabled)
             {
-                c = ToEnableThe(btn_Tap4);
+                btn_Tap4.Enabled = true;
             }
 
-            btn.BaseColor = c;
             btn.Enabled = false;
-        }
-
-        private Color ToEnableThe(SkinButton btn)
-        {
-            Color c = btn.BaseColor;
-            btn.BaseColor = Color.Transparent;
-            btn.Enabled = true;
-            return c;
         }
 
         #endregion 窗体事件
@@ -337,7 +526,12 @@ namespace CBZN_TestTool
                                     if (DistanceRegister.IsShow)
                                     {
                                         DistanceRegister dr = DistanceRegister.Instance;
-                                        dr.PortDataRecevied(distanceparameter);
+                                        dr.PortDataReceived(distanceparameter);
+                                    }
+                                    else if (BatchRegister.IsShow)
+                                    {
+                                        BatchRegister br = BatchRegister.CurrentForm;
+                                        br.PortDataReceived(distanceparameter);
                                     }
                                     break;
 
@@ -512,7 +706,7 @@ namespace CBZN_TestTool
 
         private void Dr_ViceCardUpdate(int rowindex, CardInfo info)
         {
-            if (rowindex > 0 && rowindex < dgv_DataList.RowCount)
+            if (rowindex > -1 && rowindex < dgv_DataList.RowCount)
             {
                 UpdateRowData<CardInfo>(info, dgv_DataList.Rows[rowindex]);
             }
@@ -531,14 +725,30 @@ namespace CBZN_TestTool
             }
             if (registerlist.Count > 0)
             {
-                using (BatchRegister br = new BatchRegister(registerlist))
+                using (BatchRegister br = BatchRegister.CurrentForm)
                 {
+                    br.DicRegisterList = registerlist;
+                    br.Port = _mPort;
+                    br.Registercomplete += br_Registercomplete;
                     br.ShowDialog();
+                    if (br.Tag != null)
+                    {
+                        RegisterParam rp = (RegisterParam)br.Tag;
+                        _registerParam = rp;
+                    }
                 }
             }
             else
             {
                 MessageBox.Show(@"列表中无需注册的定距卡", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        void br_Registercomplete(int index, CardInfo info)
+        {
+            if (index > -1 && index < dgv_DataList.RowCount)
+            {
+                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
             }
         }
 
@@ -703,15 +913,15 @@ namespace CBZN_TestTool
                 {
                     int index = dgv_DataList.SelectedRows[0].Index;
                     CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
-                    if (info.Cid == 0)
+                    if (info.CardType > 2)
                     {
-                        btn_Register.Enabled = info.CardType <= 3;
+                        btn_Register.Enabled = false;
                         btn_ReportTheLossOf.Enabled = false;
                     }
                     else
                     {
-                        btn_Register.Enabled = info.CardType <= 3;
-                        btn_ReportTheLossOf.Enabled = info.CardReportLoss == 0;
+                        btn_Register.Enabled = true;
+                        btn_ReportTheLossOf.Enabled = info.Cid == 0 ? false : (info.CardReportLoss == 0);
                     }
                 }
             }
@@ -760,10 +970,66 @@ namespace CBZN_TestTool
             AcceptButton = btn_DistanceDeviceEnter;
         }
 
+        void btn_TapDistanceEncryption_MouseLeave(object sender, System.EventArgs e)
+        {
+            _isMouseDown5 = false;
+            _isMouseEnter5 = false;
+        }
+
+        void btn_TapDistanceEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            _isMouseDown5 = false;
+        }
+
+        void btn_TapDistanceEncryption_MouseEnter(object sender, System.EventArgs e)
+        {
+            _isMouseEnter5 = true;
+        }
+
+        void btn_TapDistanceEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            _isMouseDown5 = true;
+        }
+
+        void btn_TapDistanceEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = DrawButton(g, btn_TapDistanceEncryption, _isMouseDown5, _isMouseEnter5);
+            DrawBottomSelect(g, rect, btn_TapDistanceEncryption.Enabled);
+        }
+
         private void btn_TapTemporaryEncryption_Click(object sender, EventArgs e)
         {
             ShowHideEncryptionTap(btn_TapTemporaryEncryption);
             AcceptButton = btn_TemporaryDevicePwdEnter;
+        }
+
+        void btn_TapTemporaryEncryption_MouseLeave(object sender, System.EventArgs e)
+        {
+            _isMouseDown6 = false;
+            _isMouseEnter6 = false;
+        }
+
+        void btn_TapTemporaryEncryption_MouseEnter(object sender, System.EventArgs e)
+        {
+            _isMouseEnter6 = true;
+        }
+
+        void btn_TapTemporaryEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            _isMouseDown6 = false;
+        }
+
+        void btn_TapTemporaryEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            _isMouseDown6 = true;
+        }
+
+        void btn_TapTemporaryEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = DrawButton(g, btn_TapTemporaryEncryption, _isMouseDown6, _isMouseEnter6);
+            DrawBottomSelect(g, rect, btn_TapTemporaryEncryption.Enabled);
         }
 
         private void dgv_pwd_KeyUp(object sender, KeyEventArgs e)
@@ -793,20 +1059,21 @@ namespace CBZN_TestTool
             if (panel == null) return;
             using (Graphics g = e.Graphics)
             {
-                int x = !btn_TapDistanceEncryption.Enabled ? btn_TapDistanceEncryption.Left : btn_TapTemporaryEncryption.Left;
-                int width = btn_TapDistanceEncryption.Width;
-                x += width / 2;
-                Point[] p =
-                {
-                    new Point(0,10),
-                    new Point (x-5,10),
-                    new Point(x,5),
-                    new Point(x+5,10),
-                    new Point(panel.Width,10),
-                    new Point(panel.Width - 1, 0),
-                    new Point(panel.Width - 1, panel.Height)
-                };
-                g.DrawLines(new Pen(Color.Gray), p);
+                //int x = !btn_TapDistanceEncryption.Enabled ? btn_TapDistanceEncryption.Left : btn_TapTemporaryEncryption.Left;
+                //int width = btn_TapDistanceEncryption.Width;
+                //x += width / 2;
+                //Point[] p =
+                //{
+                //    new Point(0,10),
+                //    new Point(x-5,10),
+                //    new Point(x,5),
+                //    new Point(x+5,10),
+                //    new Point(panel.Width,10),
+                //    new Point(panel.Width - 1, 0),
+                //    new Point(panel.Width - 1, panel.Height)
+                //};
+                //g.DrawLines(new Pen(Color.Gray), p);
+                g.DrawLine(new Pen(Color.Gray), panel.Width - 1, 0, panel.Width - 1, panel.Height - 1);
             }
         }
 
@@ -876,25 +1143,23 @@ namespace CBZN_TestTool
             this.Invoke(ds);
         }
 
-        private void ShowHideEncryptionTap(SkinButton btn)
+        private void ShowHideEncryptionTap(Button btn)
         {
             ShowSelectedEncryptionEffect(btn);
             p_DistanceInterface.Visible = btn == btn_TapDistanceEncryption;
             p_TemporaryInterface.Visible = btn == btn_TapTemporaryEncryption;
         }
 
-        private void ShowSelectedEncryptionEffect(SkinButton btn)
+        private void ShowSelectedEncryptionEffect(Button btn)
         {
-            Color c = Color.Transparent;
             if (!btn_TapDistanceEncryption.Enabled)
             {
-                c = ToEnableThe(btn_TapDistanceEncryption);
+                btn_TapDistanceEncryption.Enabled = true;
             }
             if (!btn_TapTemporaryEncryption.Enabled)
             {
-                c = ToEnableThe(btn_TapTemporaryEncryption);
+                btn_TapTemporaryEncryption.Enabled = true;
             }
-            btn.BaseColor = c;
             btn.Enabled = false;
         }
 
@@ -2341,5 +2606,7 @@ namespace CBZN_TestTool
         }
 
         #endregion 公共方法
+
+
     }
 }
