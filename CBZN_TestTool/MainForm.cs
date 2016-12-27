@@ -46,6 +46,7 @@ namespace CBZN_TestTool
         private RegisterParam? _registerParam;
         private string _strSearchWhere;
         private System.Timers.Timer _tiConnectionPort;
+        private List<CardInfo> _lossCards;
 
         private delegate void DefaultShow();
 
@@ -104,6 +105,7 @@ namespace CBZN_TestTool
 
         private void btn_Tap2_Click(object sender, EventArgs e)
         {
+            AcceptButton = btn_TemporaryDevicePwdEnter;
             ShowHideTap(btn_Tap2);
         }
 
@@ -137,7 +139,12 @@ namespace CBZN_TestTool
 
         private void btn_Tap3_Click(object sender, EventArgs e)
         {
+            AcceptButton = null;
             ShowHideTap(btn_Tap3);
+            if (dgv_Device.DataSource as DataTable == null)
+            {
+                btn_ShowDeviceRecord_Click(null, null);
+            }
         }
 
         private void btn_Tap3_MouseDown(object sender, MouseEventArgs e)
@@ -170,6 +177,7 @@ namespace CBZN_TestTool
 
         private void btn_Tap4_Click(object sender, EventArgs e)
         {
+            AcceptButton = null;
             ShowHideTap(btn_Tap4);
         }
 
@@ -479,6 +487,7 @@ namespace CBZN_TestTool
                                                     cardinfo.ParkingRestrictions =
                                                         dataparameter.FunctionByteParameter.ParkingRestrictions;
                                                 }
+                                                cardinfo.ViceCardCount = dataparameter.FunctionByteParameter.ViceCardCount;
                                             }
                                             if (cardinfo.CardCount < dataparameter.Count)
                                             {
@@ -514,6 +523,11 @@ namespace CBZN_TestTool
                                     {
                                         BatchRegister br = BatchRegister.CurrentForm;
                                         br.PortDataReceived(distanceparameter);
+                                    }
+                                    else if (CardLoss.IsShow)
+                                    {
+                                        CardLoss cl = CardLoss.CurrentForm;
+                                        cl.PortDataReceived(distanceparameter);
                                     }
                                     break;
 
@@ -729,20 +743,45 @@ namespace CBZN_TestTool
             int height = btn_ReportTheLossOf.Height;
             Rectangle leftrect = new Rectangle(0, 0, 100, height);
             Rectangle rightrect = new Rectangle(100, 0, 50, height);
-
-            CardLoss cl = CardLoss.CurrentForm;
+            if (_lossCards == null)
+                _lossCards = new List<CardInfo>();
             if (leftrect.Contains(_LossMousePoint))
             {
                 int index = dgv_DataList.SelectedRows[0].Index;
                 CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
-                cl.AddLossInfo(info);
+                if (info.CardType > 2)
+                {
+                    MessageBox.Show("副卡、注销卡、密码错误无法进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                if (info.Cid == 0)
+                {
+                    MessageBox.Show("定距卡未注册，无法进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                if (info.CardReportLoss == 1)
+                {
+                    MessageBox.Show("当前定距卡已经挂失，无法重复进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (IsExist(info))
+                {
+                    MessageBox.Show(string.Format("定距卡:{0}已经存在挂失列表中，不得重复挂失。", info.CardNumber), "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                _lossCards.Add(info);
+                _lossCount++;
             }
             else if (rightrect.Contains(_LossMousePoint))
             {
                 Point screenpoint = this.PointToScreen(btn_ReportTheLossOf.Location);
+                CardLoss cl = CardLoss.CurrentForm;
+                cl.LossComplete += cl_LossComplete;
+                cl.Port = _mPort;
+                cl.LossCards = _lossCards;
                 cl.LossCountChange += cl_LossCountChange;
                 cl.Show();
-                cl.Location = new Point(screenpoint.X + 115, screenpoint.Y + 80);
+                cl.Location = new Point(screenpoint.X + 160, screenpoint.Y + 80);
             }
         }
 
@@ -750,6 +789,37 @@ namespace CBZN_TestTool
         {
             _lossCount = count;
             btn_ReportTheLossOf.Invalidate();
+        }
+
+        private bool IsExist(CardInfo info)
+        {
+            foreach (CardInfo item in _lossCards)
+            {
+                if (info.Cid == item.Cid)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void cl_LossComplete()
+        {
+            DbHelper.Db.Update<CardInfo>(_lossCards);
+            Dictionary<int, CardInfo> dic = GetDataInfo<CardInfo>(dgv_DataList);
+            foreach (KeyValuePair<int, CardInfo> item in dic)
+            {
+                if (item.Value.Cid == 0 || item.Value.CardType > 2) continue;
+                foreach (CardInfo lossitem in _lossCards)
+                {
+                    if (item.Value.Cid == lossitem.Cid)
+                    {
+                        UpdateRowData<CardInfo>(lossitem, dgv_DataList.Rows[item.Key]);
+                        break;
+                    }
+                }
+            }
+            _lossCards = null;
         }
 
         private void btn_ReportTheLossOf_MouseDown(object sender, MouseEventArgs e)
@@ -992,20 +1062,13 @@ namespace CBZN_TestTool
             if (_mPort != null && _mPort.IsOpen)
             {
                 btn_Registers.Enabled = true;
+                btn_ReportTheLossOf.Enabled = true;
                 if (dgv_DataList.SelectedRows.Count > 0)
                 {
                     int index = dgv_DataList.SelectedRows[0].Index;
                     CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
-                    if (info.CardType > 2)
-                    {
-                        btn_Register.Enabled = false;
-                        btn_ReportTheLossOf.Enabled = false;
-                    }
-                    else
-                    {
-                        btn_Register.Enabled = true;
-                        btn_ReportTheLossOf.Enabled = info.Cid != 0 && (info.CardReportLoss == 0);
-                    }
+                    btn_Register.Enabled = info.CardType < 3;
+                    //btn_ReportTheLossOf.Enabled = info.Cid != 0 && (info.CardReportLoss == 0);
                 }
             }
         }

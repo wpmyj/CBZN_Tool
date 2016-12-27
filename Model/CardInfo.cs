@@ -33,5 +33,6 @@ namespace Model
 
         public int CardCount { get; set; }
 
+        public int ViceCardCount { get; set; }
     }
 }

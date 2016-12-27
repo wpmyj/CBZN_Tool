@@ -48,6 +48,13 @@ namespace Bll
         public int Partition;
     }
 
+    public struct LossParameter
+    {
+        public string CardNumber;
+        public DateTime Time;
+        public FunctionByteParameter? Function;
+    }
+
     public class DataCombination
     {
 
@@ -55,7 +62,6 @@ namespace Bll
         {
 
             int start = 0;
-            int count = 0;
             int type = SetTypeParameter(parameter, data);
             int function = SetFunctionParameeter(parameter.Function.Value);
 
@@ -70,14 +76,12 @@ namespace Bll
                 sb.AppendFormat("{0:yyMMdd}", data.Value.Time);
                 sb.AppendFormat("{0:X4}", data.Value.Partition);
             }
-            count = sb.Length / 2;
-            return PortAgreement.GetDistanceWrite(parameter.CardNumber, type, start, count, sb.ToString());
+            return PortAgreement.GetDistanceContent(parameter.CardNumber, type, start, sb.ToString());
         }
 
         public static byte[] CombinationDistanceCard(DistanceParameterContent parameter, List<ViceCardData> data)
         {
             int start = 0;
-            int count = 0;
             int type = SetTypeParameter(parameter, data);
             int function = SetFunctionParameeter(parameter.Function.Value);
 
@@ -104,14 +108,12 @@ namespace Bll
                     sb.Append("FFFFFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
-            count = sb.Length / 2;
-            return PortAgreement.GetDistanceWrite(parameter.CardNumber, type, start, count, sb.ToString());
+            return PortAgreement.GetDistanceContent(parameter.CardNumber, type, start, sb.ToString());
         }
 
         public static byte[] CombinationDistanceCard(DistanceParameterContent parameter, List<PlateCardData> data)
         {
             int start = 0;
-            int count = 0;
             int type = SetTypeParameter(parameter, data);
             int function = SetFunctionParameeter(parameter.Function.Value);
 
@@ -137,8 +139,25 @@ namespace Bll
                     sb.Append("FFFFFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
-            count = sb.Length / 2;
-            return PortAgreement.GetDistanceWrite(parameter.CardNumber, type, start, count, sb.ToString());
+            return PortAgreement.GetDistanceContent(parameter.CardNumber, type, start, sb.ToString());
+        }
+
+
+        public static byte[] CombinationLoss(List<LossParameter> lossparams)
+        {
+            int index = 0;
+            int losstype = 87381;
+            StringBuilder sb = new StringBuilder();
+            foreach (LossParameter item in lossparams)
+            {
+                losstype = BinaryHelper.SetIntegeSomeBit(losstype, index, true);
+                index += 2;
+                sb.Append(item.CardNumber);
+                sb.AppendFormat("{0:X2}", SetFunctionParameeter(item.Function));
+                sb.AppendFormat("{0:yyMM}", item.Time.AddDays(1));
+            }
+            string content = string.Format("{0:X2}{1:X6}{2}", lossparams.Count, losstype, sb.ToString());
+            return PortAgreement.GetLossContent("797979", content);
         }
 
         /// <summary>
@@ -243,8 +262,7 @@ namespace Bll
             {
                 newcount = 2;
             }
-            newcount++;
-            return newcount;
+            return ++newcount;
         }
     }
 }

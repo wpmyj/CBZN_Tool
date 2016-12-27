@@ -32,7 +32,7 @@ namespace Dal
             sb.Append(@" Insert Into NumberLimit (LimitNumber) values(9887); ");
 
             sb.Append(
-                @" Create Table CardInfo(Cid integer primary key autoincrement,CardNumber NvarChar(10) ,CardType Int ,CardTime DateTime, CardDistance Int ,CardLock Int, CardReportLoss Int,Synchronous Int, CardPartition Int, ParkingRestrictions Int ,InOutState Int, Electricity Int, CardCount Int); ");
+                @" Create Table CardInfo(Cid integer primary key autoincrement,CardNumber NvarChar(10) ,CardType Int ,CardTime DateTime, CardDistance Int ,CardLock Int, CardReportLoss Int,Synchronous Int, CardPartition Int, ParkingRestrictions Int ,InOutState Int, Electricity Int, CardCount Int ,ViceCardCount Int); ");
 
             sb.Append(@" Create Table BundledInfo(Bid integer primary key autoincrement,Cid integer, HostCardNumber NvarChar(10),Vid integer,ViceCardNumber NvarChar(10) );");
 

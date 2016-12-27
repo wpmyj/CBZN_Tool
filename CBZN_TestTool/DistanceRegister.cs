@@ -64,7 +64,7 @@ namespace CBZN_TestTool
 
         public void PortDataReceived(DistanceParameter parameter)
         {
-            if (parameter.CardNumber == _mCardInfo.CardNumber)
+            if (_mViceCard == null)
             {
                 if (parameter.AuxiliaryCommand != 0)
                 {
@@ -85,7 +85,7 @@ namespace CBZN_TestTool
                 {
                     if (_mViceCard != null && item.Value == _mViceCard)
                     {
-                        if (parameter.CardNumber == item.Value.CardNumber)
+                        if (item.Value.CardNumber.Equals(parameter.CardNumber))
                         {
                             if (parameter.AuxiliaryCommand == 0)
                             {
@@ -192,6 +192,7 @@ namespace CBZN_TestTool
             try
             {
                 btn_Enter.Enabled = false;
+                _mViceCard = null;
 
                 UpdateDistanceData();
 
@@ -206,7 +207,7 @@ namespace CBZN_TestTool
                     Loss = _mCardInfo.CardReportLoss,
                     Synchronous = _mCardInfo.Synchronous,
                     RegistrationType = (CardType)_mCardInfo.CardType,
-                    ViceCardCount = _mBundledCardinfo.Count,
+                    ViceCardCount = _mCardInfo.ViceCardCount,
                     ParkingRestrictions = _mCardInfo.ParkingRestrictions,
                     InOutState = _mCardInfo.InOutState
                 };
@@ -976,6 +977,7 @@ namespace CBZN_TestTool
             _mCardInfo.ParkingRestrictions = cb_ParkingRestrictions.SelectedIndex;
             _mCardInfo.CardPartition = cb_CardPartition.SelectedIndex == 0 ? 0 : GetSelectedPartition();
             _mCardInfo.CardCount = DataCombination.SetCount(_mCardInfo.CardCount);
+            _mCardInfo.ViceCardCount = _mBoundAdd.Count + _mBundledCardinfo.Count;
 
             //更新或插入数据
             if (_mCardInfo.Cid > 0)

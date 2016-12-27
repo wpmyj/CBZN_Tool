@@ -63,7 +63,7 @@ namespace Bll
             return dh.Integration(by);
         }
 
-        public static byte[] GetDistanceWrite(string cardnumber, int type, int start, int count, string data)
+        public static byte[] GetDistanceContent(string cardnumber, int type, int start, string data)
         {
             DealHandler dh = new DealHandler()
             {
@@ -73,7 +73,21 @@ namespace Bll
                 FunctionAddress = 65,
                 Command = 0
             };
-            byte[] by = Encoding.ASCII.GetBytes(string.Format("1B00{0}{1:X2}01{2:X2}{3:X2}{4}", cardnumber, type, start, count, data));
+            byte[] by = Encoding.ASCII.GetBytes(string.Format("1B00{0}{1:X2}01{2:X2}{3:X2}{4}", cardnumber, type, start, data.Length / 2, data));
+            return dh.Integration(by);
+        }
+
+        public static byte[] GetLossContent(string cardnumber, string content)
+        {
+            DealHandler dh = new DealHandler()
+            {
+                Head = 2,
+                End = 3,
+                DeviceAddress = 0,
+                FunctionAddress = 65,
+                Command = 0
+            };
+            byte[] by = Encoding.ASCII.GetBytes(string.Format("1B00{0}000100{1:X2}{2}", cardnumber, content.Length / 2, content));
             return dh.Integration(by);
         }
 

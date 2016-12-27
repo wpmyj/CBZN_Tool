@@ -156,6 +156,7 @@ namespace CBZN_TestTool
                     item.Value.CardDistance = _registerParam.Value.Distance;
                     item.Value.CardPartition = _registerParam.Value.Paratition;
                     item.Value.CardTime = _registerParam.Value.Time;
+                    item.Value.CardCount = DataCombination.SetCount(item.Value.CardCount);
                 }
             }
             RegisterCards(string.Empty, -1);
@@ -163,8 +164,11 @@ namespace CBZN_TestTool
 
         private void RegisterCards(string cardnumber, int auxiliarycommand)
         {
+            int index = -1;
             foreach (KeyValuePair<int, CardInfo> item in DicRegisterList)
             {
+                index++;
+                if (_rowIndex != index) continue;
                 if (!string.IsNullOrEmpty(cardnumber) && cardnumber == item.Value.CardNumber)
                 {
                     if (auxiliarycommand == 0)
@@ -173,17 +177,14 @@ namespace CBZN_TestTool
                         OnRegisterComplete(item.Key, item.Value);
                         dgv_RegisterList.Rows[_rowIndex].Cells["c_State"].Value = Properties.Resources.check;
                     }
-                    _rowIndex++;
                     cardnumber = string.Empty;
                     continue;
                 }
 
                 if (!string.IsNullOrEmpty(cardnumber)) continue;
-                if (item.Value.Cid > 0)
-                {
-                    _rowIndex++;
-                    continue;
-                }
+                if (item.Value.Cid > 0) continue;
+
+                _rowIndex = index;
                 TypeParameter typeparam = new TypeParameter()
                 {
                     Lock = item.Value.CardLock,
@@ -203,7 +204,7 @@ namespace CBZN_TestTool
                 DistanceParameterContent parameter = new DistanceParameterContent()
                 {
                     CardNumber = item.Value.CardNumber,
-                    Count = item.Value.CardCount++,
+                    Count = item.Value.CardCount,
                     Function = functionparam,
                     Type = typeparam
                 };

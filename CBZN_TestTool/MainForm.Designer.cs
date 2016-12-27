@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.p_Title = new System.Windows.Forms.Panel();
             this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
@@ -61,6 +61,7 @@
             this.InOutState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Electricity = new System.Windows.Forms.DataGridViewImageColumn();
             this.CardCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ViceCardCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn_ReportTheLossOf = new System.Windows.Forms.Button();
             this.btn_Search = new CCWin.SkinControl.SkinButton();
@@ -375,14 +376,14 @@
             this.dgv_DataList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_DataList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_DataList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle57.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle57.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle57.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle57.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle57.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle57.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle57.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_DataList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle57;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_DataList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_DataList.ColumnHeadersHeight = 40;
             this.dgv_DataList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_DataList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -398,15 +399,16 @@
             this.CardPartition,
             this.InOutState,
             this.Electricity,
-            this.CardCount});
-            dataGridViewCellStyle59.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle59.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle59.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle59.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle59.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle59.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle59.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_DataList.DefaultCellStyle = dataGridViewCellStyle59;
+            this.CardCount,
+            this.ViceCardCount});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_DataList.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgv_DataList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_DataList.EnableHeadersVisualStyles = false;
             this.dgv_DataList.Location = new System.Drawing.Point(0, 50);
@@ -454,9 +456,9 @@
             // CardTime
             // 
             this.CardTime.DataPropertyName = "CardTime";
-            dataGridViewCellStyle58.Format = "D";
-            dataGridViewCellStyle58.NullValue = null;
-            this.CardTime.DefaultCellStyle = dataGridViewCellStyle58;
+            dataGridViewCellStyle2.Format = "D";
+            dataGridViewCellStyle2.NullValue = null;
+            this.CardTime.DefaultCellStyle = dataGridViewCellStyle2;
             this.CardTime.HeaderText = "时 间";
             this.CardTime.Name = "CardTime";
             this.CardTime.ReadOnly = true;
@@ -536,6 +538,14 @@
             this.CardCount.ReadOnly = true;
             this.CardCount.Visible = false;
             // 
+            // ViceCardCount
+            // 
+            this.ViceCardCount.DataPropertyName = "ViceCardCount";
+            this.ViceCardCount.HeaderText = "副卡数量";
+            this.ViceCardCount.Name = "ViceCardCount";
+            this.ViceCardCount.ReadOnly = true;
+            this.ViceCardCount.Visible = false;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.btn_ReportTheLossOf);
@@ -554,6 +564,7 @@
             // btn_ReportTheLossOf
             // 
             this.btn_ReportTheLossOf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_ReportTheLossOf.Enabled = false;
             this.btn_ReportTheLossOf.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_ReportTheLossOf.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_ReportTheLossOf.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
@@ -646,7 +657,7 @@
             this.btn_Registers.ForeColor = System.Drawing.Color.White;
             this.btn_Registers.IsDrawBorder = false;
             this.btn_Registers.IsDrawGlass = false;
-            this.btn_Registers.Location = new System.Drawing.Point(218, 8);
+            this.btn_Registers.Location = new System.Drawing.Point(112, 8);
             this.btn_Registers.MouseBack = null;
             this.btn_Registers.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Registers.Name = "btn_Registers";
@@ -671,7 +682,7 @@
             this.btn_Register.ForeColor = System.Drawing.Color.White;
             this.btn_Register.IsDrawBorder = false;
             this.btn_Register.IsDrawGlass = false;
-            this.btn_Register.Location = new System.Drawing.Point(112, 8);
+            this.btn_Register.Location = new System.Drawing.Point(218, 8);
             this.btn_Register.MouseBack = null;
             this.btn_Register.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Register.Name = "btn_Register";
@@ -814,14 +825,14 @@
             this.dgv_WirelessDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_WirelessDescription.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_WirelessDescription.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle60.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle60.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle60.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle60.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle60.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle60.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle60.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_WirelessDescription.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle60;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_WirelessDescription.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgv_WirelessDescription.ColumnHeadersHeight = 40;
             this.dgv_WirelessDescription.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_description3});
@@ -1122,14 +1133,14 @@
             this.dgv_pwd.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_pwd.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_pwd.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle61.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle61.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle61.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle61.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle61.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle61.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle61.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_pwd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle61;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_pwd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgv_pwd.ColumnHeadersHeight = 40;
             this.dgv_pwd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_descript2,
@@ -1160,9 +1171,9 @@
             // 
             // c_time2
             // 
-            dataGridViewCellStyle62.Format = "G";
-            dataGridViewCellStyle62.NullValue = null;
-            this.c_time2.DefaultCellStyle = dataGridViewCellStyle62;
+            dataGridViewCellStyle6.Format = "G";
+            dataGridViewCellStyle6.NullValue = null;
+            this.c_time2.DefaultCellStyle = dataGridViewCellStyle6;
             this.c_time2.HeaderText = "时 间";
             this.c_time2.Name = "c_time2";
             this.c_time2.ReadOnly = true;
@@ -1574,14 +1585,14 @@
             this.dgv_Device.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_Device.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_Device.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle63.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle63.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle63.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle63.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle63.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle63.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle63.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_Device.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle63;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_Device.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgv_Device.ColumnHeadersHeight = 40;
             this.dgv_Device.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_Selected,
@@ -1600,14 +1611,14 @@
             this.WirelessNumber,
             this.FrequencyOffset,
             this.Language});
-            dataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle64.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle64.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle64.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle64.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle64.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle64.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_Device.DefaultCellStyle = dataGridViewCellStyle64;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_Device.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgv_Device.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_Device.EnableHeadersVisualStyles = false;
             this.dgv_Device.Location = new System.Drawing.Point(0, 50);
@@ -2045,6 +2056,7 @@
             // 
             // MainForm
             // 
+            this.AcceptButton = this.btn_Read;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
@@ -2205,6 +2217,7 @@
         private CCWin.SkinControl.SkinButton btn_Query;
         private System.Windows.Forms.TextBox tb_Search;
         private CCWin.SkinControl.SkinButton btn_Search;
+        private System.Windows.Forms.Button btn_ReportTheLossOf;
         private System.Windows.Forms.DataGridViewImageColumn Cid;
         private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn CardType;
@@ -2218,7 +2231,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn InOutState;
         private System.Windows.Forms.DataGridViewImageColumn Electricity;
         private System.Windows.Forms.DataGridViewTextBoxColumn CardCount;
-        private System.Windows.Forms.Button btn_ReportTheLossOf;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ViceCardCount;
     }
 }
 
