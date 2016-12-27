@@ -379,6 +379,7 @@ namespace CBZN_TestTool
                         {
                             _tiConnectionPort.Stop();
                             _tiConnectionPort.Dispose();
+                            _tiConnectionPort = null;
                             break;
                         }
                         _mPort.Close();
@@ -2157,10 +2158,10 @@ namespace CBZN_TestTool
         {
             btn_Test.Enabled = false;
             _isReadCard = false;
-
+            int frequency = (int)ud_WirelessFrequency.Value;
             try
             {
-                string str = string.Format("福A00000000{0:yyMMddHHmmss}FF", DateTime.Now);
+                string str = string.Format("093D2446福A0000000{0:yyMMddHHmmss}", DateTime.Now);
                 byte[] by = PortAgreement.GetOpenDoor(str);
                 if (_mPort.IsOpen)
                 {
@@ -2185,6 +2186,15 @@ namespace CBZN_TestTool
             _isReadCard = false;
             Thread thread = new Thread(ThreadSetModule);
             thread.Start();
+        }
+
+        private void ud_WirelessId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (btn_WirelessSet.Enabled)
+                    btn_WirelessSet_Click(null, null);
+            }
         }
 
         private void CloseModule()
@@ -2457,6 +2467,8 @@ namespace CBZN_TestTool
            {
                if (frequency > 0)
                {
+                   btn_FrequencySearch.Text = @"搜 索";
+                   btn_FrequencySearch.Tag = null;
                    ud_WirelessFrequency.Value = frequency;
                    ShowWirelessMessage(string.Format("频率搜索成功，当前使用第 {0} 组频率", frequency));
                }

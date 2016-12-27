@@ -452,7 +452,7 @@ namespace CBZN_ModuleTool
             {
                 ShowAndHideControl();
             }
-            //_tEffect.Start();
+            _tEffect.Start();
         }
 
         private void tb_ID_KeyDown(object sender, KeyEventArgs e)

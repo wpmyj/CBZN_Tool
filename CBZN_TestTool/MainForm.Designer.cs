@@ -1069,6 +1069,7 @@
             0,
             0,
             0});
+            this.ud_WirelessId.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ud_WirelessId_KeyDown);
             // 
             // pb_FrequencySearch
             // 

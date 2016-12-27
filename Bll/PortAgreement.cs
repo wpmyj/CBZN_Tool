@@ -153,7 +153,7 @@ namespace Bll
                 End = 3,
                 DeviceAddress = 0,
                 FunctionAddress = 67,
-                Command = 208
+                Command = 210
             };
             return dh.Integration();
         }
@@ -166,7 +166,7 @@ namespace Bll
                 End = 3,
                 FunctionAddress = 67,
                 DeviceAddress = 0,
-                Command = 207
+                Command = 208
             };
             byte[] by = Encoding.ASCII.GetBytes(content);
             return dh.Integration(by);
@@ -180,7 +180,7 @@ namespace Bll
                 End = 3,
                 DeviceAddress = 0,
                 FunctionAddress = 67,
-                Command = 16
+                Command = 17
             };
             byte[] by = Encoding.Default.GetBytes(content);
             return dh.Integration(by);
