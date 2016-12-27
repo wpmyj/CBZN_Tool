@@ -186,5 +186,31 @@ namespace Bll
             return dh.Integration(by);
         }
 
+        public static byte[] GetClientNumber(int number)
+        {
+            DealHandler dh = new DealHandler()
+            {
+                Head = 2,
+                End = 3,
+                DeviceAddress = 1,
+                FunctionAddress = 51,
+                Command = 160
+            };
+            byte[] by = Encoding.Default.GetBytes("123456" + number.ToString().PadLeft(4, '0'));
+            return dh.Integration(by);
+        }
+
+        public static byte[] GetSearchHost(int number)
+        {
+            DealHandler dh = new DealHandler()
+            {
+                Head = 2,
+                End = 3,
+                FunctionAddress = 49,
+                DeviceAddress = number,
+                Command = 0
+            };
+            return dh.Integration();
+        }
     }
 }

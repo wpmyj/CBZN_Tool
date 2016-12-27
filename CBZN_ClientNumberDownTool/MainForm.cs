@@ -107,13 +107,8 @@ namespace CBZN_ClientNumberDownTool
             ContentMessage("准备写入的数据。", Color.Black);
             try
             {
-                List<byte> bylist = new List<byte>();
-                bylist.AddRange(new byte[] { 2, 51, 48, 49, 65, 48, 49, 50, 51, 52, 53, 54 });
-                byte[] by = Encoding.ASCII.GetBytes(number.ToString().PadLeft(4, '0'));
-                bylist.AddRange(by);
-                bylist.AddRange(DataVerify(bylist.ToArray()));
-                bylist.Add(3);
-                _m_Port.Write(bylist.ToArray());
+                byte[] by = PortAgreement.GetClientNumber(number);
+                _m_Port.Write(by);
                 ContentMessage("数据准备完成，发送数据。", Color.Black);
                 if (_tiDelayTimeOut == null)
                 {
@@ -157,21 +152,6 @@ namespace CBZN_ClientNumberDownTool
         {
             ContentMessage("接收超时。", Color.Red);
             LimitControl(true);
-        }
-
-        private byte[] DataVerify(byte[] by)
-        {
-            return DataVerify(by, 0, by.Length);
-        }
-
-        private byte[] DataVerify(byte[] by, int start, int count)
-        {
-            int sum = 0;
-            for (int i = start; i < count; i++)
-            {
-                sum = sum ^ by[i];
-            }
-            return Encoding.ASCII.GetBytes(string.Format("{0:X2}", sum));
         }
 
         private void btn_EditCustomer_Click(object sender, EventArgs e)
@@ -364,6 +344,11 @@ namespace CBZN_ClientNumberDownTool
         {
             p2.Visible = false;
 
+            DataValidation.ProtocolHead = 2;
+            DataValidation.ProtocolEnd = 3;
+            DataValidation.IsProtocol = true;
+            DataValidation.IsValidation = true;
+
             string path = Environment.CurrentDirectory + "\\Data.db";
             try
             {
@@ -486,10 +471,6 @@ namespace CBZN_ClientNumberDownTool
             _m_Port.PortDataReceived = OnPortDataReceived;
             _m_Port.PortIsOpenChange = OnPortOpenAndCloseChange;
 
-            _tiSearchDevicePort = new System.Timers.Timer();
-            _tiSearchDevicePort.AutoReset = false;
-            _tiSearchDevicePort.Elapsed += _tiSearchDevicePort_Elapsed;
-
             _m_ComPort = new ComPortHelper();
             _m_ComPort.CountChange += _m_ComPort_CountChange;
             _m_ComPort.Start();
@@ -501,7 +482,7 @@ namespace CBZN_ClientNumberDownTool
         {
             //0231 (地址 3030) 3030 (校验 3339) 03 //新检测串口设备
             //0230 (地址 3030) 3031 (数据) (校验 3339) 03 
-            byte[] by = new byte[] { 2, 49, 48, 49, 48, 48, 49, 51, 03 };
+            byte[] by = PortAgreement.GetSearchHost(1);
             for (int i = 0; i < 10; i++)
             {
                 foreach (string item in _m_ComPort.PortNames)
@@ -514,6 +495,9 @@ namespace CBZN_ClientNumberDownTool
                         Thread.Sleep(500);
                         if (_m_Port.IsOpen)
                         {
+                            _tiSearchDevicePort.Stop();
+                            _tiSearchDevicePort.Dispose();
+                            _tiSearchDevicePort = null;
                             return;
                         }
                         _m_Port.Close();
@@ -558,39 +542,31 @@ namespace CBZN_ClientNumberDownTool
                 }
                 byte[] by = new byte[len];
                 _m_Port.Read(by, len);
-                if (by[0] == 2 && by[by.Length - 1] == 3)
+                List<byte[]> bylist = DataValidation.Validation(by);
+                foreach (byte[] item in bylist)
                 {
-                    if (by[1] == 49)
+                    ParsingParameter param = DataParsing.ParsingContent(item);
+                    if (param.FunctionAddress == 49)
                     {
-                        if (by[4] == 48 && by[5] == 49)
+                        int result = (int)DataParsing.TemporaryContent(param.DataContent);
+                        if (result == 1)
                         {
                             _m_Port.IsOpen = true;
                             return;
                         }
                     }
-                    else
+                    else if (param.FunctionAddress == 51)
                     {
-                        byte[] verifyresult = DataVerify(by, 0, by.Length - 3);
-                        if (verifyresult[0] == by[by.Length - 3] && verifyresult[1] == by[by.Length - 2])
+                        int result = (int)DataParsing.TemporaryContent(param.DataContent);
+                        if (result == 1)
                         {
-                            if (by[7] == 1)//成功
-                            {
-                                ContentMessage("客户编号设置成功。", Color.Green);
-                            }
-                            else //by[7]==2 失败
-                            {
-                                ContentMessage("客户编号设置失败。", Color.Red);
-                            }
+                            ContentMessage("客户编号设置成功。", Color.Green);
                         }
                         else
                         {
                             ContentMessage("错误内容：接收到的数据校验不通过。", Color.Red);
                         }
                     }
-                }
-                else
-                {
-                    ContentMessage("错误内容：接收到的数据不完整。", Color.Red);
                 }
             }
             catch (Exception ex)
@@ -634,6 +610,12 @@ namespace CBZN_ClientNumberDownTool
 
             if (!_m_Port.IsOpen)
             {
+                if (_tiSearchDevicePort == null)
+                {
+                    _tiSearchDevicePort = new System.Timers.Timer();
+                    _tiSearchDevicePort.AutoReset = false;
+                    _tiSearchDevicePort.Elapsed += _tiSearchDevicePort_Elapsed;
+                }
                 _tiSearchDevicePort.Start();
             }
         }
