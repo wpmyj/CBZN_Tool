@@ -120,8 +120,8 @@ namespace CBZN_TestTool
 
         private void l_Title_MouseDown(object sender, MouseEventArgs e)
         {
-            PcommApi.ReleaseCapture();
-            PcommApi.SendMessage(Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
+            WinApi.ReleaseCapture();
+            WinApi.SendMessage(Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
 
         private void cb_AllSelected_CheckedChanged(object sender, EventArgs e)

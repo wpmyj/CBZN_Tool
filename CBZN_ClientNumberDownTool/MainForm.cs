@@ -385,8 +385,8 @@ namespace CBZN_ClientNumberDownTool
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
-            PcommApi.ReleaseCapture();
-            PcommApi.SendMessage(this.Handle, PcommApi.WM_SYSCOMMAND, PcommApi.SC_MOVE + PcommApi.HTCAPTION, 0);
+            WinApi.ReleaseCapture();
+            WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
 
         private void SetBtn(SkinButton btn)
