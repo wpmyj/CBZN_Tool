@@ -254,7 +254,7 @@ namespace CBZN_ModuleTool
         {
             string path = Environment.CurrentDirectory + "\\Data.db";
             DbHelper.LoadDb(path);
-             
+
             DataValidation.IsProtocol = true;
             DataValidation.ProtocolHead = 2;
             DataValidation.ProtocolEnd = 3;

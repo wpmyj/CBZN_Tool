@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserEdit));
             this.btn_Enter = new System.Windows.Forms.Button();
             this.tb_Description = new System.Windows.Forms.RichTextBox();
             this.ud_UserNumber = new System.Windows.Forms.NumericUpDown();
@@ -189,6 +190,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.p_top);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "UserEdit";
             this.Text = "UserEdit";

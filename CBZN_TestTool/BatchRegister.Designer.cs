@@ -31,16 +31,17 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatchRegister));
             this.p_Title = new System.Windows.Forms.Panel();
             this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.dgv_RegisterList = new System.Windows.Forms.DataGridView();
+            this.c_State = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_Canel = new CCWin.SkinControl.SkinButton();
             this.btn_Enter = new CCWin.SkinControl.SkinButton();
             this.btn_Param = new CCWin.SkinControl.SkinButton();
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.c_State = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.p_Title.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_RegisterList)).BeginInit();
             this.SuspendLayout();
@@ -134,6 +135,21 @@
             this.dgv_RegisterList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_RegisterList_CellFormatting);
             this.dgv_RegisterList.Paint += new System.Windows.Forms.PaintEventHandler(this.dgv_RegisterList_Paint);
             // 
+            // c_State
+            // 
+            this.c_State.HeaderText = "注册状态";
+            this.c_State.Image = global::CBZN_TestTool.Properties.Resources.block;
+            this.c_State.Name = "c_State";
+            this.c_State.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "卡号";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column2.Width = 200;
+            // 
             // btn_Canel
             // 
             this.btn_Canel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -217,21 +233,6 @@
             this.dataGridViewImageColumn1.Image = global::CBZN_TestTool.Properties.Resources.block;
             this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
             // 
-            // c_State
-            // 
-            this.c_State.HeaderText = "注册状态";
-            this.c_State.Image = global::CBZN_TestTool.Properties.Resources.block;
-            this.c_State.Name = "c_State";
-            this.c_State.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "卡号";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column2.Width = 200;
-            // 
             // BatchRegister
             // 
             this.AcceptButton = this.btn_Enter;
@@ -246,6 +247,7 @@
             this.Controls.Add(this.dgv_RegisterList);
             this.Controls.Add(this.p_Title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BatchRegister";
             this.Text = "批量发行";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BatchRegister_FormClosed);
