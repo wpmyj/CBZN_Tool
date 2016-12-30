@@ -92,25 +92,22 @@ namespace CBZN_TestTool
                                     switch (value.Substring(value.Length - 2, 2))
                                     {
                                         case "F0"://继电器开闸
-                                            dinfo.OpenModel = 0;
+                                            dinfo.OpenModel = 3;
                                             dinfo.BrakeNumber = 1;
                                             break;
 
                                         case "AA"://学习遥控器开闸
-                                            dinfo.DeviceBrand = 1;
-                                            dinfo.OpenModel = 1;
+                                            dinfo.OpenModel = 2;
                                             dinfo.BrakeNumber = 1;
                                             break;
 
                                         case "FF"://串口开闸
-                                            dinfo.DeviceBrand = 0;
-                                            dinfo.OpenModel = 1;
+                                            dinfo.OpenModel = 0;
                                             dinfo.BrakeNumber = Convert.ToInt32(value.Substring(0, 6), 16);
                                             break;
 
                                         case "55"://无线电开闸
-                                            dinfo.DeviceBrand = 0;
-                                            dinfo.OpenModel = 2;
+                                            dinfo.OpenModel = 1;
                                             dinfo.BrakeNumber = Convert.ToInt32(value.Substring(0, 6), 16);
                                             break;
                                     }

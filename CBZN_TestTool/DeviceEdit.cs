@@ -44,7 +44,6 @@ namespace CBZN_TestTool
                 dinfo.Partition = cb_Partition.SelectedIndex;
                 dinfo.SAPBF = cb_SAPBF.SelectedIndex;
                 dinfo.CardReadDistance = cb_CardReadDistance.SelectedIndex;
-                dinfo.DeviceBrand = cb_DeviceBrand.SelectedIndex;
                 dinfo.BrakeNumber = (int)ud_BrakeNumber.Value;
                 dinfo.OpenModel = cb_OpenModel.SelectedIndex;
                 dinfo.ReadCardDelay = cb_ReadCardDelay.SelectedIndex;
@@ -67,42 +66,15 @@ namespace CBZN_TestTool
             ud_FrequencyOffset.Enabled = result;
         }
 
-        private void cb_DeviceBrand_SelectedIndexChanged(object sender, EventArgs e)
+        private void cb_OpenModel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cb_OpenModel.Items.Clear();
-            if (cb_DeviceBrand.SelectedIndex == 0)
+            if (cb_OpenModel.SelectedIndex >= 2)
             {
-                this.cb_OpenModel.Items.AddRange(new object[] {
-                    "继电器开闸",
-                    "串口开闸",
-                    "无线开闸"
-                });
-                ud_BrakeNumber.Enabled = true;
+                ud_BrakeNumber.Enabled = false;
             }
             else
             {
-                this.cb_OpenModel.Items.AddRange(new object[]
-                {
-                    "继电器开闸",
-                    "学习遥控器开闸"
-                });
-                ud_BrakeNumber.Enabled = false;
-            }
-            cb_OpenModel.SelectedIndex = 0;
-        }
-
-        private void cb_OpenModel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cb_DeviceBrand.SelectedIndex == 0)
-            {
-                if (cb_OpenModel.SelectedIndex == 0)
-                {
-                    ud_BrakeNumber.Enabled = false;
-                }
-                else
-                {
-                    ud_BrakeNumber.Enabled = true;
-                }
+                ud_BrakeNumber.Enabled = true;
             }
         }
 
@@ -127,7 +99,6 @@ namespace CBZN_TestTool
                 ud_HostNumber.Value = dinfo.HostNumber;
                 cb_CardReadDistance.SelectedIndex = dinfo.CardReadDistance;
                 cb_IOMouth.SelectedIndex = dinfo.IOMouth;
-                cb_DeviceBrand.SelectedIndex = dinfo.DeviceBrand;
                 cb_CameraDetection.SelectedIndex = dinfo.CameraDetection;
                 ud_BrakeNumber.Value = dinfo.BrakeNumber;
                 ud_WirelessNumber.Value = dinfo.WirelessNumber;

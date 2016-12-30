@@ -15,8 +15,6 @@ namespace Model
         /// </summary>
         public int IOMouth { get; set; }
 
-        public int DeviceBrand { get; set; }
-
         public int BrakeNumber { get; set; }
 
         public int OpenModel { get; set; }

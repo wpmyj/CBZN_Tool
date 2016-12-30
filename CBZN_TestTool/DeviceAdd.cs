@@ -43,7 +43,6 @@ namespace CBZN_TestTool
                     Partition = cb_Partition.SelectedIndex,
                     SAPBF = cb_SAPBF.SelectedIndex,
                     CardReadDistance = cb_CardReadDistance.SelectedIndex,
-                    DeviceBrand = cb_DeviceBrand.SelectedIndex,
                     BrakeNumber = (int)ud_BrakeNumber.Value,
                     OpenModel = cb_OpenModel.SelectedIndex,
                     ReadCardDelay = cb_ReadCardDelay.SelectedIndex,
@@ -74,42 +73,15 @@ namespace CBZN_TestTool
             ud_FrequencyOffset.Enabled = result;
         }
 
-        private void cb_DeviceBrand_SelectedIndexChanged(object sender, EventArgs e)
+        private void cb_OpenModel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cb_OpenModel.Items.Clear();
-            if (cb_DeviceBrand.SelectedIndex == 0)
+            if (cb_OpenModel.SelectedIndex >= 2)
             {
-                this.cb_OpenModel.Items.AddRange(new object[] {
-                    "继电器开闸",
-                    "串口开闸",
-                    "无线开闸"
-                });
-                ud_BrakeNumber.Enabled = true;
+                ud_BrakeNumber.Enabled = false;
             }
             else
             {
-                this.cb_OpenModel.Items.AddRange(new object[]
-                {
-                    "继电器开闸",
-                    "学习遥控器开闸"
-                });
-                ud_BrakeNumber.Enabled = false;
-            }
-            cb_OpenModel.SelectedIndex = 0;
-        }
-
-        private void cb_OpenModel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cb_DeviceBrand.SelectedIndex == 0)
-            {
-                if (cb_OpenModel.SelectedIndex == 0)
-                {
-                    ud_BrakeNumber.Enabled = false;
-                }
-                else
-                {
-                    ud_BrakeNumber.Enabled = true;
-                }
+                ud_BrakeNumber.Enabled = true;
             }
         }
 
@@ -125,8 +97,8 @@ namespace CBZN_TestTool
         {
             cb_IOMouth.SelectedIndex = 0;
             cb_CardReadDistance.SelectedIndex = 3;
-            cb_DeviceBrand.SelectedIndex = 0;
             cb_CameraDetection.SelectedIndex = 1;
+            cb_OpenModel.SelectedIndex = 3;
             cb_Partition.SelectedIndex = 0;
             cb_SAPBF.SelectedIndex = 0;
             cb_ReadCardDelay.SelectedIndex = 1;

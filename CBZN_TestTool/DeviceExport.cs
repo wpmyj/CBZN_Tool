@@ -59,12 +59,14 @@ namespace CBZN_TestTool
                     Directory.CreateDirectory(path);
                 }
 
-                bool defaultcontrolpwd = cb_DefaultControlPwd.Checked;
-                string controlpwd;
-                if (defaultcontrolpwd)
-                    controlpwd = "00000000000000";
-                else
-                    controlpwd = "3355AAEE" + tb_ControlPwd.Text;
+                string controlpwd = string.Empty;
+                if (cb_SetControlPwd.Checked)
+                {
+                    if (cb_DefaultControlPwd.Checked)
+                        controlpwd = "00000000000000";
+                    else
+                        controlpwd = "3355AAEE" + tb_ControlPwd.Text;
+                }
 
                 string oldhostpwd = tb_OldHostPwd.Text;
                 string hostpwd = tb_HostPwd.Text;
@@ -89,14 +91,16 @@ namespace CBZN_TestTool
                     string str = string.Empty;
                     switch (item.OpenModel)
                     {
-                        case 1:
-                            str = item.DeviceBrand == 0 ? string.Format("{0:X6}FF", item.BrakeNumber) : "FFFFFFAA";//串口开闸  学习开闸
+                        case 0:
+                            str = string.Format("{0:X6}FF", item.BrakeNumber);//串口开闸  
                             break;
 
-                        case 2:
+                        case 1:
                             str = string.Format("{0:X6}55", item.BrakeNumber);//无线开闸
                             break;
-
+                        case 2:
+                            str = "FFFFFFAA"; //学习开闸
+                            break;
                         default:
                             str = "FFFFFFF0";//继电器开闸
                             break;
@@ -111,7 +115,7 @@ namespace CBZN_TestTool
                     foreach (KeyValuePair<int, string> key in dic)
                     {
                         sw.WriteLine("00{0:X2}<{1:X2},{2},{3:X2}>", key.Key, key.Value.Length, key.Value,
-                        HexadecimalConversion.AsciiToInt(DataValidation.Xor(key.Value)));
+                         DataValidation.Xor(key.Value));
                     }
                     sw.Close();
                 }

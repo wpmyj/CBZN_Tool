@@ -159,12 +159,8 @@ namespace Bll
 
         public static int Xor(string str)
         {
-            int result = 0;
-            for (int a = 0; a < str.Length; a += 2)
-            {
-                result = result ^ Convert.ToInt32(str.Substring(a, 2), 16);
-            }
-            return result;
+            byte[] by = System.Text.Encoding.ASCII.GetBytes(str);
+            return Xor(by);
         }
     }
 }

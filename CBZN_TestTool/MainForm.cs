@@ -1824,45 +1824,28 @@ namespace CBZN_TestTool
                     e.Value = e.Value.Equals(0) ? "入口" : "出口";
                     break;
 
-                case 4:
-                    e.Value = e.Value.Equals(0) ? "畅泊道闸" : "非畅泊道闸";
+                case 5:
+                    int openmodel = HexadecimalConversion.ObjToInt(e.Value);
+                    switch (openmodel)
+                    {
+                        case 0:
+                            e.Value = "畅泊：串口开闸";
+                            break;
+
+                        case 1:
+                            e.Value = "畅泊：无线开闸";
+                            break;
+
+                        case 2:
+                            e.Value = "学习控制器开闸";
+                            break;
+                        case 3:
+                            e.Value = "继电器开闸";
+                            break;
+                    }
                     break;
 
                 case 6:
-                    int openmodel = HexadecimalConversion.ObjToInt(e.Value);
-                    if (dgv_Device.Rows[e.RowIndex].Cells["DeviceBrand"].Value.Equals(0))
-                    {
-                        switch (openmodel)
-                        {
-                            case 0:
-                                e.Value = "继电器开闸";
-                                break;
-
-                            case 1:
-                                e.Value = "串口开闸";
-                                break;
-
-                            case 2:
-                                e.Value = "无线开闸";
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        switch (openmodel)
-                        {
-                            case 0:
-                                e.Value = "继电器开闸";
-                                break;
-
-                            case 1:
-                                e.Value = "学习遥控器开闸";
-                                break;
-                        }
-                    }
-                    break;
-
-                case 7:
                     if (CRegex.IsDecimal(e.Value))
                     {
                         int dicimal = HexadecimalConversion.ObjToInt(e.Value);
@@ -1877,15 +1860,12 @@ namespace CBZN_TestTool
                     }
                     break;
 
+                case 7:
                 case 8:
                     e.Value = e.Value.Equals(0) ? "关闭" : "开启";
                     break;
 
                 case 9:
-                    e.Value = e.Value.Equals(0) ? "关闭" : "开启";
-                    break;
-
-                case 10:
                     if (CRegex.IsDecimal(e.Value))
                     {
                         int distance = HexadecimalConversion.ObjToInt(e.Value);
@@ -1910,7 +1890,7 @@ namespace CBZN_TestTool
                     }
                     break;
 
-                case 11:
+                case 10:
                     if (CRegex.IsDecimal(e.Value))
                     {
                         int delay = HexadecimalConversion.ObjToInt(e.Value);
@@ -1951,11 +1931,11 @@ namespace CBZN_TestTool
                     }
                     break;
 
-                case 12:
+                case 11:
                     e.Value = e.Value.Equals(0) ? "关闭" : "开启";
                     break;
 
-                case 15:
+                case 14:
                     if (CRegex.IsDecimal(e.Value))
                     {
                         int language = HexadecimalConversion.ObjToInt(e.Value);

@@ -127,22 +127,6 @@
             this.p_Tap3 = new System.Windows.Forms.Panel();
             this.cb_AllSelected = new System.Windows.Forms.CheckBox();
             this.dgv_Device = new System.Windows.Forms.DataGridView();
-            this.c_Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Did = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HostNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IOMouth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeviceBrand = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BrakeNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OpenModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Partition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SAPBF = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Detection = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardReadDistance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReadCardDelay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CameraDetection = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WirelessNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FrequencyOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Language = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel5 = new System.Windows.Forms.Panel();
             this.cb_DevicePage = new System.Windows.Forms.ComboBox();
             this.btn_DevicePrevious = new CCWin.SkinControl.SkinButton();
@@ -160,6 +144,21 @@
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn4 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn5 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.c_Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Did = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HostNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IOMouth = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BrakeNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OpenModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Partition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SAPBF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Detection = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardReadDistance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReadCardDelay = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CameraDetection = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WirelessNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FrequencyOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Language = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.p_Title.SuspendLayout();
             this.p_Left.SuspendLayout();
             this.p_Tap1.SuspendLayout();
@@ -1601,7 +1600,6 @@
             this.Did,
             this.HostNumber,
             this.IOMouth,
-            this.DeviceBrand,
             this.BrakeNumber,
             this.OpenModel,
             this.Partition,
@@ -1642,133 +1640,6 @@
             this.dgv_Device.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dgv_Device_Scroll);
             this.dgv_Device.SelectionChanged += new System.EventHandler(this.dgv_Device_SelectionChanged);
             this.dgv_Device.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgv_Device_KeyUp);
-            // 
-            // c_Selected
-            // 
-            this.c_Selected.HeaderText = "";
-            this.c_Selected.Name = "c_Selected";
-            this.c_Selected.Width = 30;
-            // 
-            // Did
-            // 
-            this.Did.DataPropertyName = "Did";
-            this.Did.HeaderText = "ID";
-            this.Did.Name = "Did";
-            this.Did.ReadOnly = true;
-            this.Did.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Did.Visible = false;
-            // 
-            // HostNumber
-            // 
-            this.HostNumber.DataPropertyName = "HostNumber";
-            this.HostNumber.HeaderText = "主机编号";
-            this.HostNumber.Name = "HostNumber";
-            this.HostNumber.ReadOnly = true;
-            this.HostNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // IOMouth
-            // 
-            this.IOMouth.DataPropertyName = "IOMouth";
-            this.IOMouth.HeaderText = "进出口";
-            this.IOMouth.Name = "IOMouth";
-            this.IOMouth.ReadOnly = true;
-            this.IOMouth.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // DeviceBrand
-            // 
-            this.DeviceBrand.DataPropertyName = "DeviceBrand";
-            this.DeviceBrand.HeaderText = "设备品牌";
-            this.DeviceBrand.Name = "DeviceBrand";
-            this.DeviceBrand.ReadOnly = true;
-            this.DeviceBrand.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // BrakeNumber
-            // 
-            this.BrakeNumber.DataPropertyName = "BrakeNumber";
-            this.BrakeNumber.HeaderText = "道闸 ID";
-            this.BrakeNumber.Name = "BrakeNumber";
-            this.BrakeNumber.ReadOnly = true;
-            this.BrakeNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // OpenModel
-            // 
-            this.OpenModel.DataPropertyName = "OpenModel";
-            this.OpenModel.HeaderText = "开闸模式";
-            this.OpenModel.Name = "OpenModel";
-            this.OpenModel.ReadOnly = true;
-            this.OpenModel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Partition
-            // 
-            this.Partition.DataPropertyName = "Partition";
-            this.Partition.HeaderText = "场分区";
-            this.Partition.Name = "Partition";
-            this.Partition.ReadOnly = true;
-            this.Partition.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // SAPBF
-            // 
-            this.SAPBF.DataPropertyName = "SAPBF";
-            this.SAPBF.HeaderText = "防潜回";
-            this.SAPBF.Name = "SAPBF";
-            this.SAPBF.ReadOnly = true;
-            this.SAPBF.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Detection
-            // 
-            this.Detection.DataPropertyName = "Detection";
-            this.Detection.HeaderText = "车辆检测";
-            this.Detection.Name = "Detection";
-            this.Detection.ReadOnly = true;
-            this.Detection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // CardReadDistance
-            // 
-            this.CardReadDistance.DataPropertyName = "CardReadDistance";
-            this.CardReadDistance.HeaderText = "读卡距离";
-            this.CardReadDistance.Name = "CardReadDistance";
-            this.CardReadDistance.ReadOnly = true;
-            this.CardReadDistance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // ReadCardDelay
-            // 
-            this.ReadCardDelay.DataPropertyName = "ReadCardDelay";
-            this.ReadCardDelay.HeaderText = "读卡延迟";
-            this.ReadCardDelay.Name = "ReadCardDelay";
-            this.ReadCardDelay.ReadOnly = true;
-            this.ReadCardDelay.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // CameraDetection
-            // 
-            this.CameraDetection.DataPropertyName = "CameraDetection";
-            this.CameraDetection.HeaderText = "像机检测";
-            this.CameraDetection.Name = "CameraDetection";
-            this.CameraDetection.ReadOnly = true;
-            this.CameraDetection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // WirelessNumber
-            // 
-            this.WirelessNumber.DataPropertyName = "WirelessNumber";
-            this.WirelessNumber.HeaderText = "无线 ID";
-            this.WirelessNumber.Name = "WirelessNumber";
-            this.WirelessNumber.ReadOnly = true;
-            this.WirelessNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // FrequencyOffset
-            // 
-            this.FrequencyOffset.DataPropertyName = "FrequencyOffset";
-            this.FrequencyOffset.HeaderText = "频率偏移";
-            this.FrequencyOffset.Name = "FrequencyOffset";
-            this.FrequencyOffset.ReadOnly = true;
-            this.FrequencyOffset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Language
-            // 
-            this.Language.DataPropertyName = "Language";
-            this.Language.HeaderText = "语言种类";
-            this.Language.Name = "Language";
-            this.Language.ReadOnly = true;
-            this.Language.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // panel5
             // 
@@ -2056,6 +1927,125 @@
             this.dataGridViewImageColumn5.ReadOnly = true;
             this.dataGridViewImageColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
+            // c_Selected
+            // 
+            this.c_Selected.HeaderText = "";
+            this.c_Selected.Name = "c_Selected";
+            this.c_Selected.Width = 30;
+            // 
+            // Did
+            // 
+            this.Did.DataPropertyName = "Did";
+            this.Did.HeaderText = "ID";
+            this.Did.Name = "Did";
+            this.Did.ReadOnly = true;
+            this.Did.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Did.Visible = false;
+            // 
+            // HostNumber
+            // 
+            this.HostNumber.DataPropertyName = "HostNumber";
+            this.HostNumber.HeaderText = "主机编号";
+            this.HostNumber.Name = "HostNumber";
+            this.HostNumber.ReadOnly = true;
+            this.HostNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // IOMouth
+            // 
+            this.IOMouth.DataPropertyName = "IOMouth";
+            this.IOMouth.HeaderText = "进出口";
+            this.IOMouth.Name = "IOMouth";
+            this.IOMouth.ReadOnly = true;
+            this.IOMouth.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // BrakeNumber
+            // 
+            this.BrakeNumber.DataPropertyName = "BrakeNumber";
+            this.BrakeNumber.HeaderText = "道闸 ID";
+            this.BrakeNumber.Name = "BrakeNumber";
+            this.BrakeNumber.ReadOnly = true;
+            this.BrakeNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // OpenModel
+            // 
+            this.OpenModel.DataPropertyName = "OpenModel";
+            this.OpenModel.HeaderText = "开闸模式";
+            this.OpenModel.Name = "OpenModel";
+            this.OpenModel.ReadOnly = true;
+            this.OpenModel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Partition
+            // 
+            this.Partition.DataPropertyName = "Partition";
+            this.Partition.HeaderText = "场分区";
+            this.Partition.Name = "Partition";
+            this.Partition.ReadOnly = true;
+            this.Partition.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // SAPBF
+            // 
+            this.SAPBF.DataPropertyName = "SAPBF";
+            this.SAPBF.HeaderText = "防潜回";
+            this.SAPBF.Name = "SAPBF";
+            this.SAPBF.ReadOnly = true;
+            this.SAPBF.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Detection
+            // 
+            this.Detection.DataPropertyName = "Detection";
+            this.Detection.HeaderText = "离开车辆";
+            this.Detection.Name = "Detection";
+            this.Detection.ReadOnly = true;
+            this.Detection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CardReadDistance
+            // 
+            this.CardReadDistance.DataPropertyName = "CardReadDistance";
+            this.CardReadDistance.HeaderText = "读卡距离";
+            this.CardReadDistance.Name = "CardReadDistance";
+            this.CardReadDistance.ReadOnly = true;
+            this.CardReadDistance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // ReadCardDelay
+            // 
+            this.ReadCardDelay.DataPropertyName = "ReadCardDelay";
+            this.ReadCardDelay.HeaderText = "读卡延迟";
+            this.ReadCardDelay.Name = "ReadCardDelay";
+            this.ReadCardDelay.ReadOnly = true;
+            this.ReadCardDelay.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CameraDetection
+            // 
+            this.CameraDetection.DataPropertyName = "CameraDetection";
+            this.CameraDetection.HeaderText = "车牌识别";
+            this.CameraDetection.Name = "CameraDetection";
+            this.CameraDetection.ReadOnly = true;
+            this.CameraDetection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // WirelessNumber
+            // 
+            this.WirelessNumber.DataPropertyName = "WirelessNumber";
+            this.WirelessNumber.HeaderText = "无线 ID";
+            this.WirelessNumber.Name = "WirelessNumber";
+            this.WirelessNumber.ReadOnly = true;
+            this.WirelessNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // FrequencyOffset
+            // 
+            this.FrequencyOffset.DataPropertyName = "FrequencyOffset";
+            this.FrequencyOffset.HeaderText = "频率偏移";
+            this.FrequencyOffset.Name = "FrequencyOffset";
+            this.FrequencyOffset.ReadOnly = true;
+            this.FrequencyOffset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Language
+            // 
+            this.Language.DataPropertyName = "Language";
+            this.Language.HeaderText = "语言种类";
+            this.Language.Name = "Language";
+            this.Language.ReadOnly = true;
+            this.Language.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btn_Read;
@@ -2181,22 +2171,6 @@
         private System.Windows.Forms.CheckBox cb_TemporaryWay;
         private System.Windows.Forms.CheckBox cb_DefaultDistanOldPwd;
         private System.Windows.Forms.CheckBox cb_DistanceWay;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn c_Selected;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Did;
-        private System.Windows.Forms.DataGridViewTextBoxColumn HostNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IOMouth;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeviceBrand;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BrakeNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OpenModel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Partition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SAPBF;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Detection;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardReadDistance;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ReadCardDelay;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CameraDetection;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WirelessNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FrequencyOffset;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Language;
         private CCWin.SkinControl.SkinButton btn_TemporaryReadCard;
         private CCWin.SkinControl.SkinButton btn_Test;
         private CCWin.SkinControl.SkinButton btn_WirelessSet;
@@ -2235,6 +2209,21 @@
         private System.Windows.Forms.DataGridViewImageColumn Electricity;
         private System.Windows.Forms.DataGridViewTextBoxColumn CardCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn ViceCardCount;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn c_Selected;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Did;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HostNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IOMouth;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BrakeNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OpenModel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Partition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SAPBF;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Detection;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardReadDistance;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReadCardDelay;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CameraDetection;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WirelessNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FrequencyOffset;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Language;
     }
 }
 

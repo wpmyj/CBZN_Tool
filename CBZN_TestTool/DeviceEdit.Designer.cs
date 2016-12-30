@@ -43,8 +43,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cb_CardReadDistance = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.cb_DeviceBrand = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.cb_OpenModel = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.ud_FrequencyOffset = new System.Windows.Forms.NumericUpDown();
@@ -176,7 +174,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(79, 20);
             this.label3.TabIndex = 6;
-            this.label3.Text = "像机检测：";
+            this.label3.Text = "车牌识别：";
             // 
             // cb_CameraDetection
             // 
@@ -250,40 +248,17 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "读卡距离：";
             // 
-            // cb_DeviceBrand
-            // 
-            this.cb_DeviceBrand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_DeviceBrand.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cb_DeviceBrand.FormattingEnabled = true;
-            this.cb_DeviceBrand.Items.AddRange(new object[] {
-            "畅泊道闸",
-            "非畅泊道闸"});
-            this.cb_DeviceBrand.Location = new System.Drawing.Point(355, 100);
-            this.cb_DeviceBrand.Name = "cb_DeviceBrand";
-            this.cb_DeviceBrand.Size = new System.Drawing.Size(121, 28);
-            this.cb_DeviceBrand.TabIndex = 13;
-            this.cb_DeviceBrand.SelectedIndexChanged += new System.EventHandler(this.cb_DeviceBrand_SelectedIndexChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(272, 104);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(79, 20);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "道闸品牌：";
-            // 
             // cb_OpenModel
             // 
             this.cb_OpenModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_OpenModel.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cb_OpenModel.FormattingEnabled = true;
             this.cb_OpenModel.Items.AddRange(new object[] {
-            "继电器开闸",
-            "串口开闸",
-            "无线开闸"});
-            this.cb_OpenModel.Location = new System.Drawing.Point(355, 150);
+            "畅泊：串口开闸",
+            "畅泊：无线开闸",
+            "学习控制器开闸",
+            "继电器开闸"});
+            this.cb_OpenModel.Location = new System.Drawing.Point(354, 100);
             this.cb_OpenModel.Name = "cb_OpenModel";
             this.cb_OpenModel.Size = new System.Drawing.Size(121, 28);
             this.cb_OpenModel.TabIndex = 17;
@@ -293,7 +268,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(272, 154);
+            this.label8.Location = new System.Drawing.Point(271, 104);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(79, 20);
             this.label8.TabIndex = 16;
@@ -311,11 +286,6 @@
             this.ud_FrequencyOffset.Name = "ud_FrequencyOffset";
             this.ud_FrequencyOffset.Size = new System.Drawing.Size(120, 26);
             this.ud_FrequencyOffset.TabIndex = 18;
-            this.ud_FrequencyOffset.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // label9
             // 
@@ -401,7 +371,7 @@
             "80 秒",
             "160 秒",
             "320 秒"});
-            this.cb_ReadCardDelay.Location = new System.Drawing.Point(355, 250);
+            this.cb_ReadCardDelay.Location = new System.Drawing.Point(354, 200);
             this.cb_ReadCardDelay.Name = "cb_ReadCardDelay";
             this.cb_ReadCardDelay.Size = new System.Drawing.Size(121, 28);
             this.cb_ReadCardDelay.TabIndex = 25;
@@ -410,7 +380,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.Location = new System.Drawing.Point(272, 254);
+            this.label12.Location = new System.Drawing.Point(271, 204);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(79, 20);
             this.label12.TabIndex = 24;
@@ -420,11 +390,11 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.Location = new System.Drawing.Point(271, 304);
+            this.label13.Location = new System.Drawing.Point(270, 254);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(79, 20);
             this.label13.TabIndex = 24;
-            this.label13.Text = "车辆检测：";
+            this.label13.Text = "离开车辆：";
             // 
             // cb_Detection
             // 
@@ -434,7 +404,7 @@
             this.cb_Detection.Items.AddRange(new object[] {
             "关闭",
             "开启"});
-            this.cb_Detection.Location = new System.Drawing.Point(354, 300);
+            this.cb_Detection.Location = new System.Drawing.Point(353, 250);
             this.cb_Detection.Name = "cb_Detection";
             this.cb_Detection.Size = new System.Drawing.Size(121, 28);
             this.cb_Detection.TabIndex = 25;
@@ -443,7 +413,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label14.Location = new System.Drawing.Point(271, 354);
+            this.label14.Location = new System.Drawing.Point(270, 304);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(79, 20);
             this.label14.TabIndex = 24;
@@ -460,7 +430,7 @@
             "四川话",
             "河南话",
             "陕西话"});
-            this.cb_Language.Location = new System.Drawing.Point(354, 350);
+            this.cb_Language.Location = new System.Drawing.Point(353, 300);
             this.cb_Language.Name = "cb_Language";
             this.cb_Language.Size = new System.Drawing.Size(121, 28);
             this.cb_Language.TabIndex = 25;
@@ -519,7 +489,7 @@
             // ud_BrakeNumber
             // 
             this.ud_BrakeNumber.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ud_BrakeNumber.Location = new System.Drawing.Point(354, 200);
+            this.ud_BrakeNumber.Location = new System.Drawing.Point(353, 150);
             this.ud_BrakeNumber.Maximum = new decimal(new int[] {
             16777215,
             0,
@@ -543,7 +513,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(280, 203);
+            this.label7.Location = new System.Drawing.Point(279, 153);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(70, 20);
             this.label7.TabIndex = 28;
@@ -575,8 +545,6 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.cb_OpenModel);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.cb_DeviceBrand);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.cb_CardReadDistance);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.ud_WirelessNumber);
@@ -620,8 +588,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cb_CardReadDistance;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox cb_DeviceBrand;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cb_OpenModel;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown ud_FrequencyOffset;
