@@ -93,7 +93,7 @@ namespace CBZN_TestTool
         {
             foreach (CardInfo item in LossCards)
             {
-                dgv_LossList.Rows.Add(new object[] { item.CardNumber });
+                dgv_LossList.Rows.Add(new object[] { item.CardNumber, item.CardType, item.CardTime });
             }
         }
 
@@ -199,6 +199,44 @@ namespace CBZN_TestTool
                         break;
                     }
                     index++;
+                }
+            }
+        }
+
+        private void dgv_LossList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.ColumnIndex == 1)
+            {
+                if (CRegex.IsDecimal(e.Value))
+                {
+                    int cardtype = HexadecimalConversion.ObjToInt(e.Value);
+                    switch ((CardType)cardtype)
+                    {
+                        case Bll.CardType.SingleCard:
+                            e.Value = "单卡";
+                            break;
+
+                        case Bll.CardType.CombinationCard:
+                            e.Value = "组合卡";
+                            break;
+
+                        case Bll.CardType.LPRCard:
+                            e.Value = "车牌识别卡";
+                            break;
+
+                        case Bll.CardType.ViceCard:
+                            e.Value = "副卡";
+                            break;
+
+                        case Bll.CardType.CancellationCard:
+                            e.Value = "注销卡";
+                            break;
+
+                        case Bll.CardType.PasswordMistake:
+                            e.Value = "卡片密码错误";
+                            break;
+                    }
+
                 }
             }
         }

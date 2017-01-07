@@ -472,7 +472,7 @@ namespace CBZN_TestTool
                                         cardinfo.CardLock = distanceparameter.TypeParameter.Lock;
                                         cardinfo.CardDistance = distanceparameter.TypeParameter.Distance;
                                         cardinfo.Electricity = distanceparameter.TypeParameter.Battry;
-                                        if (cardinfo.CardType != 8 || cardinfo.CardType != 15)
+                                        if (cardinfo.CardType != 8 && cardinfo.CardType != 15)
                                         {
                                             DistanceDataParameter dataparameter =
                                                     DataParsing.DistanceData(parameter.DataContent);
@@ -716,7 +716,7 @@ namespace CBZN_TestTool
             foreach (KeyValuePair<int, CardInfo> item in datalistinfo)
             {
                 if (item.Value.Cid > 0) continue;
-                if (item.Value.CardType > 4) continue;
+                if (item.Value.CardType > 2) continue;
                 if (item.Value.ParkingRestrictions == 1) continue;
                 registerlist.Add(item.Key, item.Value);
             }
@@ -727,6 +727,7 @@ namespace CBZN_TestTool
                     br.DicRegisterList = registerlist;
                     br.Port = _mPort;
                     br.Registercomplete += br_Registercomplete;
+                    br.RegisterParam = _registerParam;
                     br.ShowDialog();
                     if (br.Tag == null) return;
                     RegisterParam rp = (RegisterParam)br.Tag;
@@ -782,7 +783,7 @@ namespace CBZN_TestTool
                 cl.LossCards = _lossCards;
                 cl.LossCountChange += cl_LossCountChange;
                 cl.Show();
-                cl.Location = new Point(screenpoint.X + 160, screenpoint.Y + 80);
+                cl.Location = new Point(screenpoint.X + 85, screenpoint.Y + 80);
             }
         }
 
@@ -858,6 +859,7 @@ namespace CBZN_TestTool
 
             Color leftcolor = btn_ReportTheLossOf.BackColor;
             Color rightcolor = btn_ReportTheLossOf.BackColor;
+            Color forecolor = btn_ReportTheLossOf.ForeColor;
 
             int height = btn_ReportTheLossOf.Height;
 
@@ -866,6 +868,7 @@ namespace CBZN_TestTool
 
             if (!btn_ReportTheLossOf.Enabled)
             {
+                forecolor = Color.FromArgb(231, 231, 231);
                 leftcolor = Color.FromArgb(160, 160, 160);
                 rightcolor = leftcolor;
             }
@@ -899,7 +902,7 @@ namespace CBZN_TestTool
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
 
-            g.DrawString(btn_ReportTheLossOf.Text, btn_ReportTheLossOf.Font, new SolidBrush(btn_ReportTheLossOf.ForeColor), leftrect, sf);
+            g.DrawString(btn_ReportTheLossOf.Text, btn_ReportTheLossOf.Font, new SolidBrush(forecolor), leftrect, sf);
 
             g.DrawLine(new Pen(Color.Gray, 1), 100, 0, 100, leftrect.Height);
 
@@ -907,7 +910,7 @@ namespace CBZN_TestTool
 
             g.FillPie(new SolidBrush(leftcolor), new Rectangle(leftrect.Width + rightrect.Width / 2 - 12, height / 2 - 12, 24, 24), 0, 360);
 
-            g.DrawString(_lossCount.ToString(), btn_ReportTheLossOf.Font, new SolidBrush(btn_ReportTheLossOf.ForeColor), rightrect, sf);
+            g.DrawString(_lossCount.ToString(), btn_ReportTheLossOf.Font, new SolidBrush(forecolor), rightrect, sf);
         }
 
         private void btn_Search_Click(object sender, EventArgs e)
@@ -1340,7 +1343,7 @@ namespace CBZN_TestTool
 
             #region 验证输入
 
-            if (tb_DistanceOldPwd.Enabled)
+            if (cb_DistanceWay.Checked)
             {
                 oldpwd = tb_DistanceOldPwd.Text;
                 if (oldpwd.Length == 0)
@@ -1442,8 +1445,9 @@ namespace CBZN_TestTool
         private void cb_DistanceWay_CheckedChanged(object sender, EventArgs e)
         {
             bool result = cb_DistanceWay.Checked;
-            tb_DistanceOldPwd.Enabled = result;
             cb_DefaultDistanOldPwd.Enabled = result;
+            if (!cb_DefaultDistanOldPwd.Checked)
+                tb_DistanceOldPwd.Enabled = result;
             gb_Distance.Text = result ? "定距卡加密" : "定距发卡器加密";
         }
 
@@ -1452,8 +1456,11 @@ namespace CBZN_TestTool
             switch (parameter.AuxiliaryCommand)
             {
                 case 0:
-                    //显示成功
-                    ShowEncryptionMessage("定距卡 " + parameter.CardNumber + " 加密成功。", false, parameter.Command);
+                    if (parameter.TypeParameter.CardType == Bll.CardType.PasswordMistake)
+                        ShowEncryptionMessage("定距卡" + parameter.CardNumber + "加密失败", false, parameter.Command);
+                    else
+                        //显示成功
+                        ShowEncryptionMessage("定距卡 " + parameter.CardNumber + " 加密成功。", false, parameter.Command);
                     break;
 
                 case 8:
@@ -1519,7 +1526,7 @@ namespace CBZN_TestTool
 
             #region 输入验证
 
-            if (tb_TemporaryOldPwd.Enabled)
+            if (cb_TemporaryWay.Checked)
             {
                 oldpwd = tb_TemporaryOldPwd.Text;
                 if (oldpwd.Length == 0)
@@ -1621,8 +1628,10 @@ namespace CBZN_TestTool
         private void cb_TemporaryWay_CheckedChanged(object sender, EventArgs e)
         {
             bool result = cb_TemporaryWay.Checked;
-            tb_TemporaryOldPwd.Enabled = result;
             cb_DefaultTemporaryOldPwd.Enabled = result;
+            if (!cb_DefaultTemporaryOldPwd.Checked)
+                tb_TemporaryOldPwd.Enabled = result;
+            gb_Temporary.Text = result ? "临时IC卡加密" : "临时IC发卡器加密";
         }
 
         private void p_TemporaryInterface_Paint(object sender, PaintEventArgs e)

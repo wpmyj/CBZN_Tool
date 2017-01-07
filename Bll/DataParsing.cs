@@ -105,7 +105,7 @@ namespace Bll
                 if (parameter.Command == 10 || parameter.Command == 11 || parameter.Command == 13 || parameter.Command == 26 || parameter.Command == 27)
                 {
                     parameter.CardNumber = Encoding.ASCII.GetString(by, 4, 6);
-                    if (parameter.Command == 10 || parameter.Command == 26)
+                    if (parameter.Command == 10 || parameter.Command == 13 || parameter.Command == 26)
                     {
                         parameter.Type = HexadecimalConversion.HexToInt(by[10], by[11]);
                         parameter.TypeParameter = DistanceType(parameter.Type);

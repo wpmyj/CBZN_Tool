@@ -10,7 +10,7 @@ namespace CBZN_TestTool
 {
     public partial class BatchRegister : Form
     {
-        private RegisterParam? _registerParam;
+        public RegisterParam? RegisterParam { get; set; }
 
         public delegate void RegisterCompleteHandler(int index, CardInfo info);
         public event RegisterCompleteHandler Registercomplete;
@@ -56,7 +56,7 @@ namespace CBZN_TestTool
             }
         }
 
-        internal void PortDataReceived(DistanceParameter param)
+        public void PortDataReceived(DistanceParameter param)
         {
             RegisterCards(param.CardNumber, param.AuxiliaryCommand);
         }
@@ -113,7 +113,7 @@ namespace CBZN_TestTool
         private void BatchRegister_Shown(object sender, EventArgs e)
         {
             IsShow = true;
-            if (_registerParam == null)
+            if (RegisterParam == null)
             {
                 SetReisterParam();
             }
@@ -134,7 +134,7 @@ namespace CBZN_TestTool
                 if (rp.Tag != null)
                 {
                     RegisterParam param = (RegisterParam)rp.Tag;
-                    _registerParam = param;
+                    RegisterParam = param;
                     this.Tag = param;
                 }
             }
@@ -153,9 +153,9 @@ namespace CBZN_TestTool
                     item.Value.CardReportLoss = 0;
                     item.Value.CardType = 0;
                     item.Value.ParkingRestrictions = 0;
-                    item.Value.CardDistance = _registerParam.Value.Distance;
-                    item.Value.CardPartition = _registerParam.Value.Paratition;
-                    item.Value.CardTime = _registerParam.Value.Time;
+                    item.Value.CardDistance = RegisterParam.Value.Distance;
+                    item.Value.CardPartition = RegisterParam.Value.Paratition;
+                    item.Value.CardTime = RegisterParam.Value.Time;
                     item.Value.CardCount = DataCombination.SetCount(item.Value.CardCount);
                 }
             }
@@ -168,7 +168,6 @@ namespace CBZN_TestTool
             foreach (KeyValuePair<int, CardInfo> item in DicRegisterList)
             {
                 index++;
-                if (_rowIndex != index) continue;
                 if (!string.IsNullOrEmpty(cardnumber) && cardnumber == item.Value.CardNumber)
                 {
                     if (auxiliarycommand == 0)
@@ -255,6 +254,7 @@ namespace CBZN_TestTool
 
         private void BatchRegister_FormClosed(object sender, FormClosedEventArgs e)
         {
+            _currentForm = null;
             IsShow = false;
             Port.PortIsOpenChange -= PortOpenAndCloseChange;
         }

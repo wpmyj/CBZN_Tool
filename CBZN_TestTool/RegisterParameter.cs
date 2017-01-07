@@ -56,7 +56,7 @@ namespace CBZN_TestTool
                 _effect = new System.Timers.Timer(1) { AutoReset = true };
                 _effect.Elapsed += ShowEffect;
             }
-            _effect.Start();
+            //_effect.Start();
         }
 
         void ShowEffect(object sender, System.Timers.ElapsedEventArgs e)

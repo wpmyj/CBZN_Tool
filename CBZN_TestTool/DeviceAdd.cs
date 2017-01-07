@@ -131,6 +131,7 @@ namespace CBZN_TestTool
                 }
             }
             ud_HostNumber.Value = number;
+            cb_IOMouth.SelectedIndex = number % 2;
         }
 
         private void l_Title_MouseDown(object sender, MouseEventArgs e)

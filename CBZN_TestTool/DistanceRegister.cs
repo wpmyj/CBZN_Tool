@@ -12,7 +12,6 @@ namespace CBZN_TestTool
     public partial class DistanceRegister : Form
     {
         public static bool IsShow;
-
         private static DistanceRegister _instance;
 
         private int _lockindex;
@@ -75,6 +74,11 @@ namespace CBZN_TestTool
                     };
                     Invoke(ds);
                     return;
+                }
+                else
+                {
+                    if (parameter.CardNumber == _mCardInfo.CardNumber)
+                        this.Tag = _mCardInfo;
                 }
             }
 
@@ -264,7 +268,6 @@ namespace CBZN_TestTool
                 }
                 if (_mPort.IsOpen)
                     _mPort.Write(by);
-                this.Tag = _mCardInfo;
                 _lockindex = 0;
             }
             catch (Exception ex)
