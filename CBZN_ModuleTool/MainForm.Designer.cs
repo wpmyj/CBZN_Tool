@@ -34,7 +34,6 @@
             this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.label1 = new System.Windows.Forms.Label();
-            this.rtb_ShowContent = new System.Windows.Forms.RichTextBox();
             this.p_ComPort = new System.Windows.Forms.Panel();
             this.btn_ClosePort = new CCWin.SkinControl.SkinButton();
             this.btn_OpenPort = new CCWin.SkinControl.SkinButton();
@@ -52,7 +51,7 @@
             this.p_Title.Controls.Add(this.l_Title);
             this.p_Title.Controls.Add(this.btn_Close);
             this.p_Title.Dock = System.Windows.Forms.DockStyle.Top;
-            this.p_Title.Location = new System.Drawing.Point(1, 0);
+            this.p_Title.Location = new System.Drawing.Point(1, 1);
             this.p_Title.Name = "p_Title";
             this.p_Title.Size = new System.Drawing.Size(358, 40);
             this.p_Title.TabIndex = 3;
@@ -91,25 +90,13 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(63, 76);
+            this.label1.Location = new System.Drawing.Point(63, 77);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 20);
             this.label1.TabIndex = 4;
             this.label1.Text = "ID 编号";
-            // 
-            // rtb_ShowContent
-            // 
-            this.rtb_ShowContent.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.rtb_ShowContent.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.rtb_ShowContent.Location = new System.Drawing.Point(1, 199);
-            this.rtb_ShowContent.Name = "rtb_ShowContent";
-            this.rtb_ShowContent.ReadOnly = true;
-            this.rtb_ShowContent.Size = new System.Drawing.Size(358, 200);
-            this.rtb_ShowContent.TabIndex = 0;
-            this.rtb_ShowContent.Text = "";
             // 
             // p_ComPort
             // 
@@ -242,19 +229,18 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(360, 400);
+            this.ClientSize = new System.Drawing.Size(360, 200);
             this.Controls.Add(this.p_ComPort);
             this.Controls.Add(this.btn_DownLoad);
-            this.Controls.Add(this.rtb_ShowContent);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tb_ID);
             this.Controls.Add(this.p_Title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Padding = new System.Windows.Forms.Padding(1, 0, 1, 1);
+            this.Padding = new System.Windows.Forms.Padding(1);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "模块编号下载工具";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.p_Title.ResumeLayout(false);
@@ -271,7 +257,6 @@
         private System.Windows.Forms.Label l_Title;
         private CCWin.SkinControl.SkinButton btn_Close;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RichTextBox rtb_ShowContent;
         private System.Windows.Forms.Panel p_ComPort;
         private System.Windows.Forms.Label label2;
         private CCWin.SkinControl.SkinButton btn_ClosePort;

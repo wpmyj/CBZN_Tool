@@ -172,6 +172,20 @@ namespace Bll
             return dh.Integration(by);
         }
 
+        public static byte[] SetModuleNumber(string strnumber)
+        {
+            DealHandler dh = new DealHandler()
+            {
+                Head = 2,
+                End = 3,
+                DeviceAddress = 1,
+                FunctionAddress = 50,
+                Command = 1
+            };
+            byte[] by = Encoding.ASCII.GetBytes(string.Format("1234{0}", strnumber.PadLeft(8, '0')));
+            return dh.Integration(by);
+        }
+
         public static byte[] GetOpenDoor(string content)
         {
             DealHandler dh = new DealHandler()

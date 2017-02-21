@@ -19,13 +19,13 @@ namespace CBZN_ModuleTool
         /// </summary>
         private bool _isDirection;
 
-        private bool _isModuleResult;
-
         private bool _isMouseDown;
 
         private bool _isMouseEnter;
 
         private ModuleNumber _mNumber;
+
+        private int _currentNumber;
 
         private PortHelper _mPort;
 
@@ -35,6 +35,8 @@ namespace CBZN_ModuleTool
         private Rectangle _rect;
 
         private System.Timers.Timer _tEffect;
+
+        private System.Timers.Timer _tOverTime;
 
         public MainForm()
         {
@@ -63,12 +65,24 @@ namespace CBZN_ModuleTool
 
         private void btn_DownLoad_Click(object sender, EventArgs e)
         {
-            int id = 1;
+            _currentNumber = 1;
             if (tb_ID.Text.Length != 0)
-                id = Convert.ToInt32(tb_ID.Text);
-            if (id < _mNumber.Number)
             {
-                if (MessageBox.Show(string.Format(" ID 编号：{0}已经在使用中，是否重新下载写入。（当前流水编号：{1})", id, _mNumber.Number), @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
+                _currentNumber = Convert.ToInt32(tb_ID.Text);
+                if (_currentNumber == 0)
+                {
+                    MessageBox.Show("ID 编号从1开始。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            if (_currentNumber > 99999999)
+            {
+                MessageBox.Show("ID 编号已经超出可写范围(0 - 99999999)", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (_currentNumber < _mNumber.Number)
+            {
+                if (MessageBox.Show(string.Format(" ID 编号：{0}已经在使用中，是否重新下载写入。（当前流水编号：{1})", _currentNumber, _mNumber.Number), @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
                 {
                     return;
                 }
@@ -76,9 +90,24 @@ namespace CBZN_ModuleTool
             btn_DownLoad.Image = null;
             btn_DownLoad.Enabled = false;
             tb_ID.Enabled = false;
-            rtb_ShowContent.Clear();
-            Thread setmodule = new Thread(ThreadSetModule);
-            setmodule.Start(id);
+
+            byte[] by = PortAgreement.SetModuleNumber(tb_ID.Text);
+            _mPort.Write(by);
+
+            if (_tOverTime == null)
+            {
+                _tOverTime = new System.Timers.Timer(5000);
+                _tOverTime.AutoReset = false;
+                _tOverTime.Elapsed += _tOverTime_Elapsed;
+                _tOverTime.Start();
+            }
+        }
+
+        void _tOverTime_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            EnableDownLoadControls(true);
+            _tOverTime.Dispose();
+            _tOverTime = null;
         }
 
         private void btn_DownLoad_MouseDown(object sender, MouseEventArgs e)
@@ -156,18 +185,6 @@ namespace CBZN_ModuleTool
         private void btn_OpenPort_VisibleChanged(object sender, EventArgs e)
         {
             this.AcceptButton = btn_OpenPort.Visible ? null : btn_DownLoad;
-            if (btn_OpenPort.Visible)
-                rtb_ShowContent.Focus();
-        }
-
-        private void CloseModule()
-        {
-            byte[] by = PortAgreement.GetCloseModule();
-            if (_mPort.IsOpen)
-            {
-                _mPort.Write(by);
-                Thread.Sleep(10);
-            }
         }
 
         private void ComPortChange(List<string> portnames)
@@ -245,7 +262,12 @@ namespace CBZN_ModuleTool
                 btn_DownLoad.Enabled = true;
                 btn_DownLoad.Image = flag ? Properties.Resources.block : Properties.Resources.check;
                 tb_ID.Enabled = true;
-                tb_ID.Text = _mNumber.Number.ToString();
+                if (!flag)
+                    _currentNumber++;
+                tb_ID.Text = _currentNumber.ToString();
+                _tOverTime.Stop();
+                _tOverTime.Dispose();
+                _tOverTime = null;
             };
             btn_DownLoad.Invoke(enablecontrol);
         }
@@ -281,40 +303,6 @@ namespace CBZN_ModuleTool
             using (Graphics g = e.Graphics)
             {
                 g.DrawRectangle(new Pen(Brushes.Black, 1), new Rectangle(0, 0, this.Width - 1, this.Height - 1));
-            }
-        }
-
-        private void ModuleRid(int id)
-        {
-            _isModuleResult = false;
-            string content = string.Format("AT+RID=01{0:X8}", id);
-            byte[] by = PortAgreement.GetSetModule(content);
-            if (_mPort.IsOpen)
-            {
-                _mPort.Write(by);
-                Thread.Sleep(200);
-            }
-        }
-
-        private void ModuleTid(int id)
-        {
-            _isModuleResult = false;
-            string content = string.Format("AT+TID=01{0:X8}", id);
-            byte[] by = PortAgreement.GetSetModule(content);
-            if (_mPort.IsOpen)
-            {
-                _mPort.Write(by);
-                Thread.Sleep(200);
-            }
-        }
-
-        private void OpenModule()
-        {
-            byte[] by = PortAgreement.GetOpenModule();
-            if (_mPort.IsOpen)
-            {
-                _mPort.Write(by);
-                Thread.Sleep(10);
             }
         }
 
@@ -369,12 +357,31 @@ namespace CBZN_ModuleTool
                 List<byte[]> bylist = DataValidation.Validation(by);
                 foreach (byte[] item in bylist)
                 {
+                    if (item == null) continue;
                     ParsingParameter parameter = DataParsing.ParsingContent(item);
-                    if (parameter.FunctionAddress == 67)
+                    if (parameter.FunctionAddress == 50)
                     {
-                        if (parameter.Command == 208)
+                        if (parameter.Command == 1)
                         {
-                            _isModuleResult = DataParsing.TemporaryContent(parameter.DataContent) == 89;
+                            long number = DataParsing.TemporaryContent(parameter.DataContent);
+                            if (number == 1)
+                            {
+                                if (_currentNumber >= _mNumber.Number)
+                                {
+                                    _mNumber.Number = _currentNumber;
+                                    if (_mNumber.Mid > 0)
+                                        DbHelper.Db.Update<ModuleNumber>(_mNumber);
+                                    else
+                                        _mNumber.Mid = DbHelper.Db.Insert<ModuleNumber>(_mNumber);
+                                }
+                                EnableDownLoadControls(false);
+                                return;
+                            }
+                            else
+                            {
+                                EnableDownLoadControls(true);
+                                return;
+                            }
                         }
                     }
                 }
@@ -383,6 +390,7 @@ namespace CBZN_ModuleTool
             {
                 MessageBox.Show(ex.Message + ex.StackTrace, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            EnableDownLoadControls(true);
         }
 
         private void PortOpenOrCloseChange(object e, bool flag)
@@ -403,16 +411,31 @@ namespace CBZN_ModuleTool
             {
                 item.Visible = !item.Visible;
             }
+            if (_isDirection)
+            {
+                if (_mPort.IsOpen)
+                {
+                    btn_ClosePort.Focus();
+                }
+                else
+                {
+                    btn_OpenPort.Focus();
+                }
+            }
+            else
+            {
+                tb_ID.Focus();
+            }
         }
 
         private void ShowTEffect(object sender, ElapsedEventArgs e)
         {
             if (_isDirection)
             {
-                if (p_ComPort.Height >= rtb_ShowContent.Top - p_ComPort.Top)
+                if (p_ComPort.Height >= Height - p_ComPort.Top)
                 {
                     _isDirection = !_isDirection;
-                    p_ComPort.Height = rtb_ShowContent.Top - p_ComPort.Top;
+                    p_ComPort.Height = Height - p_ComPort.Top;
                     _tEffect.Stop();
                     return;
                 }
@@ -430,15 +453,6 @@ namespace CBZN_ModuleTool
                 }
                 p_ComPort.Height -= 15;
             }
-        }
-
-        private void ShowTxtContent(string content)
-        {
-            DefaultDelegate delegateShow = delegate
-            {
-                rtb_ShowContent.AppendText(content + "\n");
-            };
-            rtb_ShowContent.Invoke(delegateShow);
         }
 
         private void StartEffect()
@@ -478,76 +492,5 @@ namespace CBZN_ModuleTool
             }
         }
 
-        private void ThreadSetModule(object obj)
-        {
-            int id = Convert.ToInt32(obj);
-            bool iscomplete = false;
-            try
-            {
-                ShowTxtContent("开启模块设置模式");
-                OpenModule();
-
-                ShowTxtContent("设置模块发送ID参数");
-                ModuleTid(id);
-                if (!_isModuleResult)
-                {
-                    ShowTxtContent("设置失败，尝试第二次设置模块发送ID参数");
-                    ModuleTid(id);
-                    if (!_isModuleResult)
-                    {
-                        ShowTxtContent("设置失败，尝试第三次设置模块发送ID参数");
-                        ModuleTid(id);
-                        if (!_isModuleResult)
-                        {
-                            ShowTxtContent("模块发送ID设置失败，退出设置操作");
-                            iscomplete = true;
-                        }
-                    }
-                }
-
-                if (!iscomplete)
-                {
-                    ShowTxtContent("设置模块接收ID参数");
-                    ModuleRid(id);
-                    if (!_isModuleResult)
-                    {
-                        ShowTxtContent("设置失败，尝试第二次设置模块接收ID参数");
-                        ModuleRid(id);
-                        if (!_isModuleResult)
-                        {
-                            ShowTxtContent("设置失败，尝试第三次设置模块接收ID参数");
-                            if (!_isModuleResult)
-                            {
-                                ShowTxtContent("模块接收ID设置失败，退出设置操作");
-                                iscomplete = true;
-                            }
-                        }
-                    }
-                }
-
-                ShowTxtContent("关闭模块设置模式");
-                CloseModule();
-
-                if (!iscomplete)
-                {
-                    id += 1;
-                    if (id > _mNumber.Number)
-                    {
-                        _mNumber.Number = id;
-                        if (_mNumber.Mid > 0)
-                            DbHelper.Db.Update<ModuleNumber>(_mNumber);
-                        else
-                            DbHelper.Db.Insert<ModuleNumber>(_mNumber);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                iscomplete = true;
-                ShowTxtContent(ex.Message);
-            }
-
-            EnableDownLoadControls(iscomplete);
-        }
     }
 }
