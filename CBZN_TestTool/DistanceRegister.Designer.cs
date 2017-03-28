@@ -34,7 +34,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DistanceRegister));
             this.p_Title = new System.Windows.Forms.Panel();
-            this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.label1 = new System.Windows.Forms.Label();
             this.tb_CardNumber = new System.Windows.Forms.TextBox();
@@ -67,11 +66,11 @@
             this.cb_Partition1 = new System.Windows.Forms.CheckBox();
             this.cb_AllSelected = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.btn_Enter = new CCWin.SkinControl.SkinButton();
-            this.btn_Canel = new CCWin.SkinControl.SkinButton();
+            this.btn_Enter = new NewControl.NewButton();
+            this.btn_Canel = new NewControl.NewButton();
             this.p_Bundled = new System.Windows.Forms.Panel();
-            this.btn_Remove = new CCWin.SkinControl.SkinButton();
-            this.btn_Add = new CCWin.SkinControl.SkinButton();
+            this.btn_Remove = new NewControl.NewButton();
+            this.btn_Add = new NewControl.NewButton();
             this.cb_AllSelectedBundled = new System.Windows.Forms.CheckBox();
             this.l_BundledTitle = new System.Windows.Forms.Label();
             this.dgv_BundledList = new System.Windows.Forms.DataGridView();
@@ -85,7 +84,7 @@
             this.p_Provinces = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.cb_ShowProvinces = new System.Windows.Forms.CheckBox();
-            this.btn_PlateAdd = new CCWin.SkinControl.SkinButton();
+            this.btn_PlateAdd = new NewControl.NewButton();
             this.tb_Plate = new System.Windows.Forms.TextBox();
             this.clb_BundledSelected = new System.Windows.Forms.CheckedListBox();
             this.p_Title.SuspendLayout();
@@ -98,28 +97,15 @@
             // p_Title
             // 
             this.p_Title.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.p_Title.Controls.Add(this.l_Title);
             this.p_Title.Controls.Add(this.btn_Close);
             this.p_Title.Dock = System.Windows.Forms.DockStyle.Top;
-            this.p_Title.Location = new System.Drawing.Point(0, 0);
+            this.p_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.p_Title.Location = new System.Drawing.Point(1, 1);
             this.p_Title.Name = "p_Title";
-            this.p_Title.Size = new System.Drawing.Size(480, 40);
+            this.p_Title.Size = new System.Drawing.Size(478, 40);
             this.p_Title.TabIndex = 4;
+            this.p_Title.Paint += new System.Windows.Forms.PaintEventHandler(this.p_Title_Paint);
             this.p_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.p_Title_MouseDown);
-            // 
-            // l_Title
-            // 
-            this.l_Title.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.l_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_Title.ForeColor = System.Drawing.Color.White;
-            this.l_Title.Location = new System.Drawing.Point(0, 0);
-            this.l_Title.Name = "l_Title";
-            this.l_Title.Size = new System.Drawing.Size(428, 40);
-            this.l_Title.TabIndex = 4;
-            this.l_Title.Text = "定距卡发行";
-            this.l_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.l_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.p_Title_MouseDown);
             // 
             // btn_Close
             // 
@@ -128,7 +114,7 @@
             this.btn_Close.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btn_Close.DownBack = global::CBZN_TestTool.Properties.Resources.DownClose;
             this.btn_Close.DrawType = CCWin.SkinControl.DrawStyle.Img;
-            this.btn_Close.Location = new System.Drawing.Point(434, 0);
+            this.btn_Close.Location = new System.Drawing.Point(432, 0);
             this.btn_Close.MouseBack = global::CBZN_TestTool.Properties.Resources.HoverClose;
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.NormlBack = global::CBZN_TestTool.Properties.Resources.NoneClose;
@@ -142,7 +128,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(20, 60);
+            this.label1.Location = new System.Drawing.Point(21, 61);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 17);
             this.label1.TabIndex = 5;
@@ -163,7 +149,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(20, 166);
+            this.label2.Location = new System.Drawing.Point(21, 167);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 17);
             this.label2.TabIndex = 7;
@@ -188,7 +174,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(20, 111);
+            this.label3.Location = new System.Drawing.Point(21, 112);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 9;
@@ -214,7 +200,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(256, 60);
+            this.label4.Location = new System.Drawing.Point(257, 61);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 17);
             this.label4.TabIndex = 11;
@@ -234,7 +220,7 @@
             // 
             this.l_ParkingRestrictions.AutoSize = true;
             this.l_ParkingRestrictions.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_ParkingRestrictions.Location = new System.Drawing.Point(256, 111);
+            this.l_ParkingRestrictions.Location = new System.Drawing.Point(257, 112);
             this.l_ParkingRestrictions.Name = "l_ParkingRestrictions";
             this.l_ParkingRestrictions.Size = new System.Drawing.Size(68, 17);
             this.l_ParkingRestrictions.TabIndex = 13;
@@ -271,7 +257,7 @@
             // 
             this.l_CardPartition.AutoSize = true;
             this.l_CardPartition.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_CardPartition.Location = new System.Drawing.Point(256, 166);
+            this.l_CardPartition.Location = new System.Drawing.Point(257, 167);
             this.l_CardPartition.Name = "l_CardPartition";
             this.l_CardPartition.Size = new System.Drawing.Size(68, 17);
             this.l_CardPartition.TabIndex = 15;
@@ -505,21 +491,15 @@
             // btn_Enter
             // 
             this.btn_Enter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_Enter.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Enter.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Enter.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Enter.DownBack = null;
-            this.btn_Enter.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Enter.FadeGlow = false;
+            this.btn_Enter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Enter.FlatAppearance.BorderSize = 0;
+            this.btn_Enter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Enter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Enter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Enter.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Enter.ForeColor = System.Drawing.Color.White;
-            this.btn_Enter.IsDrawBorder = false;
-            this.btn_Enter.IsDrawGlass = false;
-            this.btn_Enter.Location = new System.Drawing.Point(254, 504);
-            this.btn_Enter.MouseBack = null;
-            this.btn_Enter.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Enter.Location = new System.Drawing.Point(255, 503);
             this.btn_Enter.Name = "btn_Enter";
-            this.btn_Enter.NormlBack = null;
             this.btn_Enter.Size = new System.Drawing.Size(100, 35);
             this.btn_Enter.TabIndex = 7;
             this.btn_Enter.TabStop = false;
@@ -530,22 +510,16 @@
             // btn_Canel
             // 
             this.btn_Canel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_Canel.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Canel.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Canel.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.btn_Canel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Canel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btn_Canel.DownBack = null;
-            this.btn_Canel.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Canel.FadeGlow = false;
+            this.btn_Canel.FlatAppearance.BorderSize = 0;
+            this.btn_Canel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Canel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Canel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Canel.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Canel.ForeColor = System.Drawing.Color.White;
-            this.btn_Canel.IsDrawBorder = false;
-            this.btn_Canel.IsDrawGlass = false;
-            this.btn_Canel.Location = new System.Drawing.Point(360, 504);
-            this.btn_Canel.MouseBack = null;
-            this.btn_Canel.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Canel.Location = new System.Drawing.Point(361, 503);
             this.btn_Canel.Name = "btn_Canel";
-            this.btn_Canel.NormlBack = null;
             this.btn_Canel.Size = new System.Drawing.Size(100, 35);
             this.btn_Canel.TabIndex = 8;
             this.btn_Canel.TabStop = false;
@@ -572,22 +546,16 @@
             // 
             // btn_Remove
             // 
-            this.btn_Remove.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Remove.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Remove.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Remove.DownBack = null;
-            this.btn_Remove.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Remove.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Remove.Enabled = false;
-            this.btn_Remove.FadeGlow = false;
+            this.btn_Remove.FlatAppearance.BorderSize = 0;
+            this.btn_Remove.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Remove.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Remove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Remove.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Remove.ForeColor = System.Drawing.Color.White;
-            this.btn_Remove.IsDrawBorder = false;
-            this.btn_Remove.IsDrawGlass = false;
             this.btn_Remove.Location = new System.Drawing.Point(14, 8);
-            this.btn_Remove.MouseBack = null;
-            this.btn_Remove.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Remove.Name = "btn_Remove";
-            this.btn_Remove.NormlBack = null;
             this.btn_Remove.Size = new System.Drawing.Size(75, 23);
             this.btn_Remove.TabIndex = 1;
             this.btn_Remove.TabStop = false;
@@ -597,22 +565,16 @@
             // 
             // btn_Add
             // 
-            this.btn_Add.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Add.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Add.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Add.DownBack = null;
-            this.btn_Add.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Add.Enabled = false;
-            this.btn_Add.FadeGlow = false;
+            this.btn_Add.FlatAppearance.BorderSize = 0;
+            this.btn_Add.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Add.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Add.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Add.ForeColor = System.Drawing.Color.White;
-            this.btn_Add.IsDrawBorder = false;
-            this.btn_Add.IsDrawGlass = false;
             this.btn_Add.Location = new System.Drawing.Point(14, 159);
-            this.btn_Add.MouseBack = null;
-            this.btn_Add.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Add.Name = "btn_Add";
-            this.btn_Add.NormlBack = null;
             this.btn_Add.Size = new System.Drawing.Size(75, 23);
             this.btn_Add.TabIndex = 3;
             this.btn_Add.TabStop = false;
@@ -785,22 +747,16 @@
             // 
             // btn_PlateAdd
             // 
-            this.btn_PlateAdd.BackColor = System.Drawing.Color.Transparent;
-            this.btn_PlateAdd.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_PlateAdd.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_PlateAdd.DownBack = null;
-            this.btn_PlateAdd.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_PlateAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_PlateAdd.Enabled = false;
-            this.btn_PlateAdd.FadeGlow = false;
+            this.btn_PlateAdd.FlatAppearance.BorderSize = 0;
+            this.btn_PlateAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_PlateAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_PlateAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_PlateAdd.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_PlateAdd.ForeColor = System.Drawing.Color.White;
-            this.btn_PlateAdd.IsDrawBorder = false;
-            this.btn_PlateAdd.IsDrawGlass = false;
             this.btn_PlateAdd.Location = new System.Drawing.Point(234, 8);
-            this.btn_PlateAdd.MouseBack = null;
-            this.btn_PlateAdd.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_PlateAdd.Name = "btn_PlateAdd";
-            this.btn_PlateAdd.NormlBack = null;
             this.btn_PlateAdd.Size = new System.Drawing.Size(100, 35);
             this.btn_PlateAdd.TabIndex = 8;
             this.btn_PlateAdd.TabStop = false;
@@ -810,11 +766,12 @@
             // 
             // tb_Plate
             // 
-            this.tb_Plate.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_Plate.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_Plate.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tb_Plate.Location = new System.Drawing.Point(94, 12);
             this.tb_Plate.MaxLength = 10;
             this.tb_Plate.Name = "tb_Plate";
-            this.tb_Plate.Size = new System.Drawing.Size(140, 26);
+            this.tb_Plate.Size = new System.Drawing.Size(140, 29);
             this.tb_Plate.TabIndex = 0;
             this.tb_Plate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_Plate.TextChanged += new System.EventHandler(this.tb_Plate_TextChanged);
@@ -862,9 +819,14 @@
             this.Controls.Add(this.p_Bundled);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DistanceRegister";
+            this.Padding = new System.Windows.Forms.Padding(1);
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "DistanceRegister";
+            this.Text = "定距卡发行";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DistanceRegister_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DistanceRegister_FormClosed);
             this.Load += new System.EventHandler(this.DistanceRegister_Load);
@@ -887,7 +849,6 @@
         #endregion
 
         private System.Windows.Forms.Panel p_Title;
-        private System.Windows.Forms.Label l_Title;
         private CCWin.SkinControl.SkinButton btn_Close;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tb_CardNumber;
@@ -920,19 +881,19 @@
         private System.Windows.Forms.CheckBox cb_Partition3;
         private System.Windows.Forms.CheckBox cb_Partition2;
         private System.Windows.Forms.CheckBox cb_Partition16;
-        private CCWin.SkinControl.SkinButton btn_Enter;
-        private CCWin.SkinControl.SkinButton btn_Canel;
+        private NewControl.NewButton btn_Enter;
+        private NewControl.NewButton btn_Canel;
         private System.Windows.Forms.Panel p_Bundled;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridView dgv_BundledList;
         private System.Windows.Forms.Label l_BundledTitle;
         private System.Windows.Forms.CheckBox cb_AllSelectedBundled;
         private System.Windows.Forms.CheckedListBox clb_BundledSelected;
-        private CCWin.SkinControl.SkinButton btn_Add;
-        private CCWin.SkinControl.SkinButton btn_Remove;
+        private NewControl.NewButton btn_Add;
+        private NewControl.NewButton btn_Remove;
         private System.Windows.Forms.Panel p_Plate;
         private System.Windows.Forms.TextBox tb_Plate;
-        private CCWin.SkinControl.SkinButton btn_PlateAdd;
+        private NewControl.NewButton btn_PlateAdd;
         private System.Windows.Forms.CheckBox cb_ShowProvinces;
         private System.Windows.Forms.Panel p_Provinces;
         private System.Windows.Forms.Label label5;

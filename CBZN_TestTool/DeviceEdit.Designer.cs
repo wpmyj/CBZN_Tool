@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeviceEdit));
             this.p_Title = new System.Windows.Forms.Panel();
-            this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.label1 = new System.Windows.Forms.Label();
             this.ud_HostNumber = new System.Windows.Forms.NumericUpDown();
@@ -61,6 +60,8 @@
             this.btn_Enter = new CCWin.SkinControl.SkinButton();
             this.ud_BrakeNumber = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
+            this.cb_FuzzyQuery = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.p_Title.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ud_HostNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_WirelessNumber)).BeginInit();
@@ -71,27 +72,15 @@
             // p_Title
             // 
             this.p_Title.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.p_Title.Controls.Add(this.l_Title);
             this.p_Title.Controls.Add(this.btn_Close);
             this.p_Title.Dock = System.Windows.Forms.DockStyle.Top;
-            this.p_Title.Location = new System.Drawing.Point(0, 0);
+            this.p_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.p_Title.Location = new System.Drawing.Point(1, 1);
             this.p_Title.Name = "p_Title";
-            this.p_Title.Size = new System.Drawing.Size(500, 40);
+            this.p_Title.Size = new System.Drawing.Size(498, 40);
             this.p_Title.TabIndex = 3;
-            // 
-            // l_Title
-            // 
-            this.l_Title.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.l_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_Title.ForeColor = System.Drawing.Color.White;
-            this.l_Title.Location = new System.Drawing.Point(0, 0);
-            this.l_Title.Name = "l_Title";
-            this.l_Title.Size = new System.Drawing.Size(448, 40);
-            this.l_Title.TabIndex = 4;
-            this.l_Title.Text = "编辑编录";
-            this.l_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.l_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.l_Title_MouseDown);
+            this.p_Title.Paint += new System.Windows.Forms.PaintEventHandler(this.p_Title_Paint);
+            this.p_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.p_Title_MouseDown);
             // 
             // btn_Close
             // 
@@ -100,7 +89,7 @@
             this.btn_Close.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btn_Close.DownBack = global::CBZN_TestTool.Properties.Resources.DownClose;
             this.btn_Close.DrawType = CCWin.SkinControl.DrawStyle.Img;
-            this.btn_Close.Location = new System.Drawing.Point(454, 0);
+            this.btn_Close.Location = new System.Drawing.Point(452, 0);
             this.btn_Close.MouseBack = global::CBZN_TestTool.Properties.Resources.HoverClose;
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.NormlBack = global::CBZN_TestTool.Properties.Resources.NoneClose;
@@ -113,7 +102,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(20, 58);
+            this.label1.Location = new System.Drawing.Point(21, 59);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 20);
             this.label1.TabIndex = 4;
@@ -147,7 +136,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(26, 104);
+            this.label2.Location = new System.Drawing.Point(27, 105);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(73, 20);
             this.label2.TabIndex = 6;
@@ -170,7 +159,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(20, 154);
+            this.label3.Location = new System.Drawing.Point(21, 155);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(79, 20);
             this.label3.TabIndex = 6;
@@ -217,7 +206,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(29, 203);
+            this.label4.Location = new System.Drawing.Point(30, 204);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 20);
             this.label4.TabIndex = 9;
@@ -242,7 +231,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(272, 59);
+            this.label5.Location = new System.Drawing.Point(273, 60);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(79, 20);
             this.label5.TabIndex = 10;
@@ -258,7 +247,7 @@
             "畅泊：无线开闸",
             "学习控制器开闸",
             "继电器开闸"});
-            this.cb_OpenModel.Location = new System.Drawing.Point(354, 100);
+            this.cb_OpenModel.Location = new System.Drawing.Point(355, 100);
             this.cb_OpenModel.Name = "cb_OpenModel";
             this.cb_OpenModel.Size = new System.Drawing.Size(121, 28);
             this.cb_OpenModel.TabIndex = 17;
@@ -268,7 +257,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(271, 104);
+            this.label8.Location = new System.Drawing.Point(273, 105);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(79, 20);
             this.label8.TabIndex = 16;
@@ -291,7 +280,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(20, 253);
+            this.label9.Location = new System.Drawing.Point(21, 254);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(79, 20);
             this.label9.TabIndex = 19;
@@ -328,7 +317,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(26, 304);
+            this.label10.Location = new System.Drawing.Point(27, 305);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(73, 20);
             this.label10.TabIndex = 20;
@@ -351,7 +340,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(26, 354);
+            this.label11.Location = new System.Drawing.Point(27, 355);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(73, 20);
             this.label11.TabIndex = 22;
@@ -371,7 +360,7 @@
             "80 秒",
             "160 秒",
             "320 秒"});
-            this.cb_ReadCardDelay.Location = new System.Drawing.Point(354, 200);
+            this.cb_ReadCardDelay.Location = new System.Drawing.Point(356, 199);
             this.cb_ReadCardDelay.Name = "cb_ReadCardDelay";
             this.cb_ReadCardDelay.Size = new System.Drawing.Size(121, 28);
             this.cb_ReadCardDelay.TabIndex = 25;
@@ -380,7 +369,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.Location = new System.Drawing.Point(271, 204);
+            this.label12.Location = new System.Drawing.Point(274, 204);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(79, 20);
             this.label12.TabIndex = 24;
@@ -390,7 +379,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.Location = new System.Drawing.Point(270, 254);
+            this.label13.Location = new System.Drawing.Point(273, 254);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(79, 20);
             this.label13.TabIndex = 24;
@@ -404,7 +393,7 @@
             this.cb_Detection.Items.AddRange(new object[] {
             "关闭",
             "开启"});
-            this.cb_Detection.Location = new System.Drawing.Point(353, 250);
+            this.cb_Detection.Location = new System.Drawing.Point(355, 249);
             this.cb_Detection.Name = "cb_Detection";
             this.cb_Detection.Size = new System.Drawing.Size(121, 28);
             this.cb_Detection.TabIndex = 25;
@@ -413,7 +402,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label14.Location = new System.Drawing.Point(270, 304);
+            this.label14.Location = new System.Drawing.Point(273, 304);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(79, 20);
             this.label14.TabIndex = 24;
@@ -430,7 +419,7 @@
             "四川话",
             "河南话",
             "陕西话"});
-            this.cb_Language.Location = new System.Drawing.Point(353, 300);
+            this.cb_Language.Location = new System.Drawing.Point(355, 299);
             this.cb_Language.Name = "cb_Language";
             this.cb_Language.Size = new System.Drawing.Size(121, 28);
             this.cb_Language.TabIndex = 25;
@@ -489,7 +478,7 @@
             // ud_BrakeNumber
             // 
             this.ud_BrakeNumber.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ud_BrakeNumber.Location = new System.Drawing.Point(353, 150);
+            this.ud_BrakeNumber.Location = new System.Drawing.Point(355, 150);
             this.ud_BrakeNumber.Maximum = new decimal(new int[] {
             16777215,
             0,
@@ -513,11 +502,35 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(279, 153);
+            this.label7.Location = new System.Drawing.Point(282, 154);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(70, 20);
             this.label7.TabIndex = 28;
             this.label7.Text = "道闸 ID：";
+            // 
+            // cb_FuzzyQuery
+            // 
+            this.cb_FuzzyQuery.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_FuzzyQuery.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_FuzzyQuery.FormattingEnabled = true;
+            this.cb_FuzzyQuery.Items.AddRange(new object[] {
+            "关闭",
+            "1",
+            "2"});
+            this.cb_FuzzyQuery.Location = new System.Drawing.Point(356, 350);
+            this.cb_FuzzyQuery.Name = "cb_FuzzyQuery";
+            this.cb_FuzzyQuery.Size = new System.Drawing.Size(121, 28);
+            this.cb_FuzzyQuery.TabIndex = 33;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(246, 355);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(107, 20);
+            this.label6.TabIndex = 32;
+            this.label6.Text = "模糊查询位数：";
             // 
             // DeviceEdit
             // 
@@ -527,6 +540,8 @@
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btn_Cancel;
             this.ClientSize = new System.Drawing.Size(500, 445);
+            this.Controls.Add(this.cb_FuzzyQuery);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.ud_BrakeNumber);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.btn_Enter);
@@ -558,7 +573,12 @@
             this.Controls.Add(this.label4);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DeviceEdit";
+            this.Padding = new System.Windows.Forms.Padding(1);
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "编辑编录";
             this.Load += new System.EventHandler(this.DeviceAdd_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.DeviceEdit_Paint);
@@ -576,7 +596,6 @@
         #endregion
 
         private System.Windows.Forms.Panel p_Title;
-        private System.Windows.Forms.Label l_Title;
         private CCWin.SkinControl.SkinButton btn_Close;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown ud_HostNumber;
@@ -606,5 +625,7 @@
         private CCWin.SkinControl.SkinButton btn_Enter;
         private System.Windows.Forms.NumericUpDown ud_BrakeNumber;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cb_FuzzyQuery;
+        private System.Windows.Forms.Label label6;
     }
 }

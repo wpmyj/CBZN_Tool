@@ -28,11 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeviceImport));
             this.pb_Import = new System.Windows.Forms.ProgressBar();
             this.p_Title = new System.Windows.Forms.Panel();
-            this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.btn_Cancel = new CCWin.SkinControl.SkinButton();
             this.p_Title.SuspendLayout();
@@ -48,27 +46,14 @@
             // p_Title
             // 
             this.p_Title.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.p_Title.Controls.Add(this.l_Title);
             this.p_Title.Controls.Add(this.btn_Close);
             this.p_Title.Dock = System.Windows.Forms.DockStyle.Top;
-            this.p_Title.Location = new System.Drawing.Point(0, 0);
+            this.p_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.p_Title.Location = new System.Drawing.Point(1, 1);
             this.p_Title.Name = "p_Title";
-            this.p_Title.Size = new System.Drawing.Size(450, 40);
+            this.p_Title.Size = new System.Drawing.Size(448, 40);
             this.p_Title.TabIndex = 4;
-            // 
-            // l_Title
-            // 
-            this.l_Title.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.l_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_Title.ForeColor = System.Drawing.Color.White;
-            this.l_Title.Location = new System.Drawing.Point(0, 0);
-            this.l_Title.Name = "l_Title";
-            this.l_Title.Size = new System.Drawing.Size(398, 40);
-            this.l_Title.TabIndex = 4;
-            this.l_Title.Text = "编录导入";
-            this.l_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.l_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.l_Title_MouseDown);
+            this.p_Title.Paint += new System.Windows.Forms.PaintEventHandler(this.p_Title_Paint);
             // 
             // btn_Close
             // 
@@ -77,7 +62,7 @@
             this.btn_Close.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btn_Close.DownBack = global::CBZN_TestTool.Properties.Resources.DownClose;
             this.btn_Close.DrawType = CCWin.SkinControl.DrawStyle.Img;
-            this.btn_Close.Location = new System.Drawing.Point(404, 0);
+            this.btn_Close.Location = new System.Drawing.Point(402, 0);
             this.btn_Close.MouseBack = global::CBZN_TestTool.Properties.Resources.HoverClose;
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.NormlBack = global::CBZN_TestTool.Properties.Resources.NoneClose;
@@ -114,16 +99,23 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(450, 150);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.p_Title);
             this.Controls.Add(this.pb_Import);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DeviceImport";
+            this.Padding = new System.Windows.Forms.Padding(1);
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "编录导入";
             this.Load += new System.EventHandler(this.DeviceImport_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DeviceImport_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.l_Title_MouseDown);
             this.p_Title.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -134,7 +126,6 @@
 
         private System.Windows.Forms.ProgressBar pb_Import;
         private System.Windows.Forms.Panel p_Title;
-        private System.Windows.Forms.Label l_Title;
         private CCWin.SkinControl.SkinButton btn_Close;
         private CCWin.SkinControl.SkinButton btn_Cancel;
     }

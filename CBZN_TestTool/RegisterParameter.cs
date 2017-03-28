@@ -56,7 +56,7 @@ namespace CBZN_TestTool
                 _effect = new System.Timers.Timer(1) { AutoReset = true };
                 _effect.Elapsed += ShowEffect;
             }
-            //_effect.Start();
+            _effect.Start();
         }
 
         void ShowEffect(object sender, System.Timers.ElapsedEventArgs e)
@@ -66,9 +66,7 @@ namespace CBZN_TestTool
                 if (this.Height <= 210)
                 {
                     this.Height = 210;
-                    _effect.Stop();
-                    _effect.Dispose();
-                    _effect = null;
+                    CloseEffect();
                     return;
                 }
                 this.Height -= 15;
@@ -79,12 +77,20 @@ namespace CBZN_TestTool
                 {
                     this.Height = 370;
                     p_CardPartition.Visible = true;
-                    _effect.Stop();
-                    _effect.Dispose();
-                    _effect = null;
+                    CloseEffect();
                     return;
                 }
                 this.Height += 15;
+            }
+        }
+
+        private void CloseEffect()
+        {
+            if (_effect != null)
+            {
+                _effect.Stop();
+                _effect.Dispose();
+                _effect = null;
             }
         }
 
@@ -184,6 +190,19 @@ namespace CBZN_TestTool
 
             this.Tag = rp;
             Close();
+        }
+
+        private void p_Title_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
+            }
         }
     }
 

@@ -47,7 +47,8 @@ namespace CBZN_TestTool
                     OpenModel = cb_OpenModel.SelectedIndex,
                     ReadCardDelay = cb_ReadCardDelay.SelectedIndex,
                     Detection = cb_Detection.SelectedIndex,
-                    Language = cb_Language.SelectedIndex
+                    Language = cb_Language.SelectedIndex,
+                    FuzzyQuery = cb_FuzzyQuery.SelectedIndex
                 };
                 dinfo.Did = DbHelper.Db.Insert<DeviceInfo>(dinfo);
                 OnAddDevice(dinfo);
@@ -104,15 +105,16 @@ namespace CBZN_TestTool
             cb_ReadCardDelay.SelectedIndex = 1;
             cb_Detection.SelectedIndex = 0;
             cb_Language.SelectedIndex = 0;
+            cb_FuzzyQuery.SelectedIndex = 0;
             GetHostNumber();
         }
 
         private void DeviceAdd_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Rectangle rect = new Rectangle(new Point(0, 0), new Size(this.Width - 1, this.Height - 1));
-            g.DrawRectangle(new Pen(Brushes.Black, 1), rect);
-            g.Dispose();
+            using (Graphics g = e.Graphics)
+            {
+                g.DrawRectangle(new Pen(Brushes.Black, 1), 0, 0, Width - 1, Height - 1);
+            }
         }
 
         private void GetHostNumber()
@@ -134,7 +136,7 @@ namespace CBZN_TestTool
             cb_IOMouth.SelectedIndex = number % 2;
         }
 
-        private void l_Title_MouseDown(object sender, MouseEventArgs e)
+        private void p_Title_MouseDown(object sender, MouseEventArgs e)
         {
             WinApi.ReleaseCapture();
             WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
@@ -145,6 +147,19 @@ namespace CBZN_TestTool
             if (AddDevice != null)
             {
                 AddDevice(dinfo);
+            }
+        }
+
+        private void p_Title_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
             }
         }
     }

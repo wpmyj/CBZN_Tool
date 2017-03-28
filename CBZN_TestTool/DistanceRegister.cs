@@ -221,7 +221,7 @@ namespace CBZN_TestTool
                     CardNumber = _mCardInfo.CardNumber,
                     Type = typeparameter,
                     Function = functionbyteparameter,
-                    Count = _mCardInfo.CardCount
+                    Count = ++_mCardInfo.CardCount
                 };
                 byte[] by;
                 switch (_mCardInfo.CardType)
@@ -288,7 +288,7 @@ namespace CBZN_TestTool
             string plate = tb_Plate.Text.Trim();
             if (!IsContainsPlateProvinces(plate))
             {
-                MessageBox.Show(@"输入的车牌号码无效，请重新输入。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(@"输入的车牌号码无效，输入的车牌内不得出现字母O、i或无效的汉字，请重新输入。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 tb_Plate.Focus();
                 return;
             }
@@ -315,7 +315,8 @@ namespace CBZN_TestTool
             {
                 CardNumber = plate,
                 CardTime = DateTime.Now,
-                ParkingRestrictions = 0
+                ParkingRestrictions = 0,
+                CardType = -1
             };
             _mBoundAdd.Add(-1, info);
             dgv_BundledList.Rows.Add(new object[] { false, Properties.Resources.block, info.CardNumber, info.CardTime, info.ParkingRestrictions });
@@ -622,10 +623,10 @@ namespace CBZN_TestTool
 
         private void DistanceRegister_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Rectangle rect = new Rectangle(0, 0, Width - 1, Height - 1);
-            g.DrawRectangle(new Pen(Brushes.Gray, 1), rect);
-            g.Dispose();
+            using (Graphics g = e.Graphics)
+            {
+                g.DrawRectangle(new Pen(Brushes.Gray, 1), 0, 0, Width - 1, Height - 1);
+            }
         }
 
         private void DistanceRegister_Resize(object sender, EventArgs e)
@@ -1027,6 +1028,19 @@ namespace CBZN_TestTool
                 });
             }
             Dal.DbHelper.Db.Insert<BundledInfo>(bundledinfos);
+        }
+
+        private void p_Title_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
+            }
         }
     }
 }

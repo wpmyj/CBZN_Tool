@@ -1,4 +1,5 @@
-﻿using Bll;
+﻿using System.Drawing;
+using Bll;
 using Dal;
 using Microsoft.VisualBasic.FileIO;
 using Model;
@@ -120,6 +121,9 @@ namespace CBZN_TestTool
                                 case 15:
                                     dinfo.Detection = HexadecimalConversion.StrToInt(value);
                                     break;
+                                case 17:
+                                    dinfo.Detection = HexadecimalConversion.StrToInt(value);
+                                    break;
                             }
                         }
                     }
@@ -155,6 +159,27 @@ namespace CBZN_TestTool
         {
             WinApi.ReleaseCapture();
             WinApi.SendMessage(this.Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
+        }
+
+        private void DeviceImport_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g=e.Graphics)
+            {
+                g.DrawRectangle(new Pen(Brushes.Gray, 1), 0, 0, Width - 1, Height - 1);
+            }
+        }
+
+        private void p_Title_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g=e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
+            }
         }
     }
 }

@@ -264,6 +264,19 @@ namespace CBZN_TestTool
 
         }
 
+        private void p_Title_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
+            }
+        }
+
 
     }
 }

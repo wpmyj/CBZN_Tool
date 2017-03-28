@@ -11,7 +11,7 @@ namespace Dal
     {
         public static List<CardInfo> SelectBound(Int64 id)
         {
-            string cmdtext = string.Format(" SELECT Cid,CardNumber,CardType,CardTime,CardDistance,CardLock,CardReportLoss,CardPartition,ParkingRestrictions,Electricity,Synchronous,InOutState,CardCount FROM CardInfo where cid in ( select vid from BundledInfo where Cid={0})  ", id);
+            string cmdtext = string.Format(" SELECT Cid,CardNumber,CardType,CardTime,CardDistance,CardLock,CardReportLoss,CardPartition,ParkingRestrictions,Electricity,Synchronous,InOutState,CardCount,ViceCardCount FROM CardInfo where cid in ( select vid from BundledInfo where Cid={0})  ", id);
             System.Data.SQLite.SQLiteDataReader dr = null;
             List<CardInfo> cardinfos = new List<CardInfo>();
             try
@@ -30,10 +30,6 @@ namespace Dal
                         cardinfos.Add(info);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             finally
             {

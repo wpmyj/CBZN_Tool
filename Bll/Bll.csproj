@@ -52,6 +52,7 @@
     <Compile Include="DataCombination.cs" />
     <Compile Include="PcommApi.cs" />
     <Compile Include="WinApi.cs" />
+    <Compile Include="XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

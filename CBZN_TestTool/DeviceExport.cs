@@ -1,4 +1,5 @@
-﻿using Bll;
+﻿using System.Drawing;
+using Bll;
 using Dal;
 using Model;
 using System;
@@ -110,6 +111,7 @@ namespace CBZN_TestTool
                     dic.Add(14, "1E");
                     dic.Add(15, string.Format("{0:X2}", item.Detection));//车辆检测
                     dic.Add(16, cardmachine);//出卡机密码
+                    dic.Add(17, string.Format("{0:X2}", item.FuzzyQuery));//模糊查询位数
 
                     sw = File.CreateText(string.Format("{0}\\FORM{1:X2}.txt", path, item.HostNumber));
                     foreach (KeyValuePair<int, string> key in dic)
@@ -119,6 +121,7 @@ namespace CBZN_TestTool
                     }
                     sw.Close();
                 }
+                Close();
             }
             catch (Exception ex)
             {
@@ -128,7 +131,6 @@ namespace CBZN_TestTool
             {
                 if (sw != null)
                     sw.Close();
-                Close();
             }
         }
 
@@ -401,6 +403,27 @@ namespace CBZN_TestTool
                 }
             }
             return false;
+        }
+
+        private void DeviceExport_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                g.DrawRectangle(new Pen(Brushes.Gray, 1), 0, 0, Width - 1, Height - 1);
+            }
+        }
+
+        private void p_Title_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
+            }
         }
     }
 }

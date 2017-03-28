@@ -39,5 +39,7 @@ namespace Model
         public int FrequencyOffset { get; set; }
 
         public int Language { get; set; }
+
+        public int FuzzyQuery { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace Dal
             sb.Append(@" Create Table BundledInfo(Bid integer primary key autoincrement,Cid integer, HostCardNumber NvarChar(10),Vid integer,ViceCardNumber NvarChar(10) );");
 
             sb.Append(
-                @" Create Table DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int, BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int ); ");
+                @" Create Table DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int, BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int , FuzzyQuery int ); ");
 
             sb.Append(@" Create Table ModuleNumber (Mid integer Primary key AUTOINCREMENT, Number Int) ");
 

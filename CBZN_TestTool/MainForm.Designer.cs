@@ -39,7 +39,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.p_Title = new System.Windows.Forms.Panel();
-            this.l_Title = new System.Windows.Forms.Label();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.btn_Min = new CCWin.SkinControl.SkinButton();
             this.p_Left = new System.Windows.Forms.Panel();
@@ -64,17 +63,20 @@
             this.CardCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ViceCardCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_Delay = new NewControl.NewButton();
             this.btn_ReportTheLossOf = new System.Windows.Forms.Button();
-            this.btn_Search = new CCWin.SkinControl.SkinButton();
+            this.btn_Search = new System.Windows.Forms.Button();
             this.tb_Search = new System.Windows.Forms.TextBox();
-            this.btn_ShowRecord = new CCWin.SkinControl.SkinButton();
-            this.btn_Registers = new CCWin.SkinControl.SkinButton();
-            this.btn_Register = new CCWin.SkinControl.SkinButton();
-            this.btn_Read = new CCWin.SkinControl.SkinButton();
+            this.btn_ShowRecord = new NewControl.NewButton();
+            this.btn_Registers = new NewControl.NewButton();
+            this.btn_Register = new NewControl.NewButton();
+            this.btn_Read = new NewControl.NewButton();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.cb_Page = new System.Windows.Forms.ComboBox();
-            this.btn_Previous = new CCWin.SkinControl.SkinButton();
-            this.btn_Next = new CCWin.SkinControl.SkinButton();
+            this.tb_Page = new System.Windows.Forms.TextBox();
+            this.btn_Last = new NewControl.NewButton();
+            this.btn_First = new NewControl.NewButton();
+            this.btn_Previous = new NewControl.NewButton();
+            this.btn_Next = new NewControl.NewButton();
             this.l_RecordCount = new System.Windows.Forms.Label();
             this.p_Tap4 = new System.Windows.Forms.Panel();
             this.dgv_WirelessDescription = new System.Windows.Forms.DataGridView();
@@ -100,22 +102,10 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.btn_TapTemporaryEncryption = new System.Windows.Forms.Button();
             this.btn_TapDistanceEncryption = new System.Windows.Forms.Button();
-            this.p_TemporaryInterface = new System.Windows.Forms.Panel();
-            this.gb_Temporary = new System.Windows.Forms.GroupBox();
-            this.cb_TemporaryWay = new System.Windows.Forms.CheckBox();
-            this.btn_TemporaryDevicePwdEnter = new CCWin.SkinControl.SkinButton();
-            this.tb_ConfirmTemporaryPwd = new System.Windows.Forms.TextBox();
-            this.tb_TemporaryOldPwd = new System.Windows.Forms.TextBox();
-            this.tb_TemporaryPwd = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.cb_DefaultTemporaryOldPwd = new System.Windows.Forms.CheckBox();
-            this.cb_DefaultTemporaryNewPwd = new System.Windows.Forms.CheckBox();
             this.p_DistanceInterface = new System.Windows.Forms.Panel();
             this.gb_Distance = new System.Windows.Forms.GroupBox();
             this.cb_DistanceWay = new System.Windows.Forms.CheckBox();
-            this.btn_DistanceDeviceEnter = new CCWin.SkinControl.SkinButton();
+            this.btn_DistanceDeviceEnter = new NewControl.NewButton();
             this.tb_ConfirmDistancePwd = new System.Windows.Forms.TextBox();
             this.tb_DistanceOldPwd = new System.Windows.Forms.TextBox();
             this.tb_DistancePwd = new System.Windows.Forms.TextBox();
@@ -124,9 +114,40 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cb_DefaultDistanOldPwd = new System.Windows.Forms.CheckBox();
             this.cb_DefaultDistanPwd = new System.Windows.Forms.CheckBox();
+            this.p_TemporaryInterface = new System.Windows.Forms.Panel();
+            this.gb_Temporary = new System.Windows.Forms.GroupBox();
+            this.cb_TemporaryWay = new System.Windows.Forms.CheckBox();
+            this.btn_TemporaryDevicePwdEnter = new NewControl.NewButton();
+            this.tb_ConfirmTemporaryPwd = new System.Windows.Forms.TextBox();
+            this.tb_TemporaryOldPwd = new System.Windows.Forms.TextBox();
+            this.tb_TemporaryPwd = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cb_DefaultTemporaryOldPwd = new System.Windows.Forms.CheckBox();
+            this.cb_DefaultTemporaryNewPwd = new System.Windows.Forms.CheckBox();
             this.p_Tap3 = new System.Windows.Forms.Panel();
             this.cb_AllSelected = new System.Windows.Forms.CheckBox();
             this.dgv_Device = new System.Windows.Forms.DataGridView();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.tb_DevicePage = new System.Windows.Forms.TextBox();
+            this.btn_DeviceLast = new NewControl.NewButton();
+            this.btn_DeviceFirst = new NewControl.NewButton();
+            this.btn_DevicePrevious = new NewControl.NewButton();
+            this.btn_DeviceNext = new NewControl.NewButton();
+            this.l_DeviceRecordCount = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.btn_DeviceImport = new NewControl.NewButton();
+            this.btn_DeviceExport = new NewControl.NewButton();
+            this.btn_DeviceDel = new NewControl.NewButton();
+            this.btn_DeviceEdit = new NewControl.NewButton();
+            this.btn_DeviceAdd = new NewControl.NewButton();
+            this.btn_ShowDeviceRecord = new NewControl.NewButton();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn4 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn5 = new System.Windows.Forms.DataGridViewImageColumn();
             this.c_Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Did = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HostNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -142,23 +163,7 @@
             this.WirelessNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FrequencyOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Language = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.cb_DevicePage = new System.Windows.Forms.ComboBox();
-            this.btn_DevicePrevious = new CCWin.SkinControl.SkinButton();
-            this.btn_DeviceNext = new CCWin.SkinControl.SkinButton();
-            this.l_DeviceRecordCount = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.btn_DeviceImport = new CCWin.SkinControl.SkinButton();
-            this.btn_DeviceExport = new CCWin.SkinControl.SkinButton();
-            this.btn_DeviceDel = new CCWin.SkinControl.SkinButton();
-            this.btn_DeviceEdit = new CCWin.SkinControl.SkinButton();
-            this.btn_DeviceAdd = new CCWin.SkinControl.SkinButton();
-            this.btn_ShowDeviceRecord = new CCWin.SkinControl.SkinButton();
-            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.dataGridViewImageColumn4 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.dataGridViewImageColumn5 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.FuzzyQuery = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.p_Title.SuspendLayout();
             this.p_Left.SuspendLayout();
             this.p_Tap1.SuspendLayout();
@@ -175,10 +180,10 @@
             this.p_Tap2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pwd)).BeginInit();
             this.panel3.SuspendLayout();
-            this.p_TemporaryInterface.SuspendLayout();
-            this.gb_Temporary.SuspendLayout();
             this.p_DistanceInterface.SuspendLayout();
             this.gb_Distance.SuspendLayout();
+            this.p_TemporaryInterface.SuspendLayout();
+            this.gb_Temporary.SuspendLayout();
             this.p_Tap3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Device)).BeginInit();
             this.panel5.SuspendLayout();
@@ -188,29 +193,16 @@
             // p_Title
             // 
             this.p_Title.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.p_Title.Controls.Add(this.l_Title);
             this.p_Title.Controls.Add(this.btn_Close);
             this.p_Title.Controls.Add(this.btn_Min);
             this.p_Title.Dock = System.Windows.Forms.DockStyle.Top;
-            this.p_Title.Location = new System.Drawing.Point(150, 0);
+            this.p_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.p_Title.Location = new System.Drawing.Point(151, 1);
             this.p_Title.Name = "p_Title";
-            this.p_Title.Size = new System.Drawing.Size(850, 40);
+            this.p_Title.Size = new System.Drawing.Size(898, 40);
             this.p_Title.TabIndex = 2;
+            this.p_Title.Paint += new System.Windows.Forms.PaintEventHandler(this.p_Title_Paint);
             this.p_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.p_Title_MouseDown);
-            // 
-            // l_Title
-            // 
-            this.l_Title.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.l_Title.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_Title.ForeColor = System.Drawing.Color.White;
-            this.l_Title.Location = new System.Drawing.Point(0, 0);
-            this.l_Title.Name = "l_Title";
-            this.l_Title.Size = new System.Drawing.Size(746, 40);
-            this.l_Title.TabIndex = 4;
-            this.l_Title.Text = "畅泊测试工具";
-            this.l_Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.l_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.p_Title_MouseDown);
             // 
             // btn_Close
             // 
@@ -219,7 +211,7 @@
             this.btn_Close.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btn_Close.DownBack = global::CBZN_TestTool.Properties.Resources.DownClose;
             this.btn_Close.DrawType = CCWin.SkinControl.DrawStyle.Img;
-            this.btn_Close.Location = new System.Drawing.Point(804, 0);
+            this.btn_Close.Location = new System.Drawing.Point(852, 0);
             this.btn_Close.MouseBack = global::CBZN_TestTool.Properties.Resources.HoverClose;
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.NormlBack = global::CBZN_TestTool.Properties.Resources.NoneClose;
@@ -236,7 +228,7 @@
             this.btn_Min.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btn_Min.DownBack = global::CBZN_TestTool.Properties.Resources.DownHover;
             this.btn_Min.DrawType = CCWin.SkinControl.DrawStyle.Img;
-            this.btn_Min.Location = new System.Drawing.Point(752, 0);
+            this.btn_Min.Location = new System.Drawing.Point(800, 0);
             this.btn_Min.MouseBack = global::CBZN_TestTool.Properties.Resources.HoverMin;
             this.btn_Min.Name = "btn_Min";
             this.btn_Min.NormlBack = global::CBZN_TestTool.Properties.Resources.NoneMin;
@@ -254,9 +246,9 @@
             this.p_Left.Controls.Add(this.btn_Tap1);
             this.p_Left.Controls.Add(this.btn_Tap2);
             this.p_Left.Dock = System.Windows.Forms.DockStyle.Left;
-            this.p_Left.Location = new System.Drawing.Point(0, 0);
+            this.p_Left.Location = new System.Drawing.Point(1, 1);
             this.p_Left.Name = "p_Left";
-            this.p_Left.Size = new System.Drawing.Size(150, 550);
+            this.p_Left.Size = new System.Drawing.Size(150, 548);
             this.p_Left.TabIndex = 3;
             this.p_Left.MouseDown += new System.Windows.Forms.MouseEventHandler(this.p_Title_MouseDown);
             // 
@@ -276,12 +268,9 @@
             this.btn_Tap4.TabStop = false;
             this.btn_Tap4.Text = "无线测试";
             this.btn_Tap4.UseVisualStyleBackColor = false;
-            this.btn_Tap4.Click += new System.EventHandler(this.btn_Tap4_Click);
-            this.btn_Tap4.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap4_Paint);
+            this.btn_Tap4.EnabledChanged += new System.EventHandler(this.BtnEnabledChanged);
+            this.btn_Tap4.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBtnPaint);
             this.btn_Tap4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap4_MouseDown);
-            this.btn_Tap4.MouseEnter += new System.EventHandler(this.btn_Tap4_MouseEnter);
-            this.btn_Tap4.MouseLeave += new System.EventHandler(this.btn_Tap4_MouseLeave);
-            this.btn_Tap4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap4_MouseUp);
             // 
             // btn_Tap3
             // 
@@ -299,16 +288,13 @@
             this.btn_Tap3.TabStop = false;
             this.btn_Tap3.Text = "参数编录";
             this.btn_Tap3.UseVisualStyleBackColor = false;
-            this.btn_Tap3.Click += new System.EventHandler(this.btn_Tap3_Click);
-            this.btn_Tap3.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap3_Paint);
+            this.btn_Tap3.EnabledChanged += new System.EventHandler(this.BtnEnabledChanged);
+            this.btn_Tap3.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBtnPaint);
             this.btn_Tap3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap3_MouseDown);
-            this.btn_Tap3.MouseEnter += new System.EventHandler(this.btn_Tap3_MouseEnter);
-            this.btn_Tap3.MouseLeave += new System.EventHandler(this.btn_Tap3_MouseLeave);
-            this.btn_Tap3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap3_MouseUp);
             // 
             // btn_Tap1
             // 
-            this.btn_Tap1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
+            this.btn_Tap1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Tap1.Enabled = false;
             this.btn_Tap1.FlatAppearance.BorderSize = 0;
             this.btn_Tap1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
@@ -323,12 +309,9 @@
             this.btn_Tap1.TabStop = false;
             this.btn_Tap1.Text = "卡片操作";
             this.btn_Tap1.UseVisualStyleBackColor = false;
-            this.btn_Tap1.Click += new System.EventHandler(this.btn_Tap1_Click);
-            this.btn_Tap1.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap1_Paint);
+            this.btn_Tap1.EnabledChanged += new System.EventHandler(this.BtnEnabledChanged);
+            this.btn_Tap1.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBtnPaint);
             this.btn_Tap1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap1_MouseDown);
-            this.btn_Tap1.MouseEnter += new System.EventHandler(this.btn_Tap1_MouseEnter);
-            this.btn_Tap1.MouseLeave += new System.EventHandler(this.btn_Tap1_MouseLeave);
-            this.btn_Tap1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap1_MouseUp);
             // 
             // btn_Tap2
             // 
@@ -346,12 +329,9 @@
             this.btn_Tap2.TabStop = false;
             this.btn_Tap2.Text = "加密操作";
             this.btn_Tap2.UseVisualStyleBackColor = false;
-            this.btn_Tap2.Click += new System.EventHandler(this.btn_Tap2_Click);
-            this.btn_Tap2.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_Tap2_Paint);
+            this.btn_Tap2.EnabledChanged += new System.EventHandler(this.BtnEnabledChanged);
+            this.btn_Tap2.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBtnPaint);
             this.btn_Tap2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_Tap2_MouseDown);
-            this.btn_Tap2.MouseEnter += new System.EventHandler(this.btn_Tap2_MouseEnter);
-            this.btn_Tap2.MouseLeave += new System.EventHandler(this.btn_Tap2_MouseLeave);
-            this.btn_Tap2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_Tap2_MouseUp);
             // 
             // p_Tap1
             // 
@@ -359,12 +339,11 @@
             this.p_Tap1.Controls.Add(this.panel1);
             this.p_Tap1.Controls.Add(this.panel2);
             this.p_Tap1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.p_Tap1.Location = new System.Drawing.Point(150, 40);
+            this.p_Tap1.Location = new System.Drawing.Point(151, 41);
             this.p_Tap1.Name = "p_Tap1";
             this.p_Tap1.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
-            this.p_Tap1.Size = new System.Drawing.Size(850, 510);
+            this.p_Tap1.Size = new System.Drawing.Size(898, 508);
             this.p_Tap1.TabIndex = 4;
-            this.p_Tap1.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBorderLine);
             // 
             // dgv_DataList
             // 
@@ -418,9 +397,11 @@
             this.dgv_DataList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgv_DataList.RowHeadersVisible = false;
             this.dgv_DataList.RowTemplate.Height = 36;
+            this.dgv_DataList.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv_DataList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_DataList.Size = new System.Drawing.Size(849, 409);
+            this.dgv_DataList.Size = new System.Drawing.Size(897, 407);
             this.dgv_DataList.TabIndex = 0;
+            this.dgv_DataList.TabStop = false;
             this.dgv_DataList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_DataList_CellFormatting);
             this.dgv_DataList.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgv_DataList_RowsAdded);
             this.dgv_DataList.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgv_DataList_RowsRemoved);
@@ -434,7 +415,6 @@
             this.Cid.Name = "Cid";
             this.Cid.ReadOnly = true;
             this.Cid.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Cid.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // CardNumber
             // 
@@ -462,6 +442,7 @@
             this.CardTime.HeaderText = "时 间";
             this.CardTime.Name = "CardTime";
             this.CardTime.ReadOnly = true;
+            this.CardTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.CardTime.Width = 140;
             // 
             // CardDistance
@@ -494,6 +475,7 @@
             this.Synchronous.HeaderText = "同步位";
             this.Synchronous.Name = "Synchronous";
             this.Synchronous.ReadOnly = true;
+            this.Synchronous.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Synchronous.Visible = false;
             // 
             // ParkingRestrictions
@@ -519,6 +501,7 @@
             this.InOutState.HeaderText = "出入状态";
             this.InOutState.Name = "InOutState";
             this.InOutState.ReadOnly = true;
+            this.InOutState.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.InOutState.Visible = false;
             // 
             // Electricity
@@ -536,6 +519,7 @@
             this.CardCount.HeaderText = "计数字节";
             this.CardCount.Name = "CardCount";
             this.CardCount.ReadOnly = true;
+            this.CardCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.CardCount.Visible = false;
             // 
             // ViceCardCount
@@ -544,10 +528,12 @@
             this.ViceCardCount.HeaderText = "副卡数量";
             this.ViceCardCount.Name = "ViceCardCount";
             this.ViceCardCount.ReadOnly = true;
+            this.ViceCardCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.ViceCardCount.Visible = false;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btn_Delay);
             this.panel1.Controls.Add(this.btn_ReportTheLossOf);
             this.panel1.Controls.Add(this.btn_Search);
             this.panel1.Controls.Add(this.tb_Search);
@@ -558,23 +544,44 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(849, 50);
+            this.panel1.Size = new System.Drawing.Size(897, 50);
             this.panel1.TabIndex = 3;
+            // 
+            // btn_Delay
+            // 
+            this.btn_Delay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Delay.Enabled = false;
+            this.btn_Delay.FlatAppearance.BorderSize = 0;
+            this.btn_Delay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Delay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Delay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Delay.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_Delay.ForeColor = System.Drawing.Color.White;
+            this.btn_Delay.Location = new System.Drawing.Point(324, 8);
+            this.btn_Delay.Name = "btn_Delay";
+            this.btn_Delay.Size = new System.Drawing.Size(100, 35);
+            this.btn_Delay.TabIndex = 9;
+            this.btn_Delay.TabStop = false;
+            this.btn_Delay.Text = "延 期";
+            this.btn_Delay.UseVisualStyleBackColor = false;
+            this.btn_Delay.Click += new System.EventHandler(this.btn_Delay_Click);
             // 
             // btn_ReportTheLossOf
             // 
             this.btn_ReportTheLossOf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_ReportTheLossOf.Enabled = false;
             this.btn_ReportTheLossOf.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_ReportTheLossOf.FlatAppearance.BorderSize = 0;
             this.btn_ReportTheLossOf.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_ReportTheLossOf.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_ReportTheLossOf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ReportTheLossOf.Font = new System.Drawing.Font("微软雅黑", 10.5F);
             this.btn_ReportTheLossOf.ForeColor = System.Drawing.Color.White;
-            this.btn_ReportTheLossOf.Location = new System.Drawing.Point(324, 8);
+            this.btn_ReportTheLossOf.Location = new System.Drawing.Point(430, 8);
             this.btn_ReportTheLossOf.Name = "btn_ReportTheLossOf";
             this.btn_ReportTheLossOf.Size = new System.Drawing.Size(150, 35);
             this.btn_ReportTheLossOf.TabIndex = 5;
+            this.btn_ReportTheLossOf.TabStop = false;
             this.btn_ReportTheLossOf.Text = "挂 失";
             this.btn_ReportTheLossOf.UseVisualStyleBackColor = false;
             this.btn_ReportTheLossOf.Click += new System.EventHandler(this.btn_ReportTheLossOf_Click);
@@ -587,23 +594,17 @@
             // 
             // btn_Search
             // 
-            this.btn_Search.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Search.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Search.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Search.DownBack = null;
-            this.btn_Search.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Search.FadeGlow = false;
+            this.btn_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Search.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Search.FlatAppearance.BorderSize = 0;
+            this.btn_Search.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Search.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Search.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Search.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Search.ForeColor = System.Drawing.Color.White;
             this.btn_Search.Image = global::CBZN_TestTool.Properties.Resources.Search;
-            this.btn_Search.ImageSize = new System.Drawing.Size(32, 32);
-            this.btn_Search.IsDrawBorder = false;
-            this.btn_Search.IsDrawGlass = false;
-            this.btn_Search.Location = new System.Drawing.Point(811, 9);
-            this.btn_Search.MouseBack = null;
-            this.btn_Search.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Search.Location = new System.Drawing.Point(859, 9);
             this.btn_Search.Name = "btn_Search";
-            this.btn_Search.NormlBack = null;
             this.btn_Search.Size = new System.Drawing.Size(35, 32);
             this.btn_Search.TabIndex = 8;
             this.btn_Search.TabStop = false;
@@ -612,31 +613,27 @@
             // 
             // tb_Search
             // 
+            this.tb_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_Search.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_Search.Location = new System.Drawing.Point(661, 11);
+            this.tb_Search.Location = new System.Drawing.Point(709, 11);
             this.tb_Search.MaxLength = 50;
             this.tb_Search.Name = "tb_Search";
             this.tb_Search.Size = new System.Drawing.Size(150, 29);
             this.tb_Search.TabIndex = 7;
+            this.tb_Search.TabStop = false;
             this.tb_Search.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_Search_KeyDown);
             // 
             // btn_ShowRecord
             // 
-            this.btn_ShowRecord.BackColor = System.Drawing.Color.Transparent;
-            this.btn_ShowRecord.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_ShowRecord.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_ShowRecord.DownBack = null;
-            this.btn_ShowRecord.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_ShowRecord.FadeGlow = false;
+            this.btn_ShowRecord.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_ShowRecord.FlatAppearance.BorderSize = 0;
+            this.btn_ShowRecord.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_ShowRecord.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_ShowRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ShowRecord.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_ShowRecord.ForeColor = System.Drawing.Color.White;
-            this.btn_ShowRecord.IsDrawBorder = false;
-            this.btn_ShowRecord.IsDrawGlass = false;
-            this.btn_ShowRecord.Location = new System.Drawing.Point(480, 8);
-            this.btn_ShowRecord.MouseBack = null;
-            this.btn_ShowRecord.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_ShowRecord.Location = new System.Drawing.Point(586, 8);
             this.btn_ShowRecord.Name = "btn_ShowRecord";
-            this.btn_ShowRecord.NormlBack = null;
             this.btn_ShowRecord.Size = new System.Drawing.Size(100, 35);
             this.btn_ShowRecord.TabIndex = 6;
             this.btn_ShowRecord.TabStop = false;
@@ -646,22 +643,16 @@
             // 
             // btn_Registers
             // 
-            this.btn_Registers.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Registers.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Registers.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Registers.DownBack = null;
-            this.btn_Registers.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Registers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Registers.Enabled = false;
-            this.btn_Registers.FadeGlow = false;
+            this.btn_Registers.FlatAppearance.BorderSize = 0;
+            this.btn_Registers.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Registers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Registers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Registers.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Registers.ForeColor = System.Drawing.Color.White;
-            this.btn_Registers.IsDrawBorder = false;
-            this.btn_Registers.IsDrawGlass = false;
             this.btn_Registers.Location = new System.Drawing.Point(112, 8);
-            this.btn_Registers.MouseBack = null;
-            this.btn_Registers.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Registers.Name = "btn_Registers";
-            this.btn_Registers.NormlBack = null;
             this.btn_Registers.Size = new System.Drawing.Size(100, 35);
             this.btn_Registers.TabIndex = 4;
             this.btn_Registers.TabStop = false;
@@ -671,22 +662,16 @@
             // 
             // btn_Register
             // 
-            this.btn_Register.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Register.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Register.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Register.DownBack = null;
-            this.btn_Register.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Register.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Register.Enabled = false;
-            this.btn_Register.FadeGlow = false;
+            this.btn_Register.FlatAppearance.BorderSize = 0;
+            this.btn_Register.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Register.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Register.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Register.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Register.ForeColor = System.Drawing.Color.White;
-            this.btn_Register.IsDrawBorder = false;
-            this.btn_Register.IsDrawGlass = false;
             this.btn_Register.Location = new System.Drawing.Point(218, 8);
-            this.btn_Register.MouseBack = null;
-            this.btn_Register.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Register.Name = "btn_Register";
-            this.btn_Register.NormlBack = null;
             this.btn_Register.Size = new System.Drawing.Size(100, 35);
             this.btn_Register.TabIndex = 3;
             this.btn_Register.TabStop = false;
@@ -696,22 +681,16 @@
             // 
             // btn_Read
             // 
-            this.btn_Read.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Read.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Read.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Read.DownBack = null;
-            this.btn_Read.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Read.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Read.Enabled = false;
-            this.btn_Read.FadeGlow = false;
+            this.btn_Read.FlatAppearance.BorderSize = 0;
+            this.btn_Read.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Read.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Read.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Read.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Read.ForeColor = System.Drawing.Color.White;
-            this.btn_Read.IsDrawBorder = false;
-            this.btn_Read.IsDrawGlass = false;
             this.btn_Read.Location = new System.Drawing.Point(6, 8);
-            this.btn_Read.MouseBack = null;
-            this.btn_Read.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Read.Name = "btn_Read";
-            this.btn_Read.NormlBack = null;
             this.btn_Read.Size = new System.Drawing.Size(100, 35);
             this.btn_Read.TabIndex = 2;
             this.btn_Read.TabStop = false;
@@ -721,74 +700,107 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.cb_Page);
+            this.panel2.Controls.Add(this.tb_Page);
+            this.panel2.Controls.Add(this.btn_Last);
+            this.panel2.Controls.Add(this.btn_First);
             this.panel2.Controls.Add(this.btn_Previous);
             this.panel2.Controls.Add(this.btn_Next);
             this.panel2.Controls.Add(this.l_RecordCount);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 459);
+            this.panel2.Location = new System.Drawing.Point(0, 457);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(849, 50);
+            this.panel2.Size = new System.Drawing.Size(897, 50);
             this.panel2.TabIndex = 4;
             // 
-            // cb_Page
+            // tb_Page
             // 
-            this.cb_Page.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_Page.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cb_Page.FormattingEnabled = true;
-            this.cb_Page.Location = new System.Drawing.Point(622, 9);
-            this.cb_Page.Name = "cb_Page";
-            this.cb_Page.Size = new System.Drawing.Size(110, 33);
-            this.cb_Page.TabIndex = 4;
-            this.cb_Page.SelectedIndexChanged += new System.EventHandler(this.cb_Page_SelectedIndexChanged);
+            this.tb_Page.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_Page.Location = new System.Drawing.Point(697, 9);
+            this.tb_Page.MaxLength = 10;
+            this.tb_Page.Name = "tb_Page";
+            this.tb_Page.Size = new System.Drawing.Size(100, 33);
+            this.tb_Page.TabIndex = 7;
+            this.tb_Page.TabStop = false;
+            this.tb_Page.Text = "1";
+            this.tb_Page.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_Page_KeyPress);
+            // 
+            // btn_Last
+            // 
+            this.btn_Last.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Last.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Last.Enabled = false;
+            this.btn_Last.FlatAppearance.BorderSize = 0;
+            this.btn_Last.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Last.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Last.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Last.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_Last.ForeColor = System.Drawing.Color.White;
+            this.btn_Last.Location = new System.Drawing.Point(839, 8);
+            this.btn_Last.Name = "btn_Last";
+            this.btn_Last.Size = new System.Drawing.Size(35, 35);
+            this.btn_Last.TabIndex = 6;
+            this.btn_Last.TabStop = false;
+            this.btn_Last.Text = ">|";
+            this.btn_Last.UseVisualStyleBackColor = false;
+            this.btn_Last.Click += new System.EventHandler(this.btn_Last_Click);
+            // 
+            // btn_First
+            // 
+            this.btn_First.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_First.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_First.Enabled = false;
+            this.btn_First.FlatAppearance.BorderSize = 0;
+            this.btn_First.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_First.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_First.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_First.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_First.ForeColor = System.Drawing.Color.White;
+            this.btn_First.Location = new System.Drawing.Point(613, 8);
+            this.btn_First.Name = "btn_First";
+            this.btn_First.Size = new System.Drawing.Size(35, 35);
+            this.btn_First.TabIndex = 5;
+            this.btn_First.TabStop = false;
+            this.btn_First.Text = "|<";
+            this.btn_First.UseVisualStyleBackColor = false;
+            this.btn_First.Click += new System.EventHandler(this.btn_First_Click);
             // 
             // btn_Previous
             // 
-            this.btn_Previous.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Previous.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Previous.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Previous.DownBack = null;
-            this.btn_Previous.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Previous.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Previous.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Previous.Enabled = false;
-            this.btn_Previous.FadeGlow = false;
+            this.btn_Previous.FlatAppearance.BorderSize = 0;
+            this.btn_Previous.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Previous.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Previous.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Previous.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Previous.ForeColor = System.Drawing.Color.White;
-            this.btn_Previous.IsDrawBorder = false;
-            this.btn_Previous.IsDrawGlass = false;
-            this.btn_Previous.Location = new System.Drawing.Point(516, 8);
-            this.btn_Previous.MouseBack = null;
-            this.btn_Previous.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Previous.Location = new System.Drawing.Point(654, 8);
             this.btn_Previous.Name = "btn_Previous";
-            this.btn_Previous.NormlBack = null;
-            this.btn_Previous.Size = new System.Drawing.Size(100, 35);
+            this.btn_Previous.Size = new System.Drawing.Size(35, 35);
             this.btn_Previous.TabIndex = 3;
             this.btn_Previous.TabStop = false;
-            this.btn_Previous.Text = "上一页";
+            this.btn_Previous.Text = "<";
             this.btn_Previous.UseVisualStyleBackColor = false;
             this.btn_Previous.Click += new System.EventHandler(this.btn_Previous_Click);
             // 
             // btn_Next
             // 
-            this.btn_Next.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Next.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Next.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_Next.DownBack = null;
-            this.btn_Next.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Next.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Next.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Next.Enabled = false;
-            this.btn_Next.FadeGlow = false;
+            this.btn_Next.FlatAppearance.BorderSize = 0;
+            this.btn_Next.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Next.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Next.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Next.ForeColor = System.Drawing.Color.White;
-            this.btn_Next.IsDrawBorder = false;
-            this.btn_Next.IsDrawGlass = false;
-            this.btn_Next.Location = new System.Drawing.Point(738, 8);
-            this.btn_Next.MouseBack = null;
-            this.btn_Next.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Next.Location = new System.Drawing.Point(801, 8);
             this.btn_Next.Name = "btn_Next";
-            this.btn_Next.NormlBack = null;
-            this.btn_Next.Size = new System.Drawing.Size(100, 35);
+            this.btn_Next.Size = new System.Drawing.Size(35, 35);
             this.btn_Next.TabIndex = 3;
             this.btn_Next.TabStop = false;
-            this.btn_Next.Text = "下一页";
+            this.btn_Next.Text = ">";
             this.btn_Next.UseVisualStyleBackColor = false;
             this.btn_Next.Click += new System.EventHandler(this.btn_Next_Click);
             // 
@@ -798,22 +810,21 @@
             this.l_RecordCount.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.l_RecordCount.Location = new System.Drawing.Point(15, 15);
             this.l_RecordCount.Name = "l_RecordCount";
-            this.l_RecordCount.Size = new System.Drawing.Size(95, 20);
+            this.l_RecordCount.Size = new System.Drawing.Size(139, 20);
             this.l_RecordCount.TabIndex = 0;
-            this.l_RecordCount.Text = "总共 0 条记录";
+            this.l_RecordCount.Text = "共 0 条记录，共 0 页";
             // 
             // p_Tap4
             // 
             this.p_Tap4.Controls.Add(this.dgv_WirelessDescription);
             this.p_Tap4.Controls.Add(this.p_Wireless);
             this.p_Tap4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.p_Tap4.Location = new System.Drawing.Point(150, 40);
+            this.p_Tap4.Location = new System.Drawing.Point(151, 41);
             this.p_Tap4.Name = "p_Tap4";
             this.p_Tap4.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
-            this.p_Tap4.Size = new System.Drawing.Size(850, 510);
+            this.p_Tap4.Size = new System.Drawing.Size(898, 508);
             this.p_Tap4.TabIndex = 0;
             this.p_Tap4.VisibleChanged += new System.EventHandler(this.p_Tap4_VisibleChanged);
-            this.p_Tap4.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBorderLine);
             // 
             // dgv_WirelessDescription
             // 
@@ -834,6 +845,7 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgv_WirelessDescription.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgv_WirelessDescription.ColumnHeadersHeight = 40;
+            this.dgv_WirelessDescription.ColumnHeadersVisible = false;
             this.dgv_WirelessDescription.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_description3});
             this.dgv_WirelessDescription.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -845,7 +857,7 @@
             this.dgv_WirelessDescription.RowHeadersVisible = false;
             this.dgv_WirelessDescription.RowTemplate.Height = 36;
             this.dgv_WirelessDescription.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_WirelessDescription.Size = new System.Drawing.Size(549, 509);
+            this.dgv_WirelessDescription.Size = new System.Drawing.Size(597, 507);
             this.dgv_WirelessDescription.StandardTab = true;
             this.dgv_WirelessDescription.TabIndex = 2;
             this.dgv_WirelessDescription.TabStop = false;
@@ -857,7 +869,7 @@
             this.c_description3.Name = "c_description3";
             this.c_description3.ReadOnly = true;
             this.c_description3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.c_description3.Width = 535;
+            this.c_description3.Width = 580;
             // 
             // p_Wireless
             // 
@@ -866,7 +878,7 @@
             this.p_Wireless.Dock = System.Windows.Forms.DockStyle.Left;
             this.p_Wireless.Location = new System.Drawing.Point(0, 0);
             this.p_Wireless.Name = "p_Wireless";
-            this.p_Wireless.Size = new System.Drawing.Size(300, 509);
+            this.p_Wireless.Size = new System.Drawing.Size(300, 507);
             this.p_Wireless.TabIndex = 12;
             this.p_Wireless.Paint += new System.Windows.Forms.PaintEventHandler(this.p_Wireless_Paint);
             // 
@@ -1117,12 +1129,11 @@
             this.p_Tap2.Controls.Add(this.dgv_pwd);
             this.p_Tap2.Controls.Add(this.panel3);
             this.p_Tap2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.p_Tap2.Location = new System.Drawing.Point(150, 40);
+            this.p_Tap2.Location = new System.Drawing.Point(151, 41);
             this.p_Tap2.Name = "p_Tap2";
             this.p_Tap2.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
-            this.p_Tap2.Size = new System.Drawing.Size(850, 510);
+            this.p_Tap2.Size = new System.Drawing.Size(898, 508);
             this.p_Tap2.TabIndex = 1;
-            this.p_Tap2.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBorderLine);
             // 
             // dgv_pwd
             // 
@@ -1143,6 +1154,7 @@
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgv_pwd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgv_pwd.ColumnHeadersHeight = 40;
+            this.dgv_pwd.ColumnHeadersVisible = false;
             this.dgv_pwd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_descript2,
             this.c_time2});
@@ -1155,7 +1167,7 @@
             this.dgv_pwd.RowHeadersVisible = false;
             this.dgv_pwd.RowTemplate.Height = 36;
             this.dgv_pwd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_pwd.Size = new System.Drawing.Size(609, 509);
+            this.dgv_pwd.Size = new System.Drawing.Size(657, 507);
             this.dgv_pwd.StandardTab = true;
             this.dgv_pwd.TabIndex = 1;
             this.dgv_pwd.TabStop = false;
@@ -1190,7 +1202,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(240, 509);
+            this.panel3.Size = new System.Drawing.Size(240, 507);
             this.panel3.TabIndex = 0;
             // 
             // btn_TapTemporaryEncryption
@@ -1209,16 +1221,13 @@
             this.btn_TapTemporaryEncryption.TabStop = false;
             this.btn_TapTemporaryEncryption.Text = "临时加密";
             this.btn_TapTemporaryEncryption.UseVisualStyleBackColor = false;
+            this.btn_TapTemporaryEncryption.EnabledChanged += new System.EventHandler(this.BtnEnabledChanged2);
             this.btn_TapTemporaryEncryption.Click += new System.EventHandler(this.btn_TapTemporaryEncryption_Click);
-            this.btn_TapTemporaryEncryption.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_TapTemporaryEncryption_Paint);
-            this.btn_TapTemporaryEncryption.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_TapTemporaryEncryption_MouseDown);
-            this.btn_TapTemporaryEncryption.MouseEnter += new System.EventHandler(this.btn_TapTemporaryEncryption_MouseEnter);
-            this.btn_TapTemporaryEncryption.MouseLeave += new System.EventHandler(this.btn_TapTemporaryEncryption_MouseLeave);
-            this.btn_TapTemporaryEncryption.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_TapTemporaryEncryption_MouseUp);
+            this.btn_TapTemporaryEncryption.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBtnPaint2);
             // 
             // btn_TapDistanceEncryption
             // 
-            this.btn_TapDistanceEncryption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
+            this.btn_TapDistanceEncryption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_TapDistanceEncryption.Enabled = false;
             this.btn_TapDistanceEncryption.FlatAppearance.BorderSize = 0;
             this.btn_TapDistanceEncryption.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
@@ -1233,168 +1242,9 @@
             this.btn_TapDistanceEncryption.TabStop = false;
             this.btn_TapDistanceEncryption.Text = "定距加密";
             this.btn_TapDistanceEncryption.UseVisualStyleBackColor = false;
+            this.btn_TapDistanceEncryption.EnabledChanged += new System.EventHandler(this.BtnEnabledChanged2);
             this.btn_TapDistanceEncryption.Click += new System.EventHandler(this.btn_TapDistanceEncryption_Click);
-            this.btn_TapDistanceEncryption.Paint += new System.Windows.Forms.PaintEventHandler(this.btn_TapDistanceEncryption_Paint);
-            this.btn_TapDistanceEncryption.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_TapDistanceEncryption_MouseDown);
-            this.btn_TapDistanceEncryption.MouseEnter += new System.EventHandler(this.btn_TapDistanceEncryption_MouseEnter);
-            this.btn_TapDistanceEncryption.MouseLeave += new System.EventHandler(this.btn_TapDistanceEncryption_MouseLeave);
-            this.btn_TapDistanceEncryption.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_TapDistanceEncryption_MouseUp);
-            // 
-            // p_TemporaryInterface
-            // 
-            this.p_TemporaryInterface.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.p_TemporaryInterface.Controls.Add(this.gb_Temporary);
-            this.p_TemporaryInterface.Location = new System.Drawing.Point(0, 45);
-            this.p_TemporaryInterface.Name = "p_TemporaryInterface";
-            this.p_TemporaryInterface.Size = new System.Drawing.Size(240, 464);
-            this.p_TemporaryInterface.TabIndex = 3;
-            this.p_TemporaryInterface.Visible = false;
-            this.p_TemporaryInterface.Paint += new System.Windows.Forms.PaintEventHandler(this.p_TemporaryInterface_Paint);
-            // 
-            // gb_Temporary
-            // 
-            this.gb_Temporary.Controls.Add(this.cb_TemporaryWay);
-            this.gb_Temporary.Controls.Add(this.btn_TemporaryDevicePwdEnter);
-            this.gb_Temporary.Controls.Add(this.tb_ConfirmTemporaryPwd);
-            this.gb_Temporary.Controls.Add(this.tb_TemporaryOldPwd);
-            this.gb_Temporary.Controls.Add(this.tb_TemporaryPwd);
-            this.gb_Temporary.Controls.Add(this.label4);
-            this.gb_Temporary.Controls.Add(this.label7);
-            this.gb_Temporary.Controls.Add(this.label8);
-            this.gb_Temporary.Controls.Add(this.cb_DefaultTemporaryOldPwd);
-            this.gb_Temporary.Controls.Add(this.cb_DefaultTemporaryNewPwd);
-            this.gb_Temporary.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.gb_Temporary.Location = new System.Drawing.Point(10, 20);
-            this.gb_Temporary.Name = "gb_Temporary";
-            this.gb_Temporary.Size = new System.Drawing.Size(220, 340);
-            this.gb_Temporary.TabIndex = 0;
-            this.gb_Temporary.TabStop = false;
-            this.gb_Temporary.Text = "临时IC发卡器加密";
-            // 
-            // cb_TemporaryWay
-            // 
-            this.cb_TemporaryWay.AutoSize = true;
-            this.cb_TemporaryWay.Location = new System.Drawing.Point(15, 297);
-            this.cb_TemporaryWay.Name = "cb_TemporaryWay";
-            this.cb_TemporaryWay.Size = new System.Drawing.Size(75, 21);
-            this.cb_TemporaryWay.TabIndex = 5;
-            this.cb_TemporaryWay.Text = "IC卡加密";
-            this.cb_TemporaryWay.UseVisualStyleBackColor = true;
-            this.cb_TemporaryWay.CheckedChanged += new System.EventHandler(this.cb_TemporaryWay_CheckedChanged);
-            // 
-            // btn_TemporaryDevicePwdEnter
-            // 
-            this.btn_TemporaryDevicePwdEnter.BackColor = System.Drawing.Color.Transparent;
-            this.btn_TemporaryDevicePwdEnter.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_TemporaryDevicePwdEnter.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_TemporaryDevicePwdEnter.DownBack = null;
-            this.btn_TemporaryDevicePwdEnter.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_TemporaryDevicePwdEnter.FadeGlow = false;
-            this.btn_TemporaryDevicePwdEnter.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_TemporaryDevicePwdEnter.ForeColor = System.Drawing.Color.White;
-            this.btn_TemporaryDevicePwdEnter.IsDrawBorder = false;
-            this.btn_TemporaryDevicePwdEnter.IsDrawGlass = false;
-            this.btn_TemporaryDevicePwdEnter.Location = new System.Drawing.Point(105, 288);
-            this.btn_TemporaryDevicePwdEnter.MouseBack = null;
-            this.btn_TemporaryDevicePwdEnter.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_TemporaryDevicePwdEnter.Name = "btn_TemporaryDevicePwdEnter";
-            this.btn_TemporaryDevicePwdEnter.NormlBack = null;
-            this.btn_TemporaryDevicePwdEnter.Size = new System.Drawing.Size(100, 35);
-            this.btn_TemporaryDevicePwdEnter.TabIndex = 6;
-            this.btn_TemporaryDevicePwdEnter.TabStop = false;
-            this.btn_TemporaryDevicePwdEnter.Text = "加 密";
-            this.btn_TemporaryDevicePwdEnter.UseVisualStyleBackColor = false;
-            this.btn_TemporaryDevicePwdEnter.Click += new System.EventHandler(this.btn_TemporaryDevicePwdEnter_Click);
-            // 
-            // tb_ConfirmTemporaryPwd
-            // 
-            this.tb_ConfirmTemporaryPwd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_ConfirmTemporaryPwd.Location = new System.Drawing.Point(15, 210);
-            this.tb_ConfirmTemporaryPwd.MaxLength = 8;
-            this.tb_ConfirmTemporaryPwd.Name = "tb_ConfirmTemporaryPwd";
-            this.tb_ConfirmTemporaryPwd.Size = new System.Drawing.Size(190, 29);
-            this.tb_ConfirmTemporaryPwd.TabIndex = 3;
-            this.tb_ConfirmTemporaryPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_ConfirmTemporaryPwd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ConfirmTemporaryPwd_KeyDown);
-            this.tb_ConfirmTemporaryPwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtKeyProcess);
-            // 
-            // tb_TemporaryOldPwd
-            // 
-            this.tb_TemporaryOldPwd.Enabled = false;
-            this.tb_TemporaryOldPwd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_TemporaryOldPwd.Location = new System.Drawing.Point(15, 52);
-            this.tb_TemporaryOldPwd.MaxLength = 8;
-            this.tb_TemporaryOldPwd.Name = "tb_TemporaryOldPwd";
-            this.tb_TemporaryOldPwd.Size = new System.Drawing.Size(190, 29);
-            this.tb_TemporaryOldPwd.TabIndex = 0;
-            this.tb_TemporaryOldPwd.Text = "12345678";
-            this.tb_TemporaryOldPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_TemporaryOldPwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtKeyProcess);
-            // 
-            // tb_TemporaryPwd
-            // 
-            this.tb_TemporaryPwd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_TemporaryPwd.Location = new System.Drawing.Point(15, 145);
-            this.tb_TemporaryPwd.MaxLength = 8;
-            this.tb_TemporaryPwd.Name = "tb_TemporaryPwd";
-            this.tb_TemporaryPwd.Size = new System.Drawing.Size(190, 29);
-            this.tb_TemporaryPwd.TabIndex = 2;
-            this.tb_TemporaryPwd.Text = "12345678";
-            this.tb_TemporaryPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_TemporaryPwd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_TemporaryPwd_KeyDown);
-            this.tb_TemporaryPwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtKeyProcess);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 32);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(119, 17);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "旧密码 （8 位数字）";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 190);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(56, 17);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "确认密码";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(17, 125);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(119, 17);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "新密码 （8 位数字）";
-            // 
-            // cb_DefaultTemporaryOldPwd
-            // 
-            this.cb_DefaultTemporaryOldPwd.AutoSize = true;
-            this.cb_DefaultTemporaryOldPwd.Enabled = false;
-            this.cb_DefaultTemporaryOldPwd.Location = new System.Drawing.Point(17, 89);
-            this.cb_DefaultTemporaryOldPwd.Name = "cb_DefaultTemporaryOldPwd";
-            this.cb_DefaultTemporaryOldPwd.Size = new System.Drawing.Size(75, 21);
-            this.cb_DefaultTemporaryOldPwd.TabIndex = 1;
-            this.cb_DefaultTemporaryOldPwd.Text = "出厂默认";
-            this.cb_DefaultTemporaryOldPwd.UseVisualStyleBackColor = true;
-            this.cb_DefaultTemporaryOldPwd.CheckedChanged += new System.EventHandler(this.cb_DefaultTemporaryOldPwd_CheckedChanged);
-            // 
-            // cb_DefaultTemporaryNewPwd
-            // 
-            this.cb_DefaultTemporaryNewPwd.AutoSize = true;
-            this.cb_DefaultTemporaryNewPwd.Location = new System.Drawing.Point(17, 245);
-            this.cb_DefaultTemporaryNewPwd.Name = "cb_DefaultTemporaryNewPwd";
-            this.cb_DefaultTemporaryNewPwd.Size = new System.Drawing.Size(75, 21);
-            this.cb_DefaultTemporaryNewPwd.TabIndex = 4;
-            this.cb_DefaultTemporaryNewPwd.Text = "出厂默认";
-            this.cb_DefaultTemporaryNewPwd.UseVisualStyleBackColor = true;
-            this.cb_DefaultTemporaryNewPwd.CheckedChanged += new System.EventHandler(this.cb_DefaultTemporaryNewPwd_CheckedChanged);
+            this.btn_TapDistanceEncryption.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBtnPaint2);
             // 
             // p_DistanceInterface
             // 
@@ -1405,7 +1255,7 @@
             this.p_DistanceInterface.Controls.Add(this.gb_Distance);
             this.p_DistanceInterface.Location = new System.Drawing.Point(0, 45);
             this.p_DistanceInterface.Name = "p_DistanceInterface";
-            this.p_DistanceInterface.Size = new System.Drawing.Size(240, 464);
+            this.p_DistanceInterface.Size = new System.Drawing.Size(240, 462);
             this.p_DistanceInterface.TabIndex = 2;
             this.p_DistanceInterface.Paint += new System.Windows.Forms.PaintEventHandler(this.p_DistanceInterface_Paint);
             // 
@@ -1442,21 +1292,15 @@
             // 
             // btn_DistanceDeviceEnter
             // 
-            this.btn_DistanceDeviceEnter.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DistanceDeviceEnter.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DistanceDeviceEnter.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DistanceDeviceEnter.DownBack = null;
-            this.btn_DistanceDeviceEnter.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DistanceDeviceEnter.FadeGlow = false;
+            this.btn_DistanceDeviceEnter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DistanceDeviceEnter.FlatAppearance.BorderSize = 0;
+            this.btn_DistanceDeviceEnter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DistanceDeviceEnter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_DistanceDeviceEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DistanceDeviceEnter.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_DistanceDeviceEnter.ForeColor = System.Drawing.Color.White;
-            this.btn_DistanceDeviceEnter.IsDrawBorder = false;
-            this.btn_DistanceDeviceEnter.IsDrawGlass = false;
             this.btn_DistanceDeviceEnter.Location = new System.Drawing.Point(105, 288);
-            this.btn_DistanceDeviceEnter.MouseBack = null;
-            this.btn_DistanceDeviceEnter.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_DistanceDeviceEnter.Name = "btn_DistanceDeviceEnter";
-            this.btn_DistanceDeviceEnter.NormlBack = null;
             this.btn_DistanceDeviceEnter.Size = new System.Drawing.Size(100, 35);
             this.btn_DistanceDeviceEnter.TabIndex = 6;
             this.btn_DistanceDeviceEnter.TabStop = false;
@@ -1552,6 +1396,156 @@
             this.cb_DefaultDistanPwd.UseVisualStyleBackColor = true;
             this.cb_DefaultDistanPwd.CheckedChanged += new System.EventHandler(this.cb_DefaultDistanPwd_CheckedChanged);
             // 
+            // p_TemporaryInterface
+            // 
+            this.p_TemporaryInterface.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.p_TemporaryInterface.Controls.Add(this.gb_Temporary);
+            this.p_TemporaryInterface.Location = new System.Drawing.Point(0, 45);
+            this.p_TemporaryInterface.Name = "p_TemporaryInterface";
+            this.p_TemporaryInterface.Size = new System.Drawing.Size(240, 462);
+            this.p_TemporaryInterface.TabIndex = 3;
+            this.p_TemporaryInterface.Visible = false;
+            this.p_TemporaryInterface.Paint += new System.Windows.Forms.PaintEventHandler(this.p_TemporaryInterface_Paint);
+            // 
+            // gb_Temporary
+            // 
+            this.gb_Temporary.Controls.Add(this.cb_TemporaryWay);
+            this.gb_Temporary.Controls.Add(this.btn_TemporaryDevicePwdEnter);
+            this.gb_Temporary.Controls.Add(this.tb_ConfirmTemporaryPwd);
+            this.gb_Temporary.Controls.Add(this.tb_TemporaryOldPwd);
+            this.gb_Temporary.Controls.Add(this.tb_TemporaryPwd);
+            this.gb_Temporary.Controls.Add(this.label4);
+            this.gb_Temporary.Controls.Add(this.label7);
+            this.gb_Temporary.Controls.Add(this.label8);
+            this.gb_Temporary.Controls.Add(this.cb_DefaultTemporaryOldPwd);
+            this.gb_Temporary.Controls.Add(this.cb_DefaultTemporaryNewPwd);
+            this.gb_Temporary.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.gb_Temporary.Location = new System.Drawing.Point(10, 20);
+            this.gb_Temporary.Name = "gb_Temporary";
+            this.gb_Temporary.Size = new System.Drawing.Size(220, 340);
+            this.gb_Temporary.TabIndex = 0;
+            this.gb_Temporary.TabStop = false;
+            this.gb_Temporary.Text = "临时IC发卡器加密";
+            // 
+            // cb_TemporaryWay
+            // 
+            this.cb_TemporaryWay.AutoSize = true;
+            this.cb_TemporaryWay.Location = new System.Drawing.Point(15, 297);
+            this.cb_TemporaryWay.Name = "cb_TemporaryWay";
+            this.cb_TemporaryWay.Size = new System.Drawing.Size(75, 21);
+            this.cb_TemporaryWay.TabIndex = 5;
+            this.cb_TemporaryWay.Text = "IC卡加密";
+            this.cb_TemporaryWay.UseVisualStyleBackColor = true;
+            this.cb_TemporaryWay.CheckedChanged += new System.EventHandler(this.cb_TemporaryWay_CheckedChanged);
+            // 
+            // btn_TemporaryDevicePwdEnter
+            // 
+            this.btn_TemporaryDevicePwdEnter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_TemporaryDevicePwdEnter.FlatAppearance.BorderSize = 0;
+            this.btn_TemporaryDevicePwdEnter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_TemporaryDevicePwdEnter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_TemporaryDevicePwdEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_TemporaryDevicePwdEnter.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_TemporaryDevicePwdEnter.ForeColor = System.Drawing.Color.White;
+            this.btn_TemporaryDevicePwdEnter.Location = new System.Drawing.Point(105, 288);
+            this.btn_TemporaryDevicePwdEnter.Name = "btn_TemporaryDevicePwdEnter";
+            this.btn_TemporaryDevicePwdEnter.Size = new System.Drawing.Size(100, 35);
+            this.btn_TemporaryDevicePwdEnter.TabIndex = 6;
+            this.btn_TemporaryDevicePwdEnter.TabStop = false;
+            this.btn_TemporaryDevicePwdEnter.Text = "加 密";
+            this.btn_TemporaryDevicePwdEnter.UseVisualStyleBackColor = false;
+            this.btn_TemporaryDevicePwdEnter.Click += new System.EventHandler(this.btn_TemporaryDevicePwdEnter_Click);
+            // 
+            // tb_ConfirmTemporaryPwd
+            // 
+            this.tb_ConfirmTemporaryPwd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_ConfirmTemporaryPwd.Location = new System.Drawing.Point(15, 210);
+            this.tb_ConfirmTemporaryPwd.MaxLength = 8;
+            this.tb_ConfirmTemporaryPwd.Name = "tb_ConfirmTemporaryPwd";
+            this.tb_ConfirmTemporaryPwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_ConfirmTemporaryPwd.TabIndex = 3;
+            this.tb_ConfirmTemporaryPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tb_ConfirmTemporaryPwd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ConfirmTemporaryPwd_KeyDown);
+            this.tb_ConfirmTemporaryPwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtKeyProcess);
+            // 
+            // tb_TemporaryOldPwd
+            // 
+            this.tb_TemporaryOldPwd.Enabled = false;
+            this.tb_TemporaryOldPwd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_TemporaryOldPwd.Location = new System.Drawing.Point(15, 52);
+            this.tb_TemporaryOldPwd.MaxLength = 8;
+            this.tb_TemporaryOldPwd.Name = "tb_TemporaryOldPwd";
+            this.tb_TemporaryOldPwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_TemporaryOldPwd.TabIndex = 0;
+            this.tb_TemporaryOldPwd.Text = "12345678";
+            this.tb_TemporaryOldPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tb_TemporaryOldPwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtKeyProcess);
+            // 
+            // tb_TemporaryPwd
+            // 
+            this.tb_TemporaryPwd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_TemporaryPwd.Location = new System.Drawing.Point(15, 145);
+            this.tb_TemporaryPwd.MaxLength = 8;
+            this.tb_TemporaryPwd.Name = "tb_TemporaryPwd";
+            this.tb_TemporaryPwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_TemporaryPwd.TabIndex = 2;
+            this.tb_TemporaryPwd.Text = "12345678";
+            this.tb_TemporaryPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tb_TemporaryPwd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_TemporaryPwd_KeyDown);
+            this.tb_TemporaryPwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtKeyProcess);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(17, 32);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(119, 17);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "旧密码 （8 位数字）";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 190);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(56, 17);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "确认密码";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 125);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(119, 17);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "新密码 （8 位数字）";
+            // 
+            // cb_DefaultTemporaryOldPwd
+            // 
+            this.cb_DefaultTemporaryOldPwd.AutoSize = true;
+            this.cb_DefaultTemporaryOldPwd.Enabled = false;
+            this.cb_DefaultTemporaryOldPwd.Location = new System.Drawing.Point(17, 89);
+            this.cb_DefaultTemporaryOldPwd.Name = "cb_DefaultTemporaryOldPwd";
+            this.cb_DefaultTemporaryOldPwd.Size = new System.Drawing.Size(75, 21);
+            this.cb_DefaultTemporaryOldPwd.TabIndex = 1;
+            this.cb_DefaultTemporaryOldPwd.Text = "出厂默认";
+            this.cb_DefaultTemporaryOldPwd.UseVisualStyleBackColor = true;
+            this.cb_DefaultTemporaryOldPwd.CheckedChanged += new System.EventHandler(this.cb_DefaultTemporaryOldPwd_CheckedChanged);
+            // 
+            // cb_DefaultTemporaryNewPwd
+            // 
+            this.cb_DefaultTemporaryNewPwd.AutoSize = true;
+            this.cb_DefaultTemporaryNewPwd.Location = new System.Drawing.Point(17, 245);
+            this.cb_DefaultTemporaryNewPwd.Name = "cb_DefaultTemporaryNewPwd";
+            this.cb_DefaultTemporaryNewPwd.Size = new System.Drawing.Size(75, 21);
+            this.cb_DefaultTemporaryNewPwd.TabIndex = 4;
+            this.cb_DefaultTemporaryNewPwd.Text = "出厂默认";
+            this.cb_DefaultTemporaryNewPwd.UseVisualStyleBackColor = true;
+            this.cb_DefaultTemporaryNewPwd.CheckedChanged += new System.EventHandler(this.cb_DefaultTemporaryNewPwd_CheckedChanged);
+            // 
             // p_Tap3
             // 
             this.p_Tap3.Controls.Add(this.cb_AllSelected);
@@ -1559,12 +1553,11 @@
             this.p_Tap3.Controls.Add(this.panel5);
             this.p_Tap3.Controls.Add(this.panel4);
             this.p_Tap3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.p_Tap3.Location = new System.Drawing.Point(150, 40);
+            this.p_Tap3.Location = new System.Drawing.Point(151, 41);
             this.p_Tap3.Name = "p_Tap3";
             this.p_Tap3.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
-            this.p_Tap3.Size = new System.Drawing.Size(850, 510);
+            this.p_Tap3.Size = new System.Drawing.Size(898, 508);
             this.p_Tap3.TabIndex = 1;
-            this.p_Tap3.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBorderLine);
             // 
             // cb_AllSelected
             // 
@@ -1573,6 +1566,7 @@
             this.cb_AllSelected.Name = "cb_AllSelected";
             this.cb_AllSelected.Size = new System.Drawing.Size(15, 14);
             this.cb_AllSelected.TabIndex = 6;
+            this.cb_AllSelected.TabStop = false;
             this.cb_AllSelected.UseVisualStyleBackColor = true;
             this.cb_AllSelected.CheckedChanged += new System.EventHandler(this.cb_AllSelected_CheckedChanged);
             // 
@@ -1610,7 +1604,8 @@
             this.CameraDetection,
             this.WirelessNumber,
             this.FrequencyOffset,
-            this.Language});
+            this.Language,
+            this.FuzzyQuery});
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -1627,7 +1622,7 @@
             this.dgv_Device.RowHeadersVisible = false;
             this.dgv_Device.RowTemplate.Height = 36;
             this.dgv_Device.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Device.Size = new System.Drawing.Size(849, 409);
+            this.dgv_Device.Size = new System.Drawing.Size(897, 407);
             this.dgv_Device.StandardTab = true;
             this.dgv_Device.TabIndex = 2;
             this.dgv_Device.TabStop = false;
@@ -1640,6 +1635,271 @@
             this.dgv_Device.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dgv_Device_Scroll);
             this.dgv_Device.SelectionChanged += new System.EventHandler(this.dgv_Device_SelectionChanged);
             this.dgv_Device.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgv_Device_KeyUp);
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.tb_DevicePage);
+            this.panel5.Controls.Add(this.btn_DeviceLast);
+            this.panel5.Controls.Add(this.btn_DeviceFirst);
+            this.panel5.Controls.Add(this.btn_DevicePrevious);
+            this.panel5.Controls.Add(this.btn_DeviceNext);
+            this.panel5.Controls.Add(this.l_DeviceRecordCount);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel5.Location = new System.Drawing.Point(0, 457);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(897, 50);
+            this.panel5.TabIndex = 5;
+            // 
+            // tb_DevicePage
+            // 
+            this.tb_DevicePage.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_DevicePage.Location = new System.Drawing.Point(697, 9);
+            this.tb_DevicePage.MaxLength = 10;
+            this.tb_DevicePage.Name = "tb_DevicePage";
+            this.tb_DevicePage.Size = new System.Drawing.Size(100, 33);
+            this.tb_DevicePage.TabIndex = 7;
+            this.tb_DevicePage.TabStop = false;
+            this.tb_DevicePage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_DevicePage_KeyPress);
+            // 
+            // btn_DeviceLast
+            // 
+            this.btn_DeviceLast.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_DeviceLast.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceLast.Enabled = false;
+            this.btn_DeviceLast.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceLast.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceLast.Location = new System.Drawing.Point(839, 8);
+            this.btn_DeviceLast.Name = "btn_DeviceLast";
+            this.btn_DeviceLast.Size = new System.Drawing.Size(35, 35);
+            this.btn_DeviceLast.TabIndex = 6;
+            this.btn_DeviceLast.TabStop = false;
+            this.btn_DeviceLast.Text = ">|";
+            this.btn_DeviceLast.UseVisualStyleBackColor = false;
+            this.btn_DeviceLast.Click += new System.EventHandler(this.btn_DeviceLast_Click);
+            // 
+            // btn_DeviceFirst
+            // 
+            this.btn_DeviceFirst.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_DeviceFirst.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceFirst.Enabled = false;
+            this.btn_DeviceFirst.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceFirst.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceFirst.Location = new System.Drawing.Point(613, 8);
+            this.btn_DeviceFirst.Name = "btn_DeviceFirst";
+            this.btn_DeviceFirst.Size = new System.Drawing.Size(35, 35);
+            this.btn_DeviceFirst.TabIndex = 5;
+            this.btn_DeviceFirst.TabStop = false;
+            this.btn_DeviceFirst.Text = "|<";
+            this.btn_DeviceFirst.UseVisualStyleBackColor = false;
+            this.btn_DeviceFirst.Click += new System.EventHandler(this.btn_DeviceFirst_Click);
+            // 
+            // btn_DevicePrevious
+            // 
+            this.btn_DevicePrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_DevicePrevious.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DevicePrevious.Enabled = false;
+            this.btn_DevicePrevious.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DevicePrevious.ForeColor = System.Drawing.Color.White;
+            this.btn_DevicePrevious.Location = new System.Drawing.Point(654, 8);
+            this.btn_DevicePrevious.Name = "btn_DevicePrevious";
+            this.btn_DevicePrevious.Size = new System.Drawing.Size(35, 35);
+            this.btn_DevicePrevious.TabIndex = 3;
+            this.btn_DevicePrevious.TabStop = false;
+            this.btn_DevicePrevious.Text = "<";
+            this.btn_DevicePrevious.UseVisualStyleBackColor = false;
+            this.btn_DevicePrevious.Click += new System.EventHandler(this.btn_DevicePrevious_Click);
+            // 
+            // btn_DeviceNext
+            // 
+            this.btn_DeviceNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_DeviceNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceNext.Enabled = false;
+            this.btn_DeviceNext.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceNext.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceNext.Location = new System.Drawing.Point(801, 8);
+            this.btn_DeviceNext.Name = "btn_DeviceNext";
+            this.btn_DeviceNext.Size = new System.Drawing.Size(35, 35);
+            this.btn_DeviceNext.TabIndex = 3;
+            this.btn_DeviceNext.TabStop = false;
+            this.btn_DeviceNext.Text = ">";
+            this.btn_DeviceNext.UseVisualStyleBackColor = false;
+            this.btn_DeviceNext.Click += new System.EventHandler(this.btn_DeviceNext_Click);
+            // 
+            // l_DeviceRecordCount
+            // 
+            this.l_DeviceRecordCount.AutoSize = true;
+            this.l_DeviceRecordCount.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.l_DeviceRecordCount.Location = new System.Drawing.Point(15, 15);
+            this.l_DeviceRecordCount.Name = "l_DeviceRecordCount";
+            this.l_DeviceRecordCount.Size = new System.Drawing.Size(149, 20);
+            this.l_DeviceRecordCount.TabIndex = 0;
+            this.l_DeviceRecordCount.Text = "共 0 条记录，共 {0} 页";
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.btn_DeviceImport);
+            this.panel4.Controls.Add(this.btn_DeviceExport);
+            this.panel4.Controls.Add(this.btn_DeviceDel);
+            this.panel4.Controls.Add(this.btn_DeviceEdit);
+            this.panel4.Controls.Add(this.btn_DeviceAdd);
+            this.panel4.Controls.Add(this.btn_ShowDeviceRecord);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(897, 50);
+            this.panel4.TabIndex = 0;
+            // 
+            // btn_DeviceImport
+            // 
+            this.btn_DeviceImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceImport.FlatAppearance.BorderSize = 0;
+            this.btn_DeviceImport.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceImport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_DeviceImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DeviceImport.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceImport.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceImport.Location = new System.Drawing.Point(536, 8);
+            this.btn_DeviceImport.Name = "btn_DeviceImport";
+            this.btn_DeviceImport.Size = new System.Drawing.Size(100, 35);
+            this.btn_DeviceImport.TabIndex = 6;
+            this.btn_DeviceImport.TabStop = false;
+            this.btn_DeviceImport.Text = "导 入";
+            this.btn_DeviceImport.UseVisualStyleBackColor = false;
+            this.btn_DeviceImport.Click += new System.EventHandler(this.btn_DeviceImport_Click);
+            // 
+            // btn_DeviceExport
+            // 
+            this.btn_DeviceExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceExport.Enabled = false;
+            this.btn_DeviceExport.FlatAppearance.BorderSize = 0;
+            this.btn_DeviceExport.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceExport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_DeviceExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DeviceExport.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceExport.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceExport.Location = new System.Drawing.Point(430, 8);
+            this.btn_DeviceExport.Name = "btn_DeviceExport";
+            this.btn_DeviceExport.Size = new System.Drawing.Size(100, 35);
+            this.btn_DeviceExport.TabIndex = 6;
+            this.btn_DeviceExport.TabStop = false;
+            this.btn_DeviceExport.Text = "导 出";
+            this.btn_DeviceExport.UseVisualStyleBackColor = false;
+            this.btn_DeviceExport.Click += new System.EventHandler(this.btn_DeviceExport_Click);
+            // 
+            // btn_DeviceDel
+            // 
+            this.btn_DeviceDel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceDel.Enabled = false;
+            this.btn_DeviceDel.FlatAppearance.BorderSize = 0;
+            this.btn_DeviceDel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceDel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_DeviceDel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DeviceDel.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceDel.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceDel.Location = new System.Drawing.Point(324, 8);
+            this.btn_DeviceDel.Name = "btn_DeviceDel";
+            this.btn_DeviceDel.Size = new System.Drawing.Size(100, 35);
+            this.btn_DeviceDel.TabIndex = 6;
+            this.btn_DeviceDel.TabStop = false;
+            this.btn_DeviceDel.Text = "删 除";
+            this.btn_DeviceDel.UseVisualStyleBackColor = false;
+            this.btn_DeviceDel.Click += new System.EventHandler(this.btn_DeviceDel_Click);
+            // 
+            // btn_DeviceEdit
+            // 
+            this.btn_DeviceEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceEdit.Enabled = false;
+            this.btn_DeviceEdit.FlatAppearance.BorderSize = 0;
+            this.btn_DeviceEdit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_DeviceEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DeviceEdit.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceEdit.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceEdit.Location = new System.Drawing.Point(218, 8);
+            this.btn_DeviceEdit.Name = "btn_DeviceEdit";
+            this.btn_DeviceEdit.Size = new System.Drawing.Size(100, 35);
+            this.btn_DeviceEdit.TabIndex = 5;
+            this.btn_DeviceEdit.TabStop = false;
+            this.btn_DeviceEdit.Text = "编 辑";
+            this.btn_DeviceEdit.UseVisualStyleBackColor = false;
+            this.btn_DeviceEdit.Click += new System.EventHandler(this.btn_DeviceEdit_Click);
+            // 
+            // btn_DeviceAdd
+            // 
+            this.btn_DeviceAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceAdd.FlatAppearance.BorderSize = 0;
+            this.btn_DeviceAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_DeviceAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_DeviceAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DeviceAdd.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_DeviceAdd.ForeColor = System.Drawing.Color.White;
+            this.btn_DeviceAdd.Location = new System.Drawing.Point(112, 8);
+            this.btn_DeviceAdd.Name = "btn_DeviceAdd";
+            this.btn_DeviceAdd.Size = new System.Drawing.Size(100, 35);
+            this.btn_DeviceAdd.TabIndex = 4;
+            this.btn_DeviceAdd.TabStop = false;
+            this.btn_DeviceAdd.Text = "添 加";
+            this.btn_DeviceAdd.UseVisualStyleBackColor = false;
+            this.btn_DeviceAdd.Click += new System.EventHandler(this.btn_DeviceAdd_Click);
+            // 
+            // btn_ShowDeviceRecord
+            // 
+            this.btn_ShowDeviceRecord.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_ShowDeviceRecord.FlatAppearance.BorderSize = 0;
+            this.btn_ShowDeviceRecord.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_ShowDeviceRecord.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_ShowDeviceRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ShowDeviceRecord.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_ShowDeviceRecord.ForeColor = System.Drawing.Color.White;
+            this.btn_ShowDeviceRecord.Location = new System.Drawing.Point(6, 8);
+            this.btn_ShowDeviceRecord.Name = "btn_ShowDeviceRecord";
+            this.btn_ShowDeviceRecord.Size = new System.Drawing.Size(100, 35);
+            this.btn_ShowDeviceRecord.TabIndex = 3;
+            this.btn_ShowDeviceRecord.TabStop = false;
+            this.btn_ShowDeviceRecord.Text = "显示记录";
+            this.btn_ShowDeviceRecord.UseVisualStyleBackColor = false;
+            this.btn_ShowDeviceRecord.Click += new System.EventHandler(this.btn_ShowDeviceRecord_Click);
+            // 
+            // dataGridViewImageColumn1
+            // 
+            this.dataGridViewImageColumn1.DataPropertyName = "Cid";
+            this.dataGridViewImageColumn1.HeaderText = "注册状态";
+            this.dataGridViewImageColumn1.Image = global::CBZN_TestTool.Properties.Resources.check;
+            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
+            this.dataGridViewImageColumn1.ReadOnly = true;
+            this.dataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewImageColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewImageColumn2
+            // 
+            this.dataGridViewImageColumn2.HeaderText = "解锁状态";
+            this.dataGridViewImageColumn2.Image = global::CBZN_TestTool.Properties.Resources.OpenLock;
+            this.dataGridViewImageColumn2.Name = "dataGridViewImageColumn2";
+            this.dataGridViewImageColumn2.ReadOnly = true;
+            // 
+            // dataGridViewImageColumn3
+            // 
+            this.dataGridViewImageColumn3.HeaderText = "挂失状态";
+            this.dataGridViewImageColumn3.Image = global::CBZN_TestTool.Properties.Resources.block;
+            this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
+            this.dataGridViewImageColumn3.ReadOnly = true;
+            // 
+            // dataGridViewImageColumn4
+            // 
+            this.dataGridViewImageColumn4.HeaderText = "车位限制";
+            this.dataGridViewImageColumn4.Image = global::CBZN_TestTool.Properties.Resources.block;
+            this.dataGridViewImageColumn4.Name = "dataGridViewImageColumn4";
+            this.dataGridViewImageColumn4.ReadOnly = true;
+            this.dataGridViewImageColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // dataGridViewImageColumn5
+            // 
+            this.dataGridViewImageColumn5.DataPropertyName = "Electricity";
+            this.dataGridViewImageColumn5.HeaderText = "电 量";
+            this.dataGridViewImageColumn5.Image = global::CBZN_TestTool.Properties.Resources.Battery;
+            this.dataGridViewImageColumn5.Name = "dataGridViewImageColumn5";
+            this.dataGridViewImageColumn5.ReadOnly = true;
+            this.dataGridViewImageColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // c_Selected
             // 
@@ -1760,291 +2020,12 @@
             this.Language.ReadOnly = true;
             this.Language.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // panel5
+            // FuzzyQuery
             // 
-            this.panel5.Controls.Add(this.cb_DevicePage);
-            this.panel5.Controls.Add(this.btn_DevicePrevious);
-            this.panel5.Controls.Add(this.btn_DeviceNext);
-            this.panel5.Controls.Add(this.l_DeviceRecordCount);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel5.Location = new System.Drawing.Point(0, 459);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(849, 50);
-            this.panel5.TabIndex = 5;
-            // 
-            // cb_DevicePage
-            // 
-            this.cb_DevicePage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_DevicePage.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cb_DevicePage.FormattingEnabled = true;
-            this.cb_DevicePage.Location = new System.Drawing.Point(622, 9);
-            this.cb_DevicePage.Name = "cb_DevicePage";
-            this.cb_DevicePage.Size = new System.Drawing.Size(110, 33);
-            this.cb_DevicePage.TabIndex = 4;
-            this.cb_DevicePage.TabStop = false;
-            this.cb_DevicePage.SelectedIndexChanged += new System.EventHandler(this.cb_DevicePage_SelectedIndexChanged);
-            // 
-            // btn_DevicePrevious
-            // 
-            this.btn_DevicePrevious.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DevicePrevious.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DevicePrevious.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DevicePrevious.DownBack = null;
-            this.btn_DevicePrevious.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DevicePrevious.Enabled = false;
-            this.btn_DevicePrevious.FadeGlow = false;
-            this.btn_DevicePrevious.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_DevicePrevious.ForeColor = System.Drawing.Color.White;
-            this.btn_DevicePrevious.IsDrawBorder = false;
-            this.btn_DevicePrevious.IsDrawGlass = false;
-            this.btn_DevicePrevious.Location = new System.Drawing.Point(516, 8);
-            this.btn_DevicePrevious.MouseBack = null;
-            this.btn_DevicePrevious.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_DevicePrevious.Name = "btn_DevicePrevious";
-            this.btn_DevicePrevious.NormlBack = null;
-            this.btn_DevicePrevious.Size = new System.Drawing.Size(100, 35);
-            this.btn_DevicePrevious.TabIndex = 3;
-            this.btn_DevicePrevious.TabStop = false;
-            this.btn_DevicePrevious.Text = "上一页";
-            this.btn_DevicePrevious.UseVisualStyleBackColor = false;
-            this.btn_DevicePrevious.Click += new System.EventHandler(this.btn_DevicePrevious_Click);
-            // 
-            // btn_DeviceNext
-            // 
-            this.btn_DeviceNext.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DeviceNext.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceNext.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DeviceNext.DownBack = null;
-            this.btn_DeviceNext.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceNext.Enabled = false;
-            this.btn_DeviceNext.FadeGlow = false;
-            this.btn_DeviceNext.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_DeviceNext.ForeColor = System.Drawing.Color.White;
-            this.btn_DeviceNext.IsDrawBorder = false;
-            this.btn_DeviceNext.IsDrawGlass = false;
-            this.btn_DeviceNext.Location = new System.Drawing.Point(738, 8);
-            this.btn_DeviceNext.MouseBack = null;
-            this.btn_DeviceNext.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_DeviceNext.Name = "btn_DeviceNext";
-            this.btn_DeviceNext.NormlBack = null;
-            this.btn_DeviceNext.Size = new System.Drawing.Size(100, 35);
-            this.btn_DeviceNext.TabIndex = 3;
-            this.btn_DeviceNext.TabStop = false;
-            this.btn_DeviceNext.Text = "下一页";
-            this.btn_DeviceNext.UseVisualStyleBackColor = false;
-            this.btn_DeviceNext.Click += new System.EventHandler(this.btn_DeviceNext_Click);
-            // 
-            // l_DeviceRecordCount
-            // 
-            this.l_DeviceRecordCount.AutoSize = true;
-            this.l_DeviceRecordCount.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.l_DeviceRecordCount.Location = new System.Drawing.Point(15, 15);
-            this.l_DeviceRecordCount.Name = "l_DeviceRecordCount";
-            this.l_DeviceRecordCount.Size = new System.Drawing.Size(95, 20);
-            this.l_DeviceRecordCount.TabIndex = 0;
-            this.l_DeviceRecordCount.Text = "总共 0 条记录";
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.btn_DeviceImport);
-            this.panel4.Controls.Add(this.btn_DeviceExport);
-            this.panel4.Controls.Add(this.btn_DeviceDel);
-            this.panel4.Controls.Add(this.btn_DeviceEdit);
-            this.panel4.Controls.Add(this.btn_DeviceAdd);
-            this.panel4.Controls.Add(this.btn_ShowDeviceRecord);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(849, 50);
-            this.panel4.TabIndex = 0;
-            // 
-            // btn_DeviceImport
-            // 
-            this.btn_DeviceImport.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DeviceImport.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceImport.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DeviceImport.DownBack = null;
-            this.btn_DeviceImport.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceImport.FadeGlow = false;
-            this.btn_DeviceImport.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_DeviceImport.ForeColor = System.Drawing.Color.White;
-            this.btn_DeviceImport.IsDrawBorder = false;
-            this.btn_DeviceImport.IsDrawGlass = false;
-            this.btn_DeviceImport.Location = new System.Drawing.Point(536, 8);
-            this.btn_DeviceImport.MouseBack = null;
-            this.btn_DeviceImport.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_DeviceImport.Name = "btn_DeviceImport";
-            this.btn_DeviceImport.NormlBack = null;
-            this.btn_DeviceImport.Size = new System.Drawing.Size(100, 35);
-            this.btn_DeviceImport.TabIndex = 6;
-            this.btn_DeviceImport.TabStop = false;
-            this.btn_DeviceImport.Text = "导 入";
-            this.btn_DeviceImport.UseVisualStyleBackColor = false;
-            this.btn_DeviceImport.Click += new System.EventHandler(this.btn_DeviceImport_Click);
-            // 
-            // btn_DeviceExport
-            // 
-            this.btn_DeviceExport.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DeviceExport.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceExport.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DeviceExport.DownBack = null;
-            this.btn_DeviceExport.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceExport.Enabled = false;
-            this.btn_DeviceExport.FadeGlow = false;
-            this.btn_DeviceExport.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_DeviceExport.ForeColor = System.Drawing.Color.White;
-            this.btn_DeviceExport.IsDrawBorder = false;
-            this.btn_DeviceExport.IsDrawGlass = false;
-            this.btn_DeviceExport.Location = new System.Drawing.Point(430, 8);
-            this.btn_DeviceExport.MouseBack = null;
-            this.btn_DeviceExport.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_DeviceExport.Name = "btn_DeviceExport";
-            this.btn_DeviceExport.NormlBack = null;
-            this.btn_DeviceExport.Size = new System.Drawing.Size(100, 35);
-            this.btn_DeviceExport.TabIndex = 6;
-            this.btn_DeviceExport.TabStop = false;
-            this.btn_DeviceExport.Text = "导 出";
-            this.btn_DeviceExport.UseVisualStyleBackColor = false;
-            this.btn_DeviceExport.Click += new System.EventHandler(this.btn_DeviceExport_Click);
-            // 
-            // btn_DeviceDel
-            // 
-            this.btn_DeviceDel.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DeviceDel.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceDel.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DeviceDel.DownBack = null;
-            this.btn_DeviceDel.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceDel.Enabled = false;
-            this.btn_DeviceDel.FadeGlow = false;
-            this.btn_DeviceDel.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_DeviceDel.ForeColor = System.Drawing.Color.White;
-            this.btn_DeviceDel.IsDrawBorder = false;
-            this.btn_DeviceDel.IsDrawGlass = false;
-            this.btn_DeviceDel.Location = new System.Drawing.Point(324, 8);
-            this.btn_DeviceDel.MouseBack = null;
-            this.btn_DeviceDel.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_DeviceDel.Name = "btn_DeviceDel";
-            this.btn_DeviceDel.NormlBack = null;
-            this.btn_DeviceDel.Size = new System.Drawing.Size(100, 35);
-            this.btn_DeviceDel.TabIndex = 6;
-            this.btn_DeviceDel.TabStop = false;
-            this.btn_DeviceDel.Text = "删 除";
-            this.btn_DeviceDel.UseVisualStyleBackColor = false;
-            this.btn_DeviceDel.Click += new System.EventHandler(this.btn_DeviceDel_Click);
-            // 
-            // btn_DeviceEdit
-            // 
-            this.btn_DeviceEdit.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DeviceEdit.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceEdit.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DeviceEdit.DownBack = null;
-            this.btn_DeviceEdit.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceEdit.Enabled = false;
-            this.btn_DeviceEdit.FadeGlow = false;
-            this.btn_DeviceEdit.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_DeviceEdit.ForeColor = System.Drawing.Color.White;
-            this.btn_DeviceEdit.IsDrawBorder = false;
-            this.btn_DeviceEdit.IsDrawGlass = false;
-            this.btn_DeviceEdit.Location = new System.Drawing.Point(218, 8);
-            this.btn_DeviceEdit.MouseBack = null;
-            this.btn_DeviceEdit.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_DeviceEdit.Name = "btn_DeviceEdit";
-            this.btn_DeviceEdit.NormlBack = null;
-            this.btn_DeviceEdit.Size = new System.Drawing.Size(100, 35);
-            this.btn_DeviceEdit.TabIndex = 5;
-            this.btn_DeviceEdit.TabStop = false;
-            this.btn_DeviceEdit.Text = "编 辑";
-            this.btn_DeviceEdit.UseVisualStyleBackColor = false;
-            this.btn_DeviceEdit.Click += new System.EventHandler(this.btn_DeviceEdit_Click);
-            // 
-            // btn_DeviceAdd
-            // 
-            this.btn_DeviceAdd.BackColor = System.Drawing.Color.Transparent;
-            this.btn_DeviceAdd.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceAdd.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_DeviceAdd.DownBack = null;
-            this.btn_DeviceAdd.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_DeviceAdd.FadeGlow = false;
-            this.btn_DeviceAdd.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_DeviceAdd.ForeColor = System.Drawing.Color.White;
-            this.btn_DeviceAdd.IsDrawBorder = false;
-            this.btn_DeviceAdd.IsDrawGlass = false;
-            this.btn_DeviceAdd.Location = new System.Drawing.Point(112, 8);
-            this.btn_DeviceAdd.MouseBack = null;
-            this.btn_DeviceAdd.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_DeviceAdd.Name = "btn_DeviceAdd";
-            this.btn_DeviceAdd.NormlBack = null;
-            this.btn_DeviceAdd.Size = new System.Drawing.Size(100, 35);
-            this.btn_DeviceAdd.TabIndex = 4;
-            this.btn_DeviceAdd.TabStop = false;
-            this.btn_DeviceAdd.Text = "添 加";
-            this.btn_DeviceAdd.UseVisualStyleBackColor = false;
-            this.btn_DeviceAdd.Click += new System.EventHandler(this.btn_DeviceAdd_Click);
-            // 
-            // btn_ShowDeviceRecord
-            // 
-            this.btn_ShowDeviceRecord.BackColor = System.Drawing.Color.Transparent;
-            this.btn_ShowDeviceRecord.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_ShowDeviceRecord.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.btn_ShowDeviceRecord.DownBack = null;
-            this.btn_ShowDeviceRecord.DownBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_ShowDeviceRecord.FadeGlow = false;
-            this.btn_ShowDeviceRecord.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_ShowDeviceRecord.ForeColor = System.Drawing.Color.White;
-            this.btn_ShowDeviceRecord.IsDrawBorder = false;
-            this.btn_ShowDeviceRecord.IsDrawGlass = false;
-            this.btn_ShowDeviceRecord.Location = new System.Drawing.Point(6, 8);
-            this.btn_ShowDeviceRecord.MouseBack = null;
-            this.btn_ShowDeviceRecord.MouseBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_ShowDeviceRecord.Name = "btn_ShowDeviceRecord";
-            this.btn_ShowDeviceRecord.NormlBack = null;
-            this.btn_ShowDeviceRecord.Size = new System.Drawing.Size(100, 35);
-            this.btn_ShowDeviceRecord.TabIndex = 3;
-            this.btn_ShowDeviceRecord.TabStop = false;
-            this.btn_ShowDeviceRecord.Text = "显示记录";
-            this.btn_ShowDeviceRecord.UseVisualStyleBackColor = false;
-            this.btn_ShowDeviceRecord.Click += new System.EventHandler(this.btn_ShowDeviceRecord_Click);
-            // 
-            // dataGridViewImageColumn1
-            // 
-            this.dataGridViewImageColumn1.DataPropertyName = "Cid";
-            this.dataGridViewImageColumn1.HeaderText = "注册状态";
-            this.dataGridViewImageColumn1.Image = global::CBZN_TestTool.Properties.Resources.check;
-            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
-            this.dataGridViewImageColumn1.ReadOnly = true;
-            this.dataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewImageColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // dataGridViewImageColumn2
-            // 
-            this.dataGridViewImageColumn2.HeaderText = "解锁状态";
-            this.dataGridViewImageColumn2.Image = global::CBZN_TestTool.Properties.Resources.OpenLock;
-            this.dataGridViewImageColumn2.Name = "dataGridViewImageColumn2";
-            this.dataGridViewImageColumn2.ReadOnly = true;
-            // 
-            // dataGridViewImageColumn3
-            // 
-            this.dataGridViewImageColumn3.HeaderText = "挂失状态";
-            this.dataGridViewImageColumn3.Image = global::CBZN_TestTool.Properties.Resources.block;
-            this.dataGridViewImageColumn3.Name = "dataGridViewImageColumn3";
-            this.dataGridViewImageColumn3.ReadOnly = true;
-            // 
-            // dataGridViewImageColumn4
-            // 
-            this.dataGridViewImageColumn4.HeaderText = "车位限制";
-            this.dataGridViewImageColumn4.Image = global::CBZN_TestTool.Properties.Resources.block;
-            this.dataGridViewImageColumn4.Name = "dataGridViewImageColumn4";
-            this.dataGridViewImageColumn4.ReadOnly = true;
-            this.dataGridViewImageColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // dataGridViewImageColumn5
-            // 
-            this.dataGridViewImageColumn5.DataPropertyName = "Electricity";
-            this.dataGridViewImageColumn5.HeaderText = "电 量";
-            this.dataGridViewImageColumn5.Image = global::CBZN_TestTool.Properties.Resources.Battery;
-            this.dataGridViewImageColumn5.Name = "dataGridViewImageColumn5";
-            this.dataGridViewImageColumn5.ReadOnly = true;
-            this.dataGridViewImageColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.FuzzyQuery.DataPropertyName = "FuzzyQuery";
+            this.FuzzyQuery.HeaderText = "模糊查询位数";
+            this.FuzzyQuery.Name = "FuzzyQuery";
+            this.FuzzyQuery.Width = 120;
             // 
             // MainForm
             // 
@@ -2052,7 +2033,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1000, 550);
+            this.ClientSize = new System.Drawing.Size(1050, 550);
             this.Controls.Add(this.p_Tap1);
             this.Controls.Add(this.p_Tap2);
             this.Controls.Add(this.p_Tap3);
@@ -2062,10 +2043,12 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
+            this.Padding = new System.Windows.Forms.Padding(1);
             this.Text = "畅泊测试工具";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.p_Title.ResumeLayout(false);
             this.p_Left.ResumeLayout(false);
             this.p_Tap1.ResumeLayout(false);
@@ -2085,12 +2068,12 @@
             this.p_Tap2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_pwd)).EndInit();
             this.panel3.ResumeLayout(false);
-            this.p_TemporaryInterface.ResumeLayout(false);
-            this.gb_Temporary.ResumeLayout(false);
-            this.gb_Temporary.PerformLayout();
             this.p_DistanceInterface.ResumeLayout(false);
             this.gb_Distance.ResumeLayout(false);
             this.gb_Distance.PerformLayout();
+            this.p_TemporaryInterface.ResumeLayout(false);
+            this.gb_Temporary.ResumeLayout(false);
+            this.gb_Temporary.PerformLayout();
             this.p_Tap3.ResumeLayout(false);
             this.p_Tap3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Device)).EndInit();
@@ -2107,7 +2090,6 @@
         private CCWin.SkinControl.SkinButton btn_Min;
         private System.Windows.Forms.Panel p_Title;
         private System.Windows.Forms.Panel p_Left;
-        private System.Windows.Forms.Label l_Title;
         private System.Windows.Forms.Panel p_Tap1;
         private System.Windows.Forms.Button btn_Tap2;
         private System.Windows.Forms.Button btn_Tap1;
@@ -2117,16 +2099,15 @@
         private System.Windows.Forms.Panel p_Tap4;
         private System.Windows.Forms.Button btn_Tap4;
         private System.Windows.Forms.DataGridView dgv_DataList;
-        private CCWin.SkinControl.SkinButton btn_Read;
+        private NewControl.NewButton btn_Read;
         private System.Windows.Forms.Panel panel1;
-        private CCWin.SkinControl.SkinButton btn_Register;
-        private CCWin.SkinControl.SkinButton btn_Registers;
+        private NewControl.NewButton btn_Register;
+        private NewControl.NewButton btn_Registers;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label l_RecordCount;
-        private CCWin.SkinControl.SkinButton btn_Next;
-        private CCWin.SkinControl.SkinButton btn_Previous;
-        private System.Windows.Forms.ComboBox cb_Page;
-        private CCWin.SkinControl.SkinButton btn_ShowRecord;
+        private NewControl.NewButton btn_Next;
+        private NewControl.NewButton btn_Previous;
+        private NewControl.NewButton btn_ShowRecord;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dgv_pwd;
         private System.Windows.Forms.GroupBox gb_Distance;
@@ -2134,14 +2115,13 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tb_ConfirmDistancePwd;
         private System.Windows.Forms.TextBox tb_DistancePwd;
-        private CCWin.SkinControl.SkinButton btn_DistanceDeviceEnter;
         private System.Windows.Forms.CheckBox cb_DefaultDistanPwd;
         private System.Windows.Forms.Button btn_TapDistanceEncryption;
         private System.Windows.Forms.Button btn_TapTemporaryEncryption;
         private System.Windows.Forms.Panel p_DistanceInterface;
         private System.Windows.Forms.Panel p_TemporaryInterface;
         private System.Windows.Forms.GroupBox gb_Temporary;
-        private CCWin.SkinControl.SkinButton btn_TemporaryDevicePwdEnter;
+        private NewControl.NewButton btn_TemporaryDevicePwdEnter;
         private System.Windows.Forms.TextBox tb_ConfirmTemporaryPwd;
         private System.Windows.Forms.TextBox tb_TemporaryPwd;
         private System.Windows.Forms.Label label7;
@@ -2149,19 +2129,18 @@
         private System.Windows.Forms.CheckBox cb_DefaultTemporaryNewPwd;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.DataGridView dgv_Device;
-        private CCWin.SkinControl.SkinButton btn_ShowDeviceRecord;
+        private NewControl.NewButton btn_ShowDeviceRecord;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.ComboBox cb_DevicePage;
-        private CCWin.SkinControl.SkinButton btn_DevicePrevious;
-        private CCWin.SkinControl.SkinButton btn_DeviceNext;
+        private NewControl.NewButton btn_DevicePrevious;
+        private NewControl.NewButton btn_DeviceNext;
         private System.Windows.Forms.Label l_DeviceRecordCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_descript2;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_time2;
-        private CCWin.SkinControl.SkinButton btn_DeviceAdd;
-        private CCWin.SkinControl.SkinButton btn_DeviceDel;
-        private CCWin.SkinControl.SkinButton btn_DeviceEdit;
-        private CCWin.SkinControl.SkinButton btn_DeviceImport;
-        private CCWin.SkinControl.SkinButton btn_DeviceExport;
+        private NewControl.NewButton btn_DeviceAdd;
+        private NewControl.NewButton btn_DeviceDel;
+        private NewControl.NewButton btn_DeviceEdit;
+        private NewControl.NewButton btn_DeviceImport;
+        private NewControl.NewButton btn_DeviceExport;
         private System.Windows.Forms.CheckBox cb_AllSelected;
         private System.Windows.Forms.TextBox tb_DistanceOldPwd;
         private System.Windows.Forms.Label label3;
@@ -2188,13 +2167,35 @@
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn3;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn4;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn c_description3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private CCWin.SkinControl.SkinButton btn_Query;
         private System.Windows.Forms.TextBox tb_Search;
-        private CCWin.SkinControl.SkinButton btn_Search;
+        private System.Windows.Forms.Button btn_Search;
         private System.Windows.Forms.Button btn_ReportTheLossOf;
+        private System.Windows.Forms.DataGridViewImageColumn Cid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardDistance;
+        private System.Windows.Forms.DataGridViewImageColumn CardLock;
+        private System.Windows.Forms.DataGridViewImageColumn CardReportLoss;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Synchronous;
+        private System.Windows.Forms.DataGridViewImageColumn ParkingRestrictions;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardPartition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InOutState;
+        private System.Windows.Forms.DataGridViewImageColumn Electricity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ViceCardCount;
+        private NewControl.NewButton btn_Delay;
+        private NewControl.NewButton btn_Last;
+        private NewControl.NewButton btn_First;
+        private System.Windows.Forms.TextBox tb_Page;
+        private NewControl.NewButton btn_DeviceLast;
+        private NewControl.NewButton btn_DeviceFirst;
+        private System.Windows.Forms.TextBox tb_DevicePage;
+        private NewControl.NewButton btn_DistanceDeviceEnter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn c_description3;
         private System.Windows.Forms.DataGridViewCheckBoxColumn c_Selected;
         private System.Windows.Forms.DataGridViewTextBoxColumn Did;
         private System.Windows.Forms.DataGridViewTextBoxColumn HostNumber;
@@ -2210,20 +2211,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn WirelessNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn FrequencyOffset;
         private System.Windows.Forms.DataGridViewTextBoxColumn Language;
-        private System.Windows.Forms.DataGridViewImageColumn Cid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardDistance;
-        private System.Windows.Forms.DataGridViewImageColumn CardLock;
-        private System.Windows.Forms.DataGridViewImageColumn CardReportLoss;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Synchronous;
-        private System.Windows.Forms.DataGridViewImageColumn ParkingRestrictions;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardPartition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn InOutState;
-        private System.Windows.Forms.DataGridViewImageColumn Electricity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ViceCardCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FuzzyQuery;
     }
 }
 

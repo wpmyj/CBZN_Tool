@@ -86,11 +86,17 @@
     <Compile Include="DeviceImport.Designer.cs">
       <DependentUpon>DeviceImport.cs</DependentUpon>
     </Compile>
-    <Compile Include="DistanceDelay.cs">
+    <Compile Include="DelayParam.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DistanceDelay.Designer.cs">
-      <DependentUpon>DistanceDelay.cs</DependentUpon>
+    <Compile Include="DelayParam.Designer.cs">
+      <DependentUpon>DelayParam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViceCardDelay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViceCardDelay.Designer.cs">
+      <DependentUpon>ViceCardDelay.cs</DependentUpon>
     </Compile>
     <Compile Include="DistanceRegister.cs">
       <SubType>Form</SubType>
@@ -130,8 +136,11 @@
     <EmbeddedResource Include="DeviceImport.resx">
       <DependentUpon>DeviceImport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DistanceDelay.resx">
-      <DependentUpon>DistanceDelay.cs</DependentUpon>
+    <EmbeddedResource Include="DelayParam.resx">
+      <DependentUpon>DelayParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViceCardDelay.resx">
+      <DependentUpon>ViceCardDelay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DistanceRegister.resx">
       <DependentUpon>DistanceRegister.cs</DependentUpon>
@@ -197,6 +206,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{59eb14b1-cb68-405a-a3fe-02a088b8f6a2}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NewControl\NewControl.csproj">
+      <Project>{8A15D754-D5B4-4C2E-97ED-5E3DEB3B568A}</Project>
+      <Name>NewControl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

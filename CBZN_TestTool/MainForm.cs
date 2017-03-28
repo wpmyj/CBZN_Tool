@@ -1,7 +1,4 @@
-﻿using Bll;
-using Dal;
-using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -12,6 +9,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using Bll;
+using Dal;
+using Model;
 
 namespace CBZN_TestTool
 {
@@ -25,21 +25,59 @@ namespace CBZN_TestTool
         private bool _isLossMouseEnter;
         private Point _LossMousePoint;
         private bool _isModuleSet;
-        private bool _isMouseDown1;
-        private bool _isMouseDown2;
-        private bool _isMouseDown3;
-        private bool _isMouseDown4;
-        private bool _isMouseDown5;
-        private bool _isMouseDown6;
-        private bool _isMouseEnter1;
-        private bool _isMouseEnter2;
-        private bool _isMouseEnter3;
-        private bool _isMouseEnter4;
-        private bool _isMouseEnter5;
-        private bool _isMouseEnter6;
         private bool _isReadCard;
         private bool _isThreadClose;
         private int _lossCount = 0;
+        private int _pageCount;
+        private int _currentPage;
+
+        public int CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                btn_Previous.Enabled = btn_First.Enabled = _currentPage > 0;
+                btn_Next.Enabled = btn_Last.Enabled = _currentPage != _pageCount - 1;
+                tb_Page.Text = (_currentPage + 1).ToString();
+                try
+                {
+                    DataTable dt = DbHelper.Db.ToTable<CardInfo>(_currentPage * 30, 30, _strSearchWhere);
+                    dgv_DataList.DataSource = dt;
+                    dgv_DataList.Focus();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+        }
+        private int _devicePageCount;
+        private int _deviceCurrentPage;
+
+        public int DeviceCurrentPage
+        {
+            get { return _deviceCurrentPage; }
+            set
+            {
+                _deviceCurrentPage = value;
+                btn_DevicePrevious.Enabled = btn_DeviceFirst.Enabled = _deviceCurrentPage > 0;
+                btn_DeviceNext.Enabled = btn_DeviceLast.Enabled = _deviceCurrentPage != _devicePageCount - 1;
+                tb_DevicePage.Text = (_deviceCurrentPage + 1).ToString();
+                try
+                {
+                    DataTable dt = DbHelper.Db.ToTable<DeviceInfo>(_deviceCurrentPage * 30, 30);
+                    dgv_Device.DataSource = dt;
+                    dgv_DataList.Focus();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+        }
+
         private ComPortHelper _mComPort;
         private Mutex _mMutex;
         private PortHelper _mPort;
@@ -69,213 +107,87 @@ namespace CBZN_TestTool
             WindowState = FormWindowState.Minimized;
         }
 
-        private void btn_Tap1_Click(object sender, EventArgs e)
-        {
-            AcceptButton = btn_Read;
-            ShowHideTap(btn_Tap1);
-        }
-
         private void btn_Tap1_MouseDown(object sender, MouseEventArgs e)
         {
-            _isMouseDown1 = true;
-        }
-
-        private void btn_Tap1_MouseEnter(object sender, EventArgs e)
-        {
-            _isMouseEnter1 = true;
-        }
-
-        private void btn_Tap1_MouseLeave(object sender, EventArgs e)
-        {
-            _isMouseEnter1 = false;
-            _isMouseDown1 = false;
-        }
-
-        private void btn_Tap1_MouseUp(object sender, MouseEventArgs e)
-        {
-            _isMouseDown1 = false;
-        }
-
-        private void btn_Tap1_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Rectangle rect = DrawButton(g, btn_Tap1, _isMouseDown1, _isMouseEnter1);
-            DrawRightSelect(g, rect, btn_Tap1.Enabled);
-        }
-
-        private void btn_Tap2_Click(object sender, EventArgs e)
-        {
-            AcceptButton = btn_TemporaryDevicePwdEnter;
-            ShowHideTap(btn_Tap2);
+            AcceptButton = btn_Read;
+            ShowHideTap(sender as Button);
         }
 
         private void btn_Tap2_MouseDown(object sender, MouseEventArgs e)
         {
-            _isMouseDown2 = true;
-        }
-
-        private void btn_Tap2_MouseEnter(object sender, EventArgs e)
-        {
-            _isMouseEnter2 = true;
-        }
-
-        private void btn_Tap2_MouseLeave(object sender, EventArgs e)
-        {
-            _isMouseDown2 = false;
-            _isMouseEnter2 = false;
-        }
-
-        private void btn_Tap2_MouseUp(object sender, MouseEventArgs e)
-        {
-            _isMouseDown2 = false;
-        }
-
-        private void btn_Tap2_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Rectangle rect = DrawButton(g, btn_Tap2, _isMouseDown2, _isMouseEnter2);
-            DrawRightSelect(g, rect, btn_Tap2.Enabled);
-        }
-
-        private void btn_Tap3_Click(object sender, EventArgs e)
-        {
-            AcceptButton = null;
-            ShowHideTap(btn_Tap3);
-            if (dgv_Device.DataSource as DataTable == null)
-            {
-                btn_ShowDeviceRecord_Click(null, null);
-            }
+            AcceptButton = btn_TemporaryDevicePwdEnter;
+            ShowHideTap(sender as Button);
         }
 
         private void btn_Tap3_MouseDown(object sender, MouseEventArgs e)
         {
-            _isMouseDown3 = true;
-        }
-
-        private void btn_Tap3_MouseEnter(object sender, EventArgs e)
-        {
-            _isMouseEnter3 = true;
-        }
-
-        private void btn_Tap3_MouseLeave(object sender, EventArgs e)
-        {
-            _isMouseEnter3 = false;
-            _isMouseDown3 = false;
-        }
-
-        private void btn_Tap3_MouseUp(object sender, MouseEventArgs e)
-        {
-            _isMouseDown3 = false;
-        }
-
-        private void btn_Tap3_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Rectangle rect = DrawButton(g, btn_Tap3, _isMouseDown3, _isMouseEnter3);
-            DrawRightSelect(g, rect, btn_Tap3.Enabled);
-        }
-
-        private void btn_Tap4_Click(object sender, EventArgs e)
-        {
             AcceptButton = null;
-            ShowHideTap(btn_Tap4);
+            ShowHideTap(sender as Button);
+            if (dgv_Device.DataSource as DataTable == null)
+            {
+                System.Timers.Timer ti_DelayShowDeviceRecord = new System.Timers.Timer(250);
+                ti_DelayShowDeviceRecord.AutoReset = false;
+                ti_DelayShowDeviceRecord.Elapsed += new System.Timers.ElapsedEventHandler(ti_DelayShowDeviceRecord_Elapsed);
+                ti_DelayShowDeviceRecord.Start();
+            }
         }
 
         private void btn_Tap4_MouseDown(object sender, MouseEventArgs e)
         {
-            _isMouseDown4 = true;
+            AcceptButton = null;
+            ShowHideTap(sender as Button);
         }
 
-        private void btn_Tap4_MouseEnter(object sender, EventArgs e)
+        void ti_DelayShowDeviceRecord_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            _isMouseEnter4 = true;
-        }
-
-        private void btn_Tap4_MouseLeave(object sender, EventArgs e)
-        {
-            _isMouseDown4 = false;
-            _isMouseEnter4 = false;
-        }
-
-        private void btn_Tap4_MouseUp(object sender, MouseEventArgs e)
-        {
-            _isMouseDown4 = false;
-        }
-
-        private void btn_Tap4_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Rectangle rect = DrawButton(g, btn_Tap4, _isMouseDown4, _isMouseEnter4);
-            DrawRightSelect(g, rect, btn_Tap4.Enabled);
-        }
-
-        private void DrawBorderLine(object sender, PaintEventArgs e)
-        {
-            Panel p = sender as Panel;
-            if (p == null) return;
-            Graphics g = e.Graphics;
-            Point[] ps = new Point[]{
-                new Point(0 , p.Height - 1),
-                new Point(p.Width - 1 , p.Height - 1),
-                new Point(p.Width - 1 , 0)
+            DefaultShow ds = delegate
+            {
+                btn_ShowDeviceRecord_Click(null, null);
             };
-            g.DrawLines(new Pen(Brushes.Gray, 1), ps);
-            g.Dispose();
+            dgv_Device.Invoke(ds);
         }
 
-        private void DrawBottomSelect(Graphics g, Rectangle rect, bool enabled)
+        private void MainForm_Paint(object sender, PaintEventArgs e)
         {
-            if (enabled) return;
-            GraphicsPath path = new GraphicsPath();
-            int width = rect.Width / 2;
-            path.AddLines(new Point[]
+            using (Graphics g = e.Graphics)
             {
-                new Point(width, rect.Height-5),
-                new Point(width+5,rect.Height),
-                new Point(width-5,rect.Height),
-                new Point(width,rect.Height- 5)
-            });
-            g.FillPath(Brushes.White, path);
-        }
-
-        private Rectangle DrawButton(Graphics g, Button btn, bool isdown, bool isenter)
-        {
-            SolidBrush backcolor = new SolidBrush(btn.BackColor);
-            if (isdown || !btn.Enabled)
-            {
-                backcolor = new SolidBrush(btn.FlatAppearance.MouseDownBackColor);
+                g.DrawRectangle(new Pen(Brushes.Gray, 1), new Rectangle(0, 0, Width - 1, Height - 1));
             }
-            else if (isenter)
-            {
-                backcolor = new SolidBrush(btn.FlatAppearance.MouseOverBackColor);
-            }
-
-            Rectangle rect = new Rectangle(0, 0, btn.Width, btn.Height);
-            g.FillRectangle(backcolor, rect);
-
-            StringFormat sf = new StringFormat()
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center
-            };
-            g.DrawString(btn.Text, btn.Font, new SolidBrush(btn.ForeColor), rect, sf);
-
-            return rect;
         }
 
-        private void DrawRightSelect(Graphics g, Rectangle rect, bool enabled)
+        private void DrawBtnPaint(object sender, PaintEventArgs e)
         {
-            if (enabled) return;
-            GraphicsPath path = new GraphicsPath();
-            int height = rect.Height / 2;
-            path.AddLines(new Point[]
+            Button btn = sender as Button;
+            if (!btn.Enabled)
             {
-                new Point(rect.Width-10,height),
-                new Point(rect.Width,height-10),
-                new Point(rect.Width,height+10),
-                new Point(rect.Width-10,height)
-            });
-            g.FillPath(Brushes.White, path);
+                Graphics g = e.Graphics;
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                Rectangle rect = new Rectangle(0, 0, btn.Width, btn.Height);
+                g.FillRectangle(new SolidBrush(btn.BackColor), rect);
+                g.DrawString(btn.Text, btn.Font, new SolidBrush(btn.ForeColor), rect, sf);
+                g.FillPolygon(Brushes.White, new Point[]
+                {
+                    new Point(btn.Width , btn.Height / 2 - 8),
+                    new Point(btn.Width - 8 , btn.Height / 2),
+                    new Point(btn.Width , btn.Height / 2 + 8)
+                });
+            }
+        }
+
+        private void BtnEnabledChanged(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            btn.BackColor = btn.Enabled ? Color.Transparent : btn.FlatAppearance.MouseDownBackColor;
+        }
+
+        private void BtnEnabledChanged2(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            btn.BackColor = btn.Enabled ? Color.FromArgb(4, 71, 124) : btn.FlatAppearance.MouseDownBackColor;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -298,6 +210,27 @@ namespace CBZN_TestTool
             try
             {
                 DbHelper.LoadDb(path);
+                
+                string xmlpath = string.Format("{0}\\SystemSettings.xml", Application.StartupPath);
+                XmlHelper xh = new XmlHelper(xmlpath);
+                if (!xh.Load())
+                {
+                    xh.Create("1.0", "UTF-8", "Settings");
+                    SystemSettings settings = new SystemSettings() { Version = Application.ProductVersion };
+                    xh.Add<SystemSettings>(settings);
+
+                    string cmdtext = " select * from sqlite_master where name='DeviceInfo' and sql ='CREATE TABLE DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int, BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int )' ";
+                    DataTable dt = DbHelper.Db.DataAdapter(cmdtext);
+                    if (dt.Rows.Count > 0)
+                    {
+                        cmdtext = " alter table DeviceInfo add column FuzzyQuery int default(0) ";
+                        DbHelper.Db.ExecuteNonQuery(cmdtext);
+                    }
+                }
+                else
+                {
+
+                }
             }
             catch (Exception ex)
             {
@@ -324,9 +257,30 @@ namespace CBZN_TestTool
             WinApi.SendMessage(Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
 
+        private void p_Title_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
+            }
+        }
+
         private void ShowHideTap(Button btn)
         {
             ShowSelectedEffect(btn);
+            if (btn == btn_Tap1)
+                p_Tap1.Visible = true;
+            if (btn == btn_Tap2)
+                p_Tap2.Visible = true;
+            if (btn == btn_Tap3)
+                p_Tap3.Visible = true;
+            if (btn == btn_Tap4)
+                p_Tap4.Visible = true;
             p_Tap1.Visible = btn == btn_Tap1;
             p_Tap2.Visible = btn == btn_Tap2;
             p_Tap3.Visible = btn == btn_Tap3;
@@ -335,25 +289,10 @@ namespace CBZN_TestTool
 
         private void ShowSelectedEffect(Button btn)
         {
-            Color c = Color.Transparent;
-            if (!btn_Tap1.Enabled)
-            {
-                btn_Tap1.Enabled = true;
-            }
-            if (!btn_Tap2.Enabled)
-            {
-                btn_Tap2.Enabled = true;
-            }
-            if (!btn_Tap3.Enabled)
-            {
-                btn_Tap3.Enabled = true;
-            }
-            if (!btn_Tap4.Enabled)
-            {
-                btn_Tap4.Enabled = true;
-            }
-
-            btn.Enabled = false;
+            btn_Tap1.Enabled = btn != btn_Tap1;
+            btn_Tap2.Enabled = btn != btn_Tap2;
+            btn_Tap3.Enabled = btn != btn_Tap3;
+            btn_Tap4.Enabled = btn != btn_Tap4;
         }
 
         #endregion 窗体事件
@@ -530,6 +469,16 @@ namespace CBZN_TestTool
                                         CardLoss cl = CardLoss.CurrentForm;
                                         cl.PortDataReceived(distanceparameter);
                                     }
+                                    else if (ViceCardDelay.IsShow)
+                                    {
+                                        ViceCardDelay vcd = ViceCardDelay.Instance;
+                                        vcd.PortDataReceived(distanceparameter);
+                                    }
+                                    else if (DelayParam.IsShow)
+                                    {
+                                        DelayParam dp = DelayParam.Instance;
+                                        dp.PortDataReceived(distanceparameter);
+                                    }
                                     break;
 
                                 case 160://0xA0 初始化主机参数
@@ -609,11 +558,19 @@ namespace CBZN_TestTool
             }
         }
 
-        private void PortOpenAndCloseChange(object e, bool value)
+        private void PortOpenAndCloseChange(object e, bool flag)
         {
             DefaultShow ds = delegate
             {
-                if (value)
+                btn_Read.Enabled = flag;
+                btn_DistanceDeviceEnter.Enabled = flag;
+                btn_TemporaryDevicePwdEnter.Enabled = flag;
+                btn_TemporaryReadCard.Enabled = flag;
+                btn_WirelessSet.Enabled = flag;
+                btn_FrequencySearch.Enabled = flag;
+                btn_Query.Enabled = flag;
+                btn_Test.Enabled = flag;
+                if (flag)
                 {
                     dgv_DataList_SelectionChanged(null, null);
                 }
@@ -622,15 +579,8 @@ namespace CBZN_TestTool
                     btn_Register.Enabled = false;
                     btn_Registers.Enabled = false;
                     btn_ReportTheLossOf.Enabled = false;
+                    btn_Delay.Enabled = false;
                 }
-                btn_Read.Enabled = value;
-                btn_DistanceDeviceEnter.Enabled = value;
-                btn_TemporaryDevicePwdEnter.Enabled = value;
-                btn_TemporaryReadCard.Enabled = value;
-                btn_WirelessSet.Enabled = value;
-                btn_FrequencySearch.Enabled = value;
-                btn_Query.Enabled = value;
-                btn_Test.Enabled = value;
             };
             btn_Read.Invoke(ds);
         }
@@ -638,6 +588,54 @@ namespace CBZN_TestTool
         #endregion 端口事件
 
         #region 卡片操作
+
+        private void btn_Delay_Click(object sender, EventArgs e)
+        {
+            if (dgv_DataList.SelectedRows.Count == 0) return;
+            int index = dgv_DataList.SelectedRows[0].Index;
+            CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
+            if (info.CardType > 0)
+            {
+                using (ViceCardDelay vcd = ViceCardDelay.Instance)
+                {
+                    vcd._mCardInfo = info;
+                    vcd._mPort = _mPort;
+                    vcd.DelayDataChange += Vcd_DelayDataChange;
+                    vcd.ShowDialog();
+                }
+            }
+            else
+            {
+                using (DelayParam dp = DelayParam.Instance)
+                {
+                    dp._mPort = _mPort;
+                    dp._mCardInfo = info;
+                    dp.ShowDialog();
+                    if (dp.Tag == null) return;
+                    UpdateRowData<CardInfo>(dp.Tag as CardInfo, dgv_DataList.Rows[index]);
+                }
+            }
+        }
+
+        private void Vcd_DelayDataChange(CardInfo hostcardinfo, List<CardInfo> vicecard)
+        {
+            int index = dgv_DataList.SelectedRows[0].Index;
+            UpdateRowData<CardInfo>(hostcardinfo, dgv_DataList.Rows[index]);
+            if (hostcardinfo.CardType == 1)
+            {
+                foreach (CardInfo item in vicecard)
+                {
+                    for (int i = 0; i < dgv_DataList.RowCount; i++)
+                    {
+                        if (dgv_DataList.Rows[i].Cells["CardNumber"].Value.Equals(item.CardNumber))
+                        {
+                            UpdateRowData<CardInfo>(item, dgv_DataList.Rows[i]);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         private void br_Registercomplete(int index, CardInfo info)
         {
@@ -649,25 +647,32 @@ namespace CBZN_TestTool
 
         private void btn_Next_Click(object sender, EventArgs e)
         {
-            cb_Page.SelectedIndex += 1;
+            CurrentPage += 1;
         }
 
         private void btn_Previous_Click(object sender, EventArgs e)
         {
-            cb_Page.SelectedIndex -= 1;
+            CurrentPage -= 1;
+        }
+
+        private void btn_First_Click(object sender, EventArgs e)
+        {
+            CurrentPage = 0;
+        }
+
+        private void btn_Last_Click(object sender, EventArgs e)
+        {
+            CurrentPage = _pageCount - 1;
         }
 
         private void btn_Read_Click(object sender, EventArgs e)
         {
-            //dgv_DataList.Rows.Clear();
             DataTable dt = dgv_DataList.DataSource as DataTable;
             if (dt != null)
                 dt.Rows.Clear();
             _dicDataList.Clear();
 
             btn_Read.Enabled = false;
-            cb_Page.Items.Clear();
-            cb_Page.SelectedIndex = -1;
             try
             {
                 byte[] by = PortAgreement.GetReadAllCard();
@@ -706,6 +711,7 @@ namespace CBZN_TestTool
                 if (dr.Tag == null) return;
                 info = dr.Tag as CardInfo;
                 UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
+                btn_Delay.Enabled = true;
             }
         }
 
@@ -854,21 +860,20 @@ namespace CBZN_TestTool
 
         private void btn_ReportTheLossOf_Paint(object sender, PaintEventArgs e)
         {
+
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
-
+            Rectangle rect = new Rectangle(e.ClipRectangle.X - 1, e.ClipRectangle.Y - 1, e.ClipRectangle.Width + 1, e.ClipRectangle.Height + 1);
             Color leftcolor = btn_ReportTheLossOf.BackColor;
             Color rightcolor = btn_ReportTheLossOf.BackColor;
             Color forecolor = btn_ReportTheLossOf.ForeColor;
 
-            int height = btn_ReportTheLossOf.Height;
-
-            Rectangle leftrect = new Rectangle(0, 0, 100, height);
-            Rectangle rightrect = new Rectangle(100, 0, 50, height);
+            Rectangle leftrect = new Rectangle(rect.X, rect.Y, 101, rect.Height);
+            Rectangle rightrect = new Rectangle(100, rect.Y, 50, rect.Height);
 
             if (!btn_ReportTheLossOf.Enabled)
             {
-                forecolor = Color.FromArgb(231, 231, 231);
+                forecolor = Color.White;
                 leftcolor = Color.FromArgb(160, 160, 160);
                 rightcolor = leftcolor;
             }
@@ -904,11 +909,11 @@ namespace CBZN_TestTool
 
             g.DrawString(btn_ReportTheLossOf.Text, btn_ReportTheLossOf.Font, new SolidBrush(forecolor), leftrect, sf);
 
-            g.DrawLine(new Pen(Color.Gray, 1), 100, 0, 100, leftrect.Height);
+            g.DrawLine(new Pen(Color.Gray, 1), 100, rect.Y, 100, leftrect.Height);
 
             leftcolor = _lossCount > 0 ? Color.FromArgb(240, 60, 0) : Color.FromArgb(160, 160, 160);
 
-            g.FillPie(new SolidBrush(leftcolor), new Rectangle(leftrect.Width + rightrect.Width / 2 - 12, height / 2 - 12, 24, 24), 0, 360);
+            g.FillPie(new SolidBrush(leftcolor), new Rectangle(leftrect.Width + rightrect.Width / 2 - 12, rect.Height / 2 - 12, 24, 24), 0, 360);
 
             g.DrawString(_lossCount.ToString(), btn_ReportTheLossOf.Font, new SolidBrush(forecolor), rightrect, sf);
         }
@@ -925,30 +930,6 @@ namespace CBZN_TestTool
         private void btn_ShowRecord_Click(object sender, EventArgs e)
         {
             ShowRecord(string.Empty);
-        }
-
-        private void cb_Page_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = cb_Page.SelectedIndex;
-
-            btn_Previous.Enabled = index != 0;
-            btn_Next.Enabled = index != cb_Page.Items.Count - 1;
-
-            try
-            {
-                if (index > -1)
-                {
-                    //dgv_DataList.Rows.Clear();
-                    //List<CardInfo> cardinfos = DbHelper.Db.ToList<CardInfo>(index * 30, 30, _strSearchWhere);
-                    DataTable dt = DbHelper.Db.ToTable<CardInfo>(index * 30, 30, _strSearchWhere);
-                    //AddRange(cardinfos, dgv_DataList);
-                    dgv_DataList.DataSource = dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
         }
 
         private void dgv_DataList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -1072,7 +1053,7 @@ namespace CBZN_TestTool
                     int index = dgv_DataList.SelectedRows[0].Index;
                     CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
                     btn_Register.Enabled = info.CardType < 3;
-                    //btn_ReportTheLossOf.Enabled = info.Cid != 0 && (info.CardReportLoss == 0);
+                    btn_Delay.Enabled = info.Cid > 0;
                 }
             }
         }
@@ -1099,13 +1080,40 @@ namespace CBZN_TestTool
             dgv_DataList.BeginInvoke(ds);
         }
 
+        private void tb_Page_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == 10)
+            {
+                int page = 0;
+                if (tb_Page.TextLength > 0)
+                    page = Convert.ToInt32(tb_Page.Text);
+                page--;
+                if (page <= 0)
+                    page = 0;
+                if (page >= _pageCount)
+                    page = _pageCount - 1;
+                CurrentPage = page;
+            }
+            else if (e.KeyChar == 8)
+            {
+                e.Handled = false;
+            }
+            else if (e.KeyChar < 47 || e.KeyChar > 57)
+            {
+                e.Handled = true;
+            }
+        }
+
         private void ShowRecord(string where)
         {
             try
             {
-                _strSearchWhere = " and Cid > 0 " + where;
+                _strSearchWhere = " and CardType > -1 " + where;
                 int count = DbHelper.Db.GetCount<CardInfo>(_strSearchWhere);
-                ShowPage(count, cb_Page, l_RecordCount);
+                GetShowPage(count, l_RecordCount);
+                int page = GetShowPage(count, l_RecordCount);
+                _pageCount = page;
+                CurrentPage = 0;
             }
             catch (Exception ex)
             {
@@ -1122,72 +1130,39 @@ namespace CBZN_TestTool
 
         #region 加密操作
 
+        private void DrawBtnPaint2(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (!btn.Enabled)
+            {
+                Graphics g = e.Graphics;
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                Rectangle rect = new Rectangle(0, 0, btn.Width, btn.Height);
+                g.FillRectangle(new SolidBrush(btn.BackColor), rect);
+                g.DrawString(btn.Text, btn.Font, new SolidBrush(btn.ForeColor), rect, sf);
+                g.FillPolygon(Brushes.White, new Point[]
+                {
+                    new Point(btn.Width / 2 , btn.Height  - 5),
+                    new Point(btn.Width / 2 + 5 , btn.Height),
+                    new Point(btn.Width / 2-5 , btn.Height)
+                });
+            }
+        }
+
         private void btn_TapDistanceEncryption_Click(object sender, EventArgs e)
         {
             ShowHideEncryptionTap(btn_TapDistanceEncryption);
             AcceptButton = btn_DistanceDeviceEnter;
         }
 
-        private void btn_TapDistanceEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            _isMouseDown5 = true;
-        }
-
-        private void btn_TapDistanceEncryption_MouseEnter(object sender, System.EventArgs e)
-        {
-            _isMouseEnter5 = true;
-        }
-
-        private void btn_TapDistanceEncryption_MouseLeave(object sender, System.EventArgs e)
-        {
-            _isMouseDown5 = false;
-            _isMouseEnter5 = false;
-        }
-
-        private void btn_TapDistanceEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            _isMouseDown5 = false;
-        }
-
-        private void btn_TapDistanceEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Rectangle rect = DrawButton(g, btn_TapDistanceEncryption, _isMouseDown5, _isMouseEnter5);
-            DrawBottomSelect(g, rect, btn_TapDistanceEncryption.Enabled);
-        }
-
         private void btn_TapTemporaryEncryption_Click(object sender, EventArgs e)
         {
             ShowHideEncryptionTap(btn_TapTemporaryEncryption);
             AcceptButton = btn_TemporaryDevicePwdEnter;
-        }
-
-        private void btn_TapTemporaryEncryption_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            _isMouseDown6 = true;
-        }
-
-        private void btn_TapTemporaryEncryption_MouseEnter(object sender, System.EventArgs e)
-        {
-            _isMouseEnter6 = true;
-        }
-
-        private void btn_TapTemporaryEncryption_MouseLeave(object sender, System.EventArgs e)
-        {
-            _isMouseDown6 = false;
-            _isMouseEnter6 = false;
-        }
-
-        private void btn_TapTemporaryEncryption_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            _isMouseDown6 = false;
-        }
-
-        private void btn_TapTemporaryEncryption_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Rectangle rect = DrawButton(g, btn_TapTemporaryEncryption, _isMouseDown6, _isMouseEnter6);
-            DrawBottomSelect(g, rect, btn_TapTemporaryEncryption.Enabled);
         }
 
         private void dgv_pwd_KeyUp(object sender, KeyEventArgs e)
@@ -1767,14 +1742,24 @@ namespace CBZN_TestTool
             }
         }
 
+        private void btn_DeviceFirst_Click(object sender, EventArgs e)
+        {
+            DeviceCurrentPage = 0;
+        }
+
+        private void btn_DeviceLast_Click(object sender, EventArgs e)
+        {
+            DeviceCurrentPage = _deviceCurrentPage - 1;
+        }
+
         private void btn_DeviceNext_Click(object sender, EventArgs e)
         {
-            cb_DevicePage.SelectedIndex += 1;
+            DeviceCurrentPage += 1;
         }
 
         private void btn_DevicePrevious_Click(object sender, EventArgs e)
         {
-            cb_DevicePage.SelectedIndex -= 1;
+            DeviceCurrentPage -= 1;
         }
 
         private void btn_ShowDeviceRecord_Click(object sender, EventArgs e)
@@ -1782,7 +1767,10 @@ namespace CBZN_TestTool
             try
             {
                 int count = DbHelper.Db.GetCount<DeviceInfo>();
-                ShowPage(count, cb_DevicePage, l_DeviceRecordCount);
+                int page = GetShowPage(count, l_DeviceRecordCount);
+                _deviceCurrentPage = page;
+                _devicePageCount = page;
+                DeviceCurrentPage = 0;
             }
             catch (Exception ex)
             {
@@ -1796,24 +1784,6 @@ namespace CBZN_TestTool
             for (int i = 0; i < dgv_Device.RowCount; i++)
             {
                 dgv_Device.Rows[i].Cells["c_Selected"].Value = check;
-            }
-        }
-
-        private void cb_DevicePage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = cb_DevicePage.SelectedIndex;
-
-            btn_DevicePrevious.Enabled = index != 0;
-            btn_DeviceNext.Enabled = index != cb_DevicePage.Items.Count - 1;
-
-            try
-            {
-                DataTable dt = DbHelper.Db.ToTable<DeviceInfo>(index * 30, 30);
-                dgv_Device.DataSource = dt;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -1972,6 +1942,16 @@ namespace CBZN_TestTool
                         }
                     }
                     break;
+                case 15:
+                    if (CRegex.IsDecimal(e.Value))
+                    {
+                        int fuzzyquery = HexadecimalConversion.ObjToInt(e.Value);
+                        if (fuzzyquery == 0)
+                        {
+                            e.Value = "关闭";
+                        }
+                    }
+                    break;
             }
         }
 
@@ -2046,6 +2026,29 @@ namespace CBZN_TestTool
             bool result = dgv_Device.SelectedRows.Count > 0;
             btn_DeviceDel.Enabled = result;
             btn_DeviceEdit.Enabled = result;
+        }
+
+        private void tb_DevicePage_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == 10)
+            {
+                int page = 0;
+                if (tb_DevicePage.TextLength > 0)
+                    page = Convert.ToInt32(tb_DevicePage.Text);
+                if (page <= 0)
+                    page = 0;
+                if (page >= _devicePageCount)
+                    page = _devicePageCount - 1;
+                DeviceCurrentPage = page;
+            }
+            else if (e.KeyChar == 8)
+            {
+                e.Handled = false;
+            }
+            else if (e.KeyChar < 47 || e.KeyChar > 57)
+            {
+                e.Handled = true;
+            }
         }
 
         #endregion 参数编录
@@ -2715,25 +2718,13 @@ namespace CBZN_TestTool
             return dt;
         }
 
-        private void ShowPage(int count, ComboBox cbBox, Label lcount)
+        private int GetShowPage(int count, Label lcount)
         {
-            cbBox.Items.Clear();
             int page = count / 30;
-            if (page % 30 > 0)
+            if (count % 30 > 0)
                 page++;
-            if (page > 0)
-            {
-                for (int i = 0; i < page; i++)
-                {
-                    cbBox.Items.Add(string.Format("{0}页", i));
-                }
-            }
-            else
-            {
-                cbBox.Items.Add("1页");
-            }
-            cbBox.SelectedIndex = 0;
-            lcount.Text = string.Format("总共 {0} 条记录", count);
+            lcount.Text = string.Format("共 {0} 条记录，共 {1} 页", count, page);
+            return page;
         }
 
         private void UpdateRowData<T>(T info, DataGridViewRow dr)
