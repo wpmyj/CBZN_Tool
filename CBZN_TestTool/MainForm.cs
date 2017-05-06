@@ -85,6 +85,7 @@ namespace CBZN_TestTool
         private string _strSearchWhere;
         private System.Timers.Timer _tiConnectionPort;
         private List<CardInfo> _lossCards;
+        private Thread _tDelayThread;
 
         private delegate void DefaultShow();
 
@@ -95,6 +96,15 @@ namespace CBZN_TestTool
         public MainForm()
         {
             InitializeComponent();
+        }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
         }
 
         private void btn_Close_Click(object sender, EventArgs e)
@@ -210,31 +220,41 @@ namespace CBZN_TestTool
             try
             {
                 DbHelper.LoadDb(path);
-                
+
                 string xmlpath = string.Format("{0}\\SystemSettings.xml", Application.StartupPath);
                 XmlHelper xh = new XmlHelper(xmlpath);
                 if (!xh.Load())
                 {
                     xh.Create("1.0", "UTF-8", "Settings");
-                    SystemSettings settings = new SystemSettings() { Version = Application.ProductVersion };
-                    xh.Add<SystemSettings>(settings);
-
-                    string cmdtext = " select * from sqlite_master where name='DeviceInfo' and sql ='CREATE TABLE DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int, BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int )' ";
-                    DataTable dt = DbHelper.Db.DataAdapter(cmdtext);
-                    if (dt.Rows.Count > 0)
-                    {
-                        cmdtext = " alter table DeviceInfo add column FuzzyQuery int default(0) ";
-                        DbHelper.Db.ExecuteNonQuery(cmdtext);
-                    }
                 }
-                else
+                SystemSettings syssetting = xh.Read<SystemSettings>();
+                if (syssetting == null)
                 {
-
+                    syssetting = new SystemSettings() { Version = Application.ProductVersion };
+                    xh.Add<SystemSettings>(syssetting);
+                    UpdateSystem();
+                }
+                else if (syssetting.Version != Application.ProductVersion)
+                {
+                    syssetting.Version = Application.ProductVersion;
+                    xh.Update<SystemSettings>(syssetting);
+                    UpdateSystem();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateSystem()
+        {
+            string cmdtext = " select * from sqlite_master where name='DeviceInfo' and sql ='CREATE TABLE DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int, BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int )' ";
+            DataTable dt = DbHelper.Db.DataAdapter(cmdtext);
+            if (dt.Rows.Count > 0)
+            {
+                cmdtext = " alter table DeviceInfo add column FuzzyQuery int default(0) ";
+                DbHelper.Db.ExecuteNonQuery(cmdtext);
             }
         }
 
@@ -339,7 +359,6 @@ namespace CBZN_TestTool
             {
                 if (!portnames.Contains(_mPort.PortName))
                 {
-                    _mPort.IsOpen = false;
                     try
                     {
                         _mPort.Close();
@@ -347,6 +366,10 @@ namespace CBZN_TestTool
                     catch
                     {
                         // ignored
+                    }
+                    finally
+                    {
+                        _mPort.IsOpen = false;
                     }
                 }
             }
@@ -392,6 +415,11 @@ namespace CBZN_TestTool
                                     {
                                         DefaultShow ds = delegate
                                         {
+                                            if (_tDelayThread != null)
+                                            {
+                                                _tDelayThread.Abort();
+                                                _tDelayThread = null;
+                                            }
                                             btn_Read.Enabled = true;
                                             dgv_DataList_SelectionChanged(null, null);
                                             l_RecordCount.Text = string.Format("总共 {0} 条记录", dgv_DataList.RowCount);
@@ -435,6 +463,7 @@ namespace CBZN_TestTool
                                             }
                                         }
                                         ShowReadCardInfo(cardinfo);
+                                        CreateDelayThread();
                                     }
 
                                     #endregion 读所有卡的flash
@@ -581,13 +610,23 @@ namespace CBZN_TestTool
                     btn_ReportTheLossOf.Enabled = false;
                     btn_Delay.Enabled = false;
                 }
+                if (flag)
+                {
+                    l_PortConnectionState.Text = _mPort.PortName;
+                    l_PortConnectionState.ForeColor = Color.Lime;
+                }
+                else
+                {
+                    l_PortConnectionState.Text = "未连接";
+                    l_PortConnectionState.ForeColor = Color.Red;
+                }
             };
             btn_Read.Invoke(ds);
         }
 
         #endregion 端口事件
 
-        #region 卡片操作
+        #region 卡片管理
 
         private void btn_Delay_Click(object sender, EventArgs e)
         {
@@ -677,11 +716,35 @@ namespace CBZN_TestTool
             {
                 byte[] by = PortAgreement.GetReadAllCard();
                 _mPort.Write(by);
+
+                CreateDelayThread();
             }
             catch (Exception ex)
             {
                 btn_Read.Enabled = true;
                 MessageBox.Show(ex.Message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void CreateDelayThread()
+        {
+            if (_tDelayThread != null)
+                _tDelayThread.Abort();
+            _tDelayThread = new Thread(DelayShowReadControl);
+            _tDelayThread.IsBackground = true;
+            _tDelayThread.Start();
+        }
+
+        private void DelayShowReadControl()
+        {
+            try
+            {
+                Thread.Sleep(5000);
+
+                btn_Read.Enabled = _mPort.IsOpen;
+            }
+            catch
+            {
             }
         }
 
@@ -1036,6 +1099,7 @@ namespace CBZN_TestTool
             {
                 btn_Register.Enabled = false;
                 btn_Registers.Enabled = false;
+                btn_Delay.Enabled = false;
                 btn_ReportTheLossOf.Enabled = false;
             }
         }
@@ -1052,8 +1116,16 @@ namespace CBZN_TestTool
                 {
                     int index = dgv_DataList.SelectedRows[0].Index;
                     CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
-                    btn_Register.Enabled = info.CardType < 3;
-                    btn_Delay.Enabled = info.Cid > 0;
+                    if (info.CardType < 3)
+                    {
+                        btn_Register.Enabled = true;
+                        btn_Delay.Enabled = info.Cid > 0;
+                    }
+                    else
+                    {
+                        btn_Register.Enabled = false;
+                        btn_Delay.Enabled = false;
+                    }
                 }
             }
         }
@@ -1310,6 +1382,14 @@ namespace CBZN_TestTool
 
         #region 定距加密
 
+        private void gb_Distance_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                g.DrawLine(new Pen(Color.FromArgb(221, 221, 221)), 0, tb_DistanceOldPwd.Top + tb_DistanceOldPwd.Height + 20, gb_Distance.Width, tb_DistanceOldPwd.Top + tb_DistanceOldPwd.Height + 20);
+            }
+        }
+
         private void btn_DistanceDeviceEnter_Click(object sender, EventArgs e)
         {
             string oldpwd = string.Empty;
@@ -1432,7 +1512,7 @@ namespace CBZN_TestTool
             {
                 case 0:
                     if (parameter.TypeParameter.CardType == Bll.CardType.PasswordMistake)
-                        ShowEncryptionMessage("定距卡" + parameter.CardNumber + "加密失败", false, parameter.Command);
+                        ShowEncryptionMessage("定距卡 " + parameter.CardNumber + " 加密失败", false, parameter.Command);
                     else
                         //显示成功
                         ShowEncryptionMessage("定距卡 " + parameter.CardNumber + " 加密成功。", false, parameter.Command);
@@ -1492,6 +1572,14 @@ namespace CBZN_TestTool
         #endregion 定距加密
 
         #region 临时加密
+
+        private void gb_Temporary_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                g.DrawLine(new Pen(Color.FromArgb(221, 221, 221)), 0, tb_TemporaryOldPwd.Top + tb_TemporaryOldPwd.Height + 20, gb_Temporary.Width, tb_TemporaryOldPwd.Top + tb_TemporaryOldPwd.Height + 20);
+            }
+        }
 
         private void btn_TemporaryDevicePwdEnter_Click(object sender, EventArgs e)
         {
@@ -1778,13 +1866,22 @@ namespace CBZN_TestTool
             }
         }
 
+        private void cb_AllSelected_MouseDown(object sender, MouseEventArgs e)
+        {
+            cb_AllSelected.ThreeState = false;
+        }
+
         private void cb_AllSelected_CheckedChanged(object sender, EventArgs e)
         {
+            if (cb_AllSelected.CheckState == CheckState.Indeterminate) return;
             bool check = cb_AllSelected.Checked;
+            cb_AllSelected.Tag = check;
             for (int i = 0; i < dgv_Device.RowCount; i++)
             {
                 dgv_Device.Rows[i].Cells["c_Selected"].Value = check;
             }
+            btn_DeviceExport.Enabled = check;
+            cb_AllSelected.Tag = null;
         }
 
         private void dgv_Device_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1958,25 +2055,25 @@ namespace CBZN_TestTool
         private void dgv_Device_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex != 0) return;
-            bool check = Convert.ToBoolean(dgv_Device.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-            if (check)
+            if (cb_AllSelected.Tag != null) return;
+
+            int count = 0;
+            for (int i = 0; i < dgv_Device.RowCount; i++)
             {
-                btn_DeviceExport.Enabled = true;
-            }
-            else
-            {
-                foreach (DataGridViewRow row in dgv_Device.Rows)
+                if (Convert.ToBoolean(dgv_Device.Rows[e.RowIndex].Cells[e.ColumnIndex].Value))
                 {
-                    object obj = row.Cells[e.ColumnIndex].Value;
-                    if (!(obj is bool)) continue;
-                    if ((bool)obj)
-                    {
-                        btn_DeviceExport.Enabled = true;
-                        return;
-                    }
+                    count++;
                 }
-                btn_DeviceExport.Enabled = false;
             }
+
+            cb_AllSelected.ThreeState = true;
+            if (count == 0)
+                cb_AllSelected.CheckState = CheckState.Unchecked;
+            else if (count >= dgv_Device.RowCount)
+                cb_AllSelected.CheckState = CheckState.Checked;
+            else
+                cb_AllSelected.CheckState = CheckState.Indeterminate;
+            btn_DeviceExport.Enabled = count > 0;
         }
 
         private void dgv_Device_CurrentCellDirtyStateChanged(object sender, EventArgs e)

@@ -42,6 +42,7 @@
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.btn_Min = new CCWin.SkinControl.SkinButton();
             this.p_Left = new System.Windows.Forms.Panel();
+            this.l_PortConnectionState = new System.Windows.Forms.Label();
             this.btn_Tap4 = new System.Windows.Forms.Button();
             this.btn_Tap3 = new System.Windows.Forms.Button();
             this.btn_Tap1 = new System.Windows.Forms.Button();
@@ -129,6 +130,22 @@
             this.p_Tap3 = new System.Windows.Forms.Panel();
             this.cb_AllSelected = new System.Windows.Forms.CheckBox();
             this.dgv_Device = new System.Windows.Forms.DataGridView();
+            this.c_Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Did = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HostNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IOMouth = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BrakeNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OpenModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Partition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SAPBF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Detection = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardReadDistance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReadCardDelay = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CameraDetection = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WirelessNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FrequencyOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Language = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FuzzyQuery = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel5 = new System.Windows.Forms.Panel();
             this.tb_DevicePage = new System.Windows.Forms.TextBox();
             this.btn_DeviceLast = new NewControl.NewButton();
@@ -148,22 +165,6 @@
             this.dataGridViewImageColumn3 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn4 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn5 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.c_Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Did = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HostNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IOMouth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BrakeNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OpenModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Partition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SAPBF = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Detection = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardReadDistance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReadCardDelay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CameraDetection = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WirelessNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FrequencyOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Language = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FuzzyQuery = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.p_Title.SuspendLayout();
             this.p_Left.SuspendLayout();
             this.p_Tap1.SuspendLayout();
@@ -241,6 +242,7 @@
             // p_Left
             // 
             this.p_Left.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(71)))), ((int)(((byte)(124)))));
+            this.p_Left.Controls.Add(this.l_PortConnectionState);
             this.p_Left.Controls.Add(this.btn_Tap4);
             this.p_Left.Controls.Add(this.btn_Tap3);
             this.p_Left.Controls.Add(this.btn_Tap1);
@@ -251,6 +253,17 @@
             this.p_Left.Size = new System.Drawing.Size(150, 548);
             this.p_Left.TabIndex = 3;
             this.p_Left.MouseDown += new System.Windows.Forms.MouseEventHandler(this.p_Title_MouseDown);
+            // 
+            // l_PortConnectionState
+            // 
+            this.l_PortConnectionState.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.l_PortConnectionState.ForeColor = System.Drawing.Color.Red;
+            this.l_PortConnectionState.Location = new System.Drawing.Point(0, 62);
+            this.l_PortConnectionState.Name = "l_PortConnectionState";
+            this.l_PortConnectionState.Size = new System.Drawing.Size(150, 20);
+            this.l_PortConnectionState.TabIndex = 5;
+            this.l_PortConnectionState.Text = "未连接";
+            this.l_PortConnectionState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btn_Tap4
             // 
@@ -307,7 +320,7 @@
             this.btn_Tap1.Size = new System.Drawing.Size(150, 100);
             this.btn_Tap1.TabIndex = 1;
             this.btn_Tap1.TabStop = false;
-            this.btn_Tap1.Text = "卡片操作";
+            this.btn_Tap1.Text = "卡片管理";
             this.btn_Tap1.UseVisualStyleBackColor = false;
             this.btn_Tap1.EnabledChanged += new System.EventHandler(this.BtnEnabledChanged);
             this.btn_Tap1.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawBtnPaint);
@@ -614,11 +627,11 @@
             // tb_Search
             // 
             this.tb_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_Search.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_Search.Location = new System.Drawing.Point(709, 11);
+            this.tb_Search.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_Search.Location = new System.Drawing.Point(709, 9);
             this.tb_Search.MaxLength = 50;
             this.tb_Search.Name = "tb_Search";
-            this.tb_Search.Size = new System.Drawing.Size(150, 29);
+            this.tb_Search.Size = new System.Drawing.Size(150, 33);
             this.tb_Search.TabIndex = 7;
             this.tb_Search.TabStop = false;
             this.tb_Search.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_Search_KeyDown);
@@ -715,10 +728,10 @@
             // tb_Page
             // 
             this.tb_Page.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_Page.Location = new System.Drawing.Point(697, 9);
+            this.tb_Page.Location = new System.Drawing.Point(745, 10);
             this.tb_Page.MaxLength = 10;
             this.tb_Page.Name = "tb_Page";
-            this.tb_Page.Size = new System.Drawing.Size(100, 33);
+            this.tb_Page.Size = new System.Drawing.Size(50, 33);
             this.tb_Page.TabIndex = 7;
             this.tb_Page.TabStop = false;
             this.tb_Page.Text = "1";
@@ -755,7 +768,7 @@
             this.btn_First.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_First.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_First.ForeColor = System.Drawing.Color.White;
-            this.btn_First.Location = new System.Drawing.Point(613, 8);
+            this.btn_First.Location = new System.Drawing.Point(661, 9);
             this.btn_First.Name = "btn_First";
             this.btn_First.Size = new System.Drawing.Size(35, 35);
             this.btn_First.TabIndex = 5;
@@ -775,7 +788,7 @@
             this.btn_Previous.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Previous.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Previous.ForeColor = System.Drawing.Color.White;
-            this.btn_Previous.Location = new System.Drawing.Point(654, 8);
+            this.btn_Previous.Location = new System.Drawing.Point(702, 9);
             this.btn_Previous.Name = "btn_Previous";
             this.btn_Previous.Size = new System.Drawing.Size(35, 35);
             this.btn_Previous.TabIndex = 3;
@@ -1160,14 +1173,14 @@
             this.c_time2});
             this.dgv_pwd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_pwd.EnableHeadersVisualStyles = false;
-            this.dgv_pwd.Location = new System.Drawing.Point(240, 0);
+            this.dgv_pwd.Location = new System.Drawing.Point(250, 0);
             this.dgv_pwd.MultiSelect = false;
             this.dgv_pwd.Name = "dgv_pwd";
             this.dgv_pwd.ReadOnly = true;
             this.dgv_pwd.RowHeadersVisible = false;
             this.dgv_pwd.RowTemplate.Height = 36;
             this.dgv_pwd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_pwd.Size = new System.Drawing.Size(657, 507);
+            this.dgv_pwd.Size = new System.Drawing.Size(647, 507);
             this.dgv_pwd.StandardTab = true;
             this.dgv_pwd.TabIndex = 1;
             this.dgv_pwd.TabStop = false;
@@ -1202,7 +1215,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(240, 507);
+            this.panel3.Size = new System.Drawing.Size(250, 507);
             this.panel3.TabIndex = 0;
             // 
             // btn_TapTemporaryEncryption
@@ -1214,9 +1227,9 @@
             this.btn_TapTemporaryEncryption.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_TapTemporaryEncryption.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_TapTemporaryEncryption.ForeColor = System.Drawing.Color.White;
-            this.btn_TapTemporaryEncryption.Location = new System.Drawing.Point(120, 0);
+            this.btn_TapTemporaryEncryption.Location = new System.Drawing.Point(125, 0);
             this.btn_TapTemporaryEncryption.Name = "btn_TapTemporaryEncryption";
-            this.btn_TapTemporaryEncryption.Size = new System.Drawing.Size(120, 45);
+            this.btn_TapTemporaryEncryption.Size = new System.Drawing.Size(125, 45);
             this.btn_TapTemporaryEncryption.TabIndex = 1;
             this.btn_TapTemporaryEncryption.TabStop = false;
             this.btn_TapTemporaryEncryption.Text = "临时加密";
@@ -1237,7 +1250,7 @@
             this.btn_TapDistanceEncryption.ForeColor = System.Drawing.Color.White;
             this.btn_TapDistanceEncryption.Location = new System.Drawing.Point(0, 0);
             this.btn_TapDistanceEncryption.Name = "btn_TapDistanceEncryption";
-            this.btn_TapDistanceEncryption.Size = new System.Drawing.Size(120, 45);
+            this.btn_TapDistanceEncryption.Size = new System.Drawing.Size(125, 45);
             this.btn_TapDistanceEncryption.TabIndex = 0;
             this.btn_TapDistanceEncryption.TabStop = false;
             this.btn_TapDistanceEncryption.Text = "定距加密";
@@ -1255,7 +1268,7 @@
             this.p_DistanceInterface.Controls.Add(this.gb_Distance);
             this.p_DistanceInterface.Location = new System.Drawing.Point(0, 45);
             this.p_DistanceInterface.Name = "p_DistanceInterface";
-            this.p_DistanceInterface.Size = new System.Drawing.Size(240, 462);
+            this.p_DistanceInterface.Size = new System.Drawing.Size(250, 462);
             this.p_DistanceInterface.TabIndex = 2;
             this.p_DistanceInterface.Paint += new System.Windows.Forms.PaintEventHandler(this.p_DistanceInterface_Paint);
             // 
@@ -1274,10 +1287,11 @@
             this.gb_Distance.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.gb_Distance.Location = new System.Drawing.Point(10, 20);
             this.gb_Distance.Name = "gb_Distance";
-            this.gb_Distance.Size = new System.Drawing.Size(220, 340);
+            this.gb_Distance.Size = new System.Drawing.Size(230, 340);
             this.gb_Distance.TabIndex = 0;
             this.gb_Distance.TabStop = false;
             this.gb_Distance.Text = "定距发卡器加密";
+            this.gb_Distance.Paint += new System.Windows.Forms.PaintEventHandler(this.gb_Distance_Paint);
             // 
             // cb_DistanceWay
             // 
@@ -1299,7 +1313,7 @@
             this.btn_DistanceDeviceEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DistanceDeviceEnter.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_DistanceDeviceEnter.ForeColor = System.Drawing.Color.White;
-            this.btn_DistanceDeviceEnter.Location = new System.Drawing.Point(105, 288);
+            this.btn_DistanceDeviceEnter.Location = new System.Drawing.Point(115, 288);
             this.btn_DistanceDeviceEnter.Name = "btn_DistanceDeviceEnter";
             this.btn_DistanceDeviceEnter.Size = new System.Drawing.Size(100, 35);
             this.btn_DistanceDeviceEnter.TabIndex = 6;
@@ -1314,7 +1328,7 @@
             this.tb_ConfirmDistancePwd.Location = new System.Drawing.Point(15, 210);
             this.tb_ConfirmDistancePwd.MaxLength = 6;
             this.tb_ConfirmDistancePwd.Name = "tb_ConfirmDistancePwd";
-            this.tb_ConfirmDistancePwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_ConfirmDistancePwd.Size = new System.Drawing.Size(200, 29);
             this.tb_ConfirmDistancePwd.TabIndex = 3;
             this.tb_ConfirmDistancePwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_ConfirmDistancePwd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ConfirmDistancePwd_KeyDown);
@@ -1327,7 +1341,7 @@
             this.tb_DistanceOldPwd.Location = new System.Drawing.Point(15, 52);
             this.tb_DistanceOldPwd.MaxLength = 6;
             this.tb_DistanceOldPwd.Name = "tb_DistanceOldPwd";
-            this.tb_DistanceOldPwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_DistanceOldPwd.Size = new System.Drawing.Size(200, 29);
             this.tb_DistanceOldPwd.TabIndex = 0;
             this.tb_DistanceOldPwd.Text = "123456";
             this.tb_DistanceOldPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1339,7 +1353,7 @@
             this.tb_DistancePwd.Location = new System.Drawing.Point(15, 145);
             this.tb_DistancePwd.MaxLength = 6;
             this.tb_DistancePwd.Name = "tb_DistancePwd";
-            this.tb_DistancePwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_DistancePwd.Size = new System.Drawing.Size(200, 29);
             this.tb_DistancePwd.TabIndex = 2;
             this.tb_DistancePwd.Text = "123456";
             this.tb_DistancePwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1377,8 +1391,9 @@
             // 
             this.cb_DefaultDistanOldPwd.AutoSize = true;
             this.cb_DefaultDistanOldPwd.Enabled = false;
-            this.cb_DefaultDistanOldPwd.Location = new System.Drawing.Point(17, 89);
+            this.cb_DefaultDistanOldPwd.Location = new System.Drawing.Point(139, 28);
             this.cb_DefaultDistanOldPwd.Name = "cb_DefaultDistanOldPwd";
+            this.cb_DefaultDistanOldPwd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cb_DefaultDistanOldPwd.Size = new System.Drawing.Size(75, 21);
             this.cb_DefaultDistanOldPwd.TabIndex = 1;
             this.cb_DefaultDistanOldPwd.Text = "出厂默认";
@@ -1388,7 +1403,7 @@
             // cb_DefaultDistanPwd
             // 
             this.cb_DefaultDistanPwd.AutoSize = true;
-            this.cb_DefaultDistanPwd.Location = new System.Drawing.Point(17, 245);
+            this.cb_DefaultDistanPwd.Location = new System.Drawing.Point(17, 250);
             this.cb_DefaultDistanPwd.Name = "cb_DefaultDistanPwd";
             this.cb_DefaultDistanPwd.Size = new System.Drawing.Size(75, 21);
             this.cb_DefaultDistanPwd.TabIndex = 4;
@@ -1404,7 +1419,7 @@
             this.p_TemporaryInterface.Controls.Add(this.gb_Temporary);
             this.p_TemporaryInterface.Location = new System.Drawing.Point(0, 45);
             this.p_TemporaryInterface.Name = "p_TemporaryInterface";
-            this.p_TemporaryInterface.Size = new System.Drawing.Size(240, 462);
+            this.p_TemporaryInterface.Size = new System.Drawing.Size(250, 462);
             this.p_TemporaryInterface.TabIndex = 3;
             this.p_TemporaryInterface.Visible = false;
             this.p_TemporaryInterface.Paint += new System.Windows.Forms.PaintEventHandler(this.p_TemporaryInterface_Paint);
@@ -1424,10 +1439,11 @@
             this.gb_Temporary.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.gb_Temporary.Location = new System.Drawing.Point(10, 20);
             this.gb_Temporary.Name = "gb_Temporary";
-            this.gb_Temporary.Size = new System.Drawing.Size(220, 340);
+            this.gb_Temporary.Size = new System.Drawing.Size(230, 340);
             this.gb_Temporary.TabIndex = 0;
             this.gb_Temporary.TabStop = false;
             this.gb_Temporary.Text = "临时IC发卡器加密";
+            this.gb_Temporary.Paint += new System.Windows.Forms.PaintEventHandler(this.gb_Temporary_Paint);
             // 
             // cb_TemporaryWay
             // 
@@ -1449,7 +1465,7 @@
             this.btn_TemporaryDevicePwdEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_TemporaryDevicePwdEnter.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_TemporaryDevicePwdEnter.ForeColor = System.Drawing.Color.White;
-            this.btn_TemporaryDevicePwdEnter.Location = new System.Drawing.Point(105, 288);
+            this.btn_TemporaryDevicePwdEnter.Location = new System.Drawing.Point(115, 288);
             this.btn_TemporaryDevicePwdEnter.Name = "btn_TemporaryDevicePwdEnter";
             this.btn_TemporaryDevicePwdEnter.Size = new System.Drawing.Size(100, 35);
             this.btn_TemporaryDevicePwdEnter.TabIndex = 6;
@@ -1464,7 +1480,7 @@
             this.tb_ConfirmTemporaryPwd.Location = new System.Drawing.Point(15, 210);
             this.tb_ConfirmTemporaryPwd.MaxLength = 8;
             this.tb_ConfirmTemporaryPwd.Name = "tb_ConfirmTemporaryPwd";
-            this.tb_ConfirmTemporaryPwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_ConfirmTemporaryPwd.Size = new System.Drawing.Size(200, 29);
             this.tb_ConfirmTemporaryPwd.TabIndex = 3;
             this.tb_ConfirmTemporaryPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_ConfirmTemporaryPwd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ConfirmTemporaryPwd_KeyDown);
@@ -1477,7 +1493,7 @@
             this.tb_TemporaryOldPwd.Location = new System.Drawing.Point(15, 52);
             this.tb_TemporaryOldPwd.MaxLength = 8;
             this.tb_TemporaryOldPwd.Name = "tb_TemporaryOldPwd";
-            this.tb_TemporaryOldPwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_TemporaryOldPwd.Size = new System.Drawing.Size(200, 29);
             this.tb_TemporaryOldPwd.TabIndex = 0;
             this.tb_TemporaryOldPwd.Text = "12345678";
             this.tb_TemporaryOldPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1489,7 +1505,7 @@
             this.tb_TemporaryPwd.Location = new System.Drawing.Point(15, 145);
             this.tb_TemporaryPwd.MaxLength = 8;
             this.tb_TemporaryPwd.Name = "tb_TemporaryPwd";
-            this.tb_TemporaryPwd.Size = new System.Drawing.Size(190, 29);
+            this.tb_TemporaryPwd.Size = new System.Drawing.Size(200, 29);
             this.tb_TemporaryPwd.TabIndex = 2;
             this.tb_TemporaryPwd.Text = "12345678";
             this.tb_TemporaryPwd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1527,8 +1543,9 @@
             // 
             this.cb_DefaultTemporaryOldPwd.AutoSize = true;
             this.cb_DefaultTemporaryOldPwd.Enabled = false;
-            this.cb_DefaultTemporaryOldPwd.Location = new System.Drawing.Point(17, 89);
+            this.cb_DefaultTemporaryOldPwd.Location = new System.Drawing.Point(139, 28);
             this.cb_DefaultTemporaryOldPwd.Name = "cb_DefaultTemporaryOldPwd";
+            this.cb_DefaultTemporaryOldPwd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cb_DefaultTemporaryOldPwd.Size = new System.Drawing.Size(75, 21);
             this.cb_DefaultTemporaryOldPwd.TabIndex = 1;
             this.cb_DefaultTemporaryOldPwd.Text = "出厂默认";
@@ -1538,7 +1555,7 @@
             // cb_DefaultTemporaryNewPwd
             // 
             this.cb_DefaultTemporaryNewPwd.AutoSize = true;
-            this.cb_DefaultTemporaryNewPwd.Location = new System.Drawing.Point(17, 245);
+            this.cb_DefaultTemporaryNewPwd.Location = new System.Drawing.Point(17, 250);
             this.cb_DefaultTemporaryNewPwd.Name = "cb_DefaultTemporaryNewPwd";
             this.cb_DefaultTemporaryNewPwd.Size = new System.Drawing.Size(75, 21);
             this.cb_DefaultTemporaryNewPwd.TabIndex = 4;
@@ -1569,6 +1586,7 @@
             this.cb_AllSelected.TabStop = false;
             this.cb_AllSelected.UseVisualStyleBackColor = true;
             this.cb_AllSelected.CheckedChanged += new System.EventHandler(this.cb_AllSelected_CheckedChanged);
+            this.cb_AllSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cb_AllSelected_MouseDown);
             // 
             // dgv_Device
             // 
@@ -1636,6 +1654,132 @@
             this.dgv_Device.SelectionChanged += new System.EventHandler(this.dgv_Device_SelectionChanged);
             this.dgv_Device.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgv_Device_KeyUp);
             // 
+            // c_Selected
+            // 
+            this.c_Selected.HeaderText = "";
+            this.c_Selected.Name = "c_Selected";
+            this.c_Selected.Width = 30;
+            // 
+            // Did
+            // 
+            this.Did.DataPropertyName = "Did";
+            this.Did.HeaderText = "ID";
+            this.Did.Name = "Did";
+            this.Did.ReadOnly = true;
+            this.Did.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Did.Visible = false;
+            // 
+            // HostNumber
+            // 
+            this.HostNumber.DataPropertyName = "HostNumber";
+            this.HostNumber.HeaderText = "主机编号";
+            this.HostNumber.Name = "HostNumber";
+            this.HostNumber.ReadOnly = true;
+            this.HostNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // IOMouth
+            // 
+            this.IOMouth.DataPropertyName = "IOMouth";
+            this.IOMouth.HeaderText = "进出口";
+            this.IOMouth.Name = "IOMouth";
+            this.IOMouth.ReadOnly = true;
+            this.IOMouth.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // BrakeNumber
+            // 
+            this.BrakeNumber.DataPropertyName = "BrakeNumber";
+            this.BrakeNumber.HeaderText = "道闸 ID";
+            this.BrakeNumber.Name = "BrakeNumber";
+            this.BrakeNumber.ReadOnly = true;
+            this.BrakeNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // OpenModel
+            // 
+            this.OpenModel.DataPropertyName = "OpenModel";
+            this.OpenModel.HeaderText = "开闸模式";
+            this.OpenModel.Name = "OpenModel";
+            this.OpenModel.ReadOnly = true;
+            this.OpenModel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Partition
+            // 
+            this.Partition.DataPropertyName = "Partition";
+            this.Partition.HeaderText = "场分区";
+            this.Partition.Name = "Partition";
+            this.Partition.ReadOnly = true;
+            this.Partition.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // SAPBF
+            // 
+            this.SAPBF.DataPropertyName = "SAPBF";
+            this.SAPBF.HeaderText = "防潜回";
+            this.SAPBF.Name = "SAPBF";
+            this.SAPBF.ReadOnly = true;
+            this.SAPBF.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Detection
+            // 
+            this.Detection.DataPropertyName = "Detection";
+            this.Detection.HeaderText = "离开车辆";
+            this.Detection.Name = "Detection";
+            this.Detection.ReadOnly = true;
+            this.Detection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CardReadDistance
+            // 
+            this.CardReadDistance.DataPropertyName = "CardReadDistance";
+            this.CardReadDistance.HeaderText = "读卡距离";
+            this.CardReadDistance.Name = "CardReadDistance";
+            this.CardReadDistance.ReadOnly = true;
+            this.CardReadDistance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // ReadCardDelay
+            // 
+            this.ReadCardDelay.DataPropertyName = "ReadCardDelay";
+            this.ReadCardDelay.HeaderText = "读卡延迟";
+            this.ReadCardDelay.Name = "ReadCardDelay";
+            this.ReadCardDelay.ReadOnly = true;
+            this.ReadCardDelay.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CameraDetection
+            // 
+            this.CameraDetection.DataPropertyName = "CameraDetection";
+            this.CameraDetection.HeaderText = "车牌识别";
+            this.CameraDetection.Name = "CameraDetection";
+            this.CameraDetection.ReadOnly = true;
+            this.CameraDetection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // WirelessNumber
+            // 
+            this.WirelessNumber.DataPropertyName = "WirelessNumber";
+            this.WirelessNumber.HeaderText = "无线 ID";
+            this.WirelessNumber.Name = "WirelessNumber";
+            this.WirelessNumber.ReadOnly = true;
+            this.WirelessNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // FrequencyOffset
+            // 
+            this.FrequencyOffset.DataPropertyName = "FrequencyOffset";
+            this.FrequencyOffset.HeaderText = "频率偏移";
+            this.FrequencyOffset.Name = "FrequencyOffset";
+            this.FrequencyOffset.ReadOnly = true;
+            this.FrequencyOffset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Language
+            // 
+            this.Language.DataPropertyName = "Language";
+            this.Language.HeaderText = "语言种类";
+            this.Language.Name = "Language";
+            this.Language.ReadOnly = true;
+            this.Language.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // FuzzyQuery
+            // 
+            this.FuzzyQuery.DataPropertyName = "FuzzyQuery";
+            this.FuzzyQuery.HeaderText = "模糊查询位数";
+            this.FuzzyQuery.Name = "FuzzyQuery";
+            this.FuzzyQuery.Width = 120;
+            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.tb_DevicePage);
@@ -1653,10 +1797,10 @@
             // tb_DevicePage
             // 
             this.tb_DevicePage.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_DevicePage.Location = new System.Drawing.Point(697, 9);
+            this.tb_DevicePage.Location = new System.Drawing.Point(745, 9);
             this.tb_DevicePage.MaxLength = 10;
             this.tb_DevicePage.Name = "tb_DevicePage";
-            this.tb_DevicePage.Size = new System.Drawing.Size(100, 33);
+            this.tb_DevicePage.Size = new System.Drawing.Size(50, 33);
             this.tb_DevicePage.TabIndex = 7;
             this.tb_DevicePage.TabStop = false;
             this.tb_DevicePage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_DevicePage_KeyPress);
@@ -1684,7 +1828,7 @@
             this.btn_DeviceFirst.Enabled = false;
             this.btn_DeviceFirst.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_DeviceFirst.ForeColor = System.Drawing.Color.White;
-            this.btn_DeviceFirst.Location = new System.Drawing.Point(613, 8);
+            this.btn_DeviceFirst.Location = new System.Drawing.Point(663, 8);
             this.btn_DeviceFirst.Name = "btn_DeviceFirst";
             this.btn_DeviceFirst.Size = new System.Drawing.Size(35, 35);
             this.btn_DeviceFirst.TabIndex = 5;
@@ -1700,7 +1844,7 @@
             this.btn_DevicePrevious.Enabled = false;
             this.btn_DevicePrevious.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_DevicePrevious.ForeColor = System.Drawing.Color.White;
-            this.btn_DevicePrevious.Location = new System.Drawing.Point(654, 8);
+            this.btn_DevicePrevious.Location = new System.Drawing.Point(704, 8);
             this.btn_DevicePrevious.Name = "btn_DevicePrevious";
             this.btn_DevicePrevious.Size = new System.Drawing.Size(35, 35);
             this.btn_DevicePrevious.TabIndex = 3;
@@ -1901,132 +2045,6 @@
             this.dataGridViewImageColumn5.ReadOnly = true;
             this.dataGridViewImageColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // c_Selected
-            // 
-            this.c_Selected.HeaderText = "";
-            this.c_Selected.Name = "c_Selected";
-            this.c_Selected.Width = 30;
-            // 
-            // Did
-            // 
-            this.Did.DataPropertyName = "Did";
-            this.Did.HeaderText = "ID";
-            this.Did.Name = "Did";
-            this.Did.ReadOnly = true;
-            this.Did.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Did.Visible = false;
-            // 
-            // HostNumber
-            // 
-            this.HostNumber.DataPropertyName = "HostNumber";
-            this.HostNumber.HeaderText = "主机编号";
-            this.HostNumber.Name = "HostNumber";
-            this.HostNumber.ReadOnly = true;
-            this.HostNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // IOMouth
-            // 
-            this.IOMouth.DataPropertyName = "IOMouth";
-            this.IOMouth.HeaderText = "进出口";
-            this.IOMouth.Name = "IOMouth";
-            this.IOMouth.ReadOnly = true;
-            this.IOMouth.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // BrakeNumber
-            // 
-            this.BrakeNumber.DataPropertyName = "BrakeNumber";
-            this.BrakeNumber.HeaderText = "道闸 ID";
-            this.BrakeNumber.Name = "BrakeNumber";
-            this.BrakeNumber.ReadOnly = true;
-            this.BrakeNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // OpenModel
-            // 
-            this.OpenModel.DataPropertyName = "OpenModel";
-            this.OpenModel.HeaderText = "开闸模式";
-            this.OpenModel.Name = "OpenModel";
-            this.OpenModel.ReadOnly = true;
-            this.OpenModel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Partition
-            // 
-            this.Partition.DataPropertyName = "Partition";
-            this.Partition.HeaderText = "场分区";
-            this.Partition.Name = "Partition";
-            this.Partition.ReadOnly = true;
-            this.Partition.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // SAPBF
-            // 
-            this.SAPBF.DataPropertyName = "SAPBF";
-            this.SAPBF.HeaderText = "防潜回";
-            this.SAPBF.Name = "SAPBF";
-            this.SAPBF.ReadOnly = true;
-            this.SAPBF.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Detection
-            // 
-            this.Detection.DataPropertyName = "Detection";
-            this.Detection.HeaderText = "离开车辆";
-            this.Detection.Name = "Detection";
-            this.Detection.ReadOnly = true;
-            this.Detection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // CardReadDistance
-            // 
-            this.CardReadDistance.DataPropertyName = "CardReadDistance";
-            this.CardReadDistance.HeaderText = "读卡距离";
-            this.CardReadDistance.Name = "CardReadDistance";
-            this.CardReadDistance.ReadOnly = true;
-            this.CardReadDistance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // ReadCardDelay
-            // 
-            this.ReadCardDelay.DataPropertyName = "ReadCardDelay";
-            this.ReadCardDelay.HeaderText = "读卡延迟";
-            this.ReadCardDelay.Name = "ReadCardDelay";
-            this.ReadCardDelay.ReadOnly = true;
-            this.ReadCardDelay.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // CameraDetection
-            // 
-            this.CameraDetection.DataPropertyName = "CameraDetection";
-            this.CameraDetection.HeaderText = "车牌识别";
-            this.CameraDetection.Name = "CameraDetection";
-            this.CameraDetection.ReadOnly = true;
-            this.CameraDetection.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // WirelessNumber
-            // 
-            this.WirelessNumber.DataPropertyName = "WirelessNumber";
-            this.WirelessNumber.HeaderText = "无线 ID";
-            this.WirelessNumber.Name = "WirelessNumber";
-            this.WirelessNumber.ReadOnly = true;
-            this.WirelessNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // FrequencyOffset
-            // 
-            this.FrequencyOffset.DataPropertyName = "FrequencyOffset";
-            this.FrequencyOffset.HeaderText = "频率偏移";
-            this.FrequencyOffset.Name = "FrequencyOffset";
-            this.FrequencyOffset.ReadOnly = true;
-            this.FrequencyOffset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Language
-            // 
-            this.Language.DataPropertyName = "Language";
-            this.Language.HeaderText = "语言种类";
-            this.Language.Name = "Language";
-            this.Language.ReadOnly = true;
-            this.Language.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // FuzzyQuery
-            // 
-            this.FuzzyQuery.DataPropertyName = "FuzzyQuery";
-            this.FuzzyQuery.HeaderText = "模糊查询位数";
-            this.FuzzyQuery.Name = "FuzzyQuery";
-            this.FuzzyQuery.Width = 120;
-            // 
             // MainForm
             // 
             this.AcceptButton = this.btn_Read;
@@ -2212,6 +2230,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FrequencyOffset;
         private System.Windows.Forms.DataGridViewTextBoxColumn Language;
         private System.Windows.Forms.DataGridViewTextBoxColumn FuzzyQuery;
+        private System.Windows.Forms.Label l_PortConnectionState;
     }
 }
 

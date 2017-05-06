@@ -117,13 +117,13 @@ namespace CBZN_TestTool
             {
                 SetReisterParam();
             }
-            else
-            {
-                if (MessageBox.Show(@"是否使用已保存的批量参数进行批量发行操作。", @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                {
-                    SetReisterParam();
-                }
-            }
+            //else
+            //{
+            //    if (MessageBox.Show(@"是否使用已保存的批量参数进行批量发行操作。", @"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            //    {
+            //        SetReisterParam();
+            //    }
+            //}
         }
 
         private void SetReisterParam()

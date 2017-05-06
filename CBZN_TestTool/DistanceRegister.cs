@@ -170,14 +170,14 @@ namespace CBZN_TestTool
                 {
                     _mBundledCardinfo.Add(-1, info);
                     _mBoundDel.Remove(info);
-                    dgv_BundledList.Rows.Add(new object[] { false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
+                    dgv_BundledList.Rows.Add(new object[] { false, false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
                     isadd = true;
                     break;
                 }
 
                 if (isadd) continue;
                 _mBoundAdd.Add(index, info);
-                dgv_BundledList.Rows.Add(new object[] { false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
+                dgv_BundledList.Rows.Add(new object[] { false, false, info.CardNumber, info.CardTime, info.ParkingRestrictions });
             }
         }
 
@@ -1041,6 +1041,27 @@ namespace CBZN_TestTool
                 };
                 g.DrawString(Text, p_Title.Font, Brushes.White, new Rectangle(0, 0, p_Title.Width, p_Title.Height), sf);
             }
+        }
+
+        private void clb_BundledSelected_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            int count = 0;
+            for (int i = 0; i < clb_BundledSelected.Items.Count; i++)
+            {
+                if (i == e.Index)
+                {
+                    if (e.NewValue == CheckState.Checked)
+                        count++;
+                }
+                else
+                {
+                    if (clb_BundledSelected.GetItemChecked(i))
+                    {
+                        count++;
+                    }
+                }
+            }
+            btn_Add.Enabled = count != 0;
         }
     }
 }

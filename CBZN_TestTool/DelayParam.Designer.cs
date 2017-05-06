@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.p_Title = new System.Windows.Forms.Panel();
             this.btn_Close = new CCWin.SkinControl.SkinButton();
             this.p_CardPartition = new System.Windows.Forms.Panel();
@@ -313,7 +314,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(180, 12);
+            this.label7.Location = new System.Drawing.Point(205, 12);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(80, 17);
             this.label7.TabIndex = 0;

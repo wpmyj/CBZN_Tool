@@ -769,7 +769,7 @@
             this.tb_Plate.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.tb_Plate.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tb_Plate.Location = new System.Drawing.Point(94, 12);
-            this.tb_Plate.MaxLength = 10;
+            this.tb_Plate.MaxLength = 8;
             this.tb_Plate.Name = "tb_Plate";
             this.tb_Plate.Size = new System.Drawing.Size(140, 29);
             this.tb_Plate.TabIndex = 0;
@@ -790,6 +790,7 @@
             this.clb_BundledSelected.Name = "clb_BundledSelected";
             this.clb_BundledSelected.Size = new System.Drawing.Size(440, 112);
             this.clb_BundledSelected.TabIndex = 2;
+            this.clb_BundledSelected.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clb_BundledSelected_ItemCheck);
             this.clb_BundledSelected.VisibleChanged += new System.EventHandler(this.clb_BundledSelected_VisibleChanged);
             // 
             // DistanceRegister

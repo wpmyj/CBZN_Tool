@@ -168,7 +168,7 @@ namespace Bll
         {
             StringBuilder sb = new StringBuilder();
             int index = 0;
-            lprnumber = lprnumber.PadRight(8, '0');
+            lprnumber = lprnumber.PadRight(8, '~');
             if (lprnumber[0] == 'W' && lprnumber[1] == 'J')
             {
                 if (lprnumber.Length != 7)
