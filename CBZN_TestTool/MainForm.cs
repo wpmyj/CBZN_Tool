@@ -19,18 +19,30 @@ namespace CBZN_TestTool
     {
         #region 变量
 
+        /// <summary>
+        /// 将读取到的定距卡添加致集合中,判断是否已经读取过
+        /// </summary>
         private readonly Dictionary<string, int> _dicDataList = new Dictionary<string, int>();
 
-        private bool _isLossMouseDown;
-        private bool _isLossMouseEnter;
-        private Point _LossMousePoint;
+        /// <summary>
+        /// 设置模块参数
+        /// </summary>
         private bool _isModuleSet;
+        /// <summary>
+        /// 是否读取临时IC卡
+        /// </summary>
         private bool _isReadCard;
-        private bool _isThreadClose;
-        private int _lossCount = 0;
+        /// <summary>
+        /// 卡片管理总页数
+        /// </summary>
         private int _pageCount;
+        /// <summary>
+        /// 卡片管理当前页数
+        /// </summary>
         private int _currentPage;
-
+        /// <summary>
+        /// 卡片管理当前页数
+        /// </summary>
         public int CurrentPage
         {
             get { return _currentPage; }
@@ -42,7 +54,8 @@ namespace CBZN_TestTool
                 tb_Page.Text = (_currentPage + 1).ToString();
                 try
                 {
-                    DataTable dt = DbHelper.Db.ToTable<CardInfo>(_currentPage * 30, 30, _strSearchWhere);
+                    string where = GetSearchWhere();
+                    DataTable dt = DbHelper.Db.ToTable<CardInfo>(_currentPage * 30, 30, where);
                     dgv_DataList.DataSource = dt;
                     dgv_DataList.Focus();
                 }
@@ -53,9 +66,18 @@ namespace CBZN_TestTool
 
             }
         }
-        private int _devicePageCount;
-        private int _deviceCurrentPage;
 
+        /// <summary>
+        /// 设备信息总页数
+        /// </summary>
+        private int _devicePageCount;
+        /// <summary>
+        /// 设备信息当前页数
+        /// </summary>
+        private int _deviceCurrentPage;
+        /// <summary>
+        /// 设备信息当前页数
+        /// </summary>
         public int DeviceCurrentPage
         {
             get { return _deviceCurrentPage; }
@@ -77,17 +99,32 @@ namespace CBZN_TestTool
                 }
             }
         }
-
+        /// <summary>
+        /// 端口
+        /// </summary>
         private ComPortHelper _mComPort;
         private Mutex _mMutex;
         private PortHelper _mPort;
+        /// <summary>
+        /// 批量注册参数
+        /// </summary>
         private RegisterParam? _registerParam;
-        private string _strSearchWhere;
+        /// <summary>
+        /// 定时器连接端口
+        /// </summary>
         private System.Timers.Timer _tiConnectionPort;
-        private List<CardInfo> _lossCards;
+        /// <summary>
+        /// 挂失集合
+        /// </summary>
+        public static List<CardInfo> _lossCards;
+        /// <summary>
+        /// 线程用于延期显示刷新按键
+        /// </summary>
         private Thread _tDelayThread;
-
-        private delegate void DefaultShow();
+        /// <summary>
+        /// 线程用于无线模式搜索频率
+        /// </summary>
+        private Thread _tSearchFrequency;
 
         #endregion 变量
 
@@ -97,6 +134,7 @@ namespace CBZN_TestTool
         {
             InitializeComponent();
         }
+
         protected override CreateParams CreateParams
         {
             get
@@ -150,11 +188,7 @@ namespace CBZN_TestTool
 
         void ti_DelayShowDeviceRecord_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            DefaultShow ds = delegate
-            {
-                btn_ShowDeviceRecord_Click(null, null);
-            };
-            dgv_Device.Invoke(ds);
+            dgv_Device.Invoke(new EventHandler(delegate { btn_ShowDeviceRecord_Click(null, null); }));
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
@@ -249,12 +283,15 @@ namespace CBZN_TestTool
 
         private void UpdateSystem()
         {
-            string cmdtext = " select * from sqlite_master where name='DeviceInfo' and sql ='CREATE TABLE DeviceInfo(Did integer primary key autoincrement,HostNumber int ,IOMouth int, BrakeNumber int ,OpenModel int,Partition int,SAPBF int,Detection int,CardReadDistance int,ReadCardDelay int,CameraDetection int,WirelessNumber int,FrequencyOffset int ,Language int )' ";
-            DataTable dt = DbHelper.Db.DataAdapter(cmdtext);
-            if (dt.Rows.Count > 0)
+            string cmdtext = " select sql from sqlite_master where name='DeviceInfo' ";
+            object obj = DbHelper.Db.ExecuteScalar(cmdtext);
+            if (obj != DBNull.Value)
             {
-                cmdtext = " alter table DeviceInfo add column FuzzyQuery int default(0) ";
-                DbHelper.Db.ExecuteNonQuery(cmdtext);
+                if (!obj.ToString().Contains("FuzzyQuery"))
+                {
+                    cmdtext = " alter table DeviceInfo add column FuzzyQuery int default(0) ";
+                    DbHelper.Db.ExecuteNonQuery(cmdtext);
+                }
             }
         }
 
@@ -413,7 +450,7 @@ namespace CBZN_TestTool
 
                                     if (distanceparameter.AuxiliaryCommand == 8)
                                     {
-                                        DefaultShow ds = delegate
+                                        btn_Read.Invoke(new EventHandler(delegate
                                         {
                                             if (_tDelayThread != null)
                                             {
@@ -423,8 +460,7 @@ namespace CBZN_TestTool
                                             btn_Read.Enabled = true;
                                             dgv_DataList_SelectionChanged(null, null);
                                             l_RecordCount.Text = string.Format("总共 {0} 条记录", dgv_DataList.RowCount);
-                                        };
-                                        btn_Read.Invoke(ds);
+                                        }));
                                     }
                                     else
                                     {
@@ -447,7 +483,7 @@ namespace CBZN_TestTool
                                                 cardinfo.CardReportLoss = dataparameter.FunctionByteParameter.Loss;
                                             cardinfo.Synchronous = dataparameter.FunctionByteParameter.Synchronous;
                                             cardinfo.InOutState = dataparameter.FunctionByteParameter.InOutState;
-                                            if (cardinfo.Cid > 0)
+                                            if (cardinfo.Cid > 0 && cardinfo.CardType < 3)
                                             {
                                                 cardinfo.CardType = (int)dataparameter.FunctionByteParameter.RegistrationType;
                                                 if (cardinfo.CardType == 1)
@@ -493,11 +529,6 @@ namespace CBZN_TestTool
                                         BatchRegister br = BatchRegister.CurrentForm;
                                         br.PortDataReceived(distanceparameter);
                                     }
-                                    else if (CardLoss.IsShow)
-                                    {
-                                        CardLoss cl = CardLoss.CurrentForm;
-                                        cl.PortDataReceived(distanceparameter);
-                                    }
                                     else if (ViceCardDelay.IsShow)
                                     {
                                         ViceCardDelay vcd = ViceCardDelay.Instance;
@@ -507,6 +538,21 @@ namespace CBZN_TestTool
                                     {
                                         DelayParam dp = DelayParam.Instance;
                                         dp.PortDataReceived(distanceparameter);
+                                    }
+                                    else if (p_ReportTheLossOf.Visible)
+                                    {
+                                        if (distanceparameter.AuxiliaryCommand == 0)//挂失完成
+                                        {
+                                            LossComplete();
+                                            dgv_LossList.Rows.Clear();
+                                            btn_Enter.Enabled = true;
+                                            p_ReportTheLossOf.Visible = false;
+                                        }
+                                        else //挂失失败
+                                        {
+                                            btn_Enter.Enabled = true;
+                                            MessageBox.Show("定距卡挂失失败，请确认挂失卡是否放置在发行器上。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        }
                                     }
                                     break;
 
@@ -589,7 +635,7 @@ namespace CBZN_TestTool
 
         private void PortOpenAndCloseChange(object e, bool flag)
         {
-            DefaultShow ds = delegate
+            this.Invoke(new EventHandler(delegate
             {
                 btn_Read.Enabled = flag;
                 btn_DistanceDeviceEnter.Enabled = flag;
@@ -599,6 +645,7 @@ namespace CBZN_TestTool
                 btn_FrequencySearch.Enabled = flag;
                 btn_Query.Enabled = flag;
                 btn_Test.Enabled = flag;
+                btn_Enter.Enabled = flag;
                 if (flag)
                 {
                     dgv_DataList_SelectionChanged(null, null);
@@ -620,8 +667,7 @@ namespace CBZN_TestTool
                     l_PortConnectionState.Text = "未连接";
                     l_PortConnectionState.ForeColor = Color.Red;
                 }
-            };
-            btn_Read.Invoke(ds);
+            }));
         }
 
         #endregion 端口事件
@@ -755,27 +801,27 @@ namespace CBZN_TestTool
 
             CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
             Dictionary<int, CardInfo> datalistinfo = GetDataInfo<CardInfo>(dgv_DataList);
-            Dictionary<int, CardInfo> viceinfos = new Dictionary<int, CardInfo>();
+            List<CardInfo> vicecardinfo = new List<CardInfo>();
             foreach (KeyValuePair<int, CardInfo> item in datalistinfo)
             {
                 if (item.Value.CardType == 3)
                 {
-                    viceinfos.Add(item.Key, item.Value);
+                    vicecardinfo.Add(item.Value);
                 }
             }
 
             using (DistanceRegister dr = DistanceRegister.Instance)
             {
+                dr._mViceCardInfo = vicecardinfo;
                 dr._mCardInfo = info;
-                dr._mViceCardInfo = viceinfos;
                 dr._mPort = _mPort;
-                dr.ViceCardUpdate += Dr_ViceCardUpdate;
                 dr.ShowDialog();
                 if (dr.Tag == null) return;
                 info = dr.Tag as CardInfo;
                 UpdateRowData<CardInfo>(info, dgv_DataList.Rows[index]);
                 btn_Delay.Enabled = true;
             }
+
         }
 
         private void btn_Registers_Click(object sender, EventArgs e)
@@ -811,55 +857,39 @@ namespace CBZN_TestTool
 
         private void btn_ReportTheLossOf_Click(object sender, EventArgs e)
         {
-            int height = btn_ReportTheLossOf.Height;
-            Rectangle leftrect = new Rectangle(0, 0, 100, height);
-            Rectangle rightrect = new Rectangle(100, 0, 50, height);
             if (_lossCards == null)
                 _lossCards = new List<CardInfo>();
-            if (leftrect.Contains(_LossMousePoint))
+            int index = dgv_DataList.SelectedRows[0].Index;
+            CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
+            if (info.CardType > 2)
             {
-                int index = dgv_DataList.SelectedRows[0].Index;
-                CardInfo info = GetDataInfo<CardInfo>(index, dgv_DataList);
-                if (info.CardType > 2)
-                {
-                    MessageBox.Show("副卡、注销卡、密码错误无法进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
-                if (info.Cid == 0)
-                {
-                    MessageBox.Show("定距卡未注册，无法进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
-                if (info.CardReportLoss == 1)
-                {
-                    MessageBox.Show("当前定距卡已经挂失，无法重复进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                if (IsExist(info))
-                {
-                    MessageBox.Show(string.Format("定距卡:{0}已经存在挂失列表中，不得重复挂失。", info.CardNumber), "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
-                _lossCards.Add(info);
-                _lossCount++;
+                MessageBox.Show("副卡、注销卡、密码错误无法进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
             }
-            else if (rightrect.Contains(_LossMousePoint))
+            if (info.Cid == 0)
             {
-                Point screenpoint = this.PointToScreen(btn_ReportTheLossOf.Location);
-                CardLoss cl = CardLoss.CurrentForm;
-                cl.LossComplete += cl_LossComplete;
-                cl.Port = _mPort;
-                cl.LossCards = _lossCards;
-                cl.LossCountChange += cl_LossCountChange;
-                cl.Show();
-                cl.Location = new Point(screenpoint.X + 85, screenpoint.Y + 80);
+                MessageBox.Show("定距卡未注册，无法进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
             }
-        }
-
-        private void cl_LossCountChange(int count)
-        {
-            _lossCount = count;
-            btn_ReportTheLossOf.Invalidate();
+            if (info.CardReportLoss == 1)
+            {
+                MessageBox.Show("当前定距卡已经挂失，无法重复进行挂失操作。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (IsExist(info))
+            {
+                MessageBox.Show(string.Format("定距卡:{0}已经存在挂失列表中，不得重复挂失。", info.CardNumber), "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            _lossCards.Add(info);
+            if (p_ReportTheLossOf.Visible)
+            {
+                dgv_LossList.Rows.Add(new object[] { false, info.CardNumber, info.CardType, info.CardTime });
+            }
+            else
+            {
+                p_ReportTheLossOf.Visible = true;
+            }
         }
 
         private bool IsExist(CardInfo info)
@@ -874,7 +904,7 @@ namespace CBZN_TestTool
             return false;
         }
 
-        private void cl_LossComplete()
+        private void LossComplete()
         {
             DbHelper.Db.Update<CardInfo>(_lossCards);
             Dictionary<int, CardInfo> dic = GetDataInfo<CardInfo>(dgv_DataList);
@@ -893,106 +923,14 @@ namespace CBZN_TestTool
             _lossCards = null;
         }
 
-        private void btn_ReportTheLossOf_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isLossMouseDown = true;
-        }
-
-        private void btn_ReportTheLossOf_MouseEnter(object sender, EventArgs e)
-        {
-            _isLossMouseEnter = true;
-        }
-
-        private void btn_ReportTheLossOf_MouseLeave(object sender, EventArgs e)
-        {
-            _isLossMouseDown = false;
-            _isLossMouseEnter = false;
-        }
-
-        private void btn_ReportTheLossOf_MouseMove(object sender, MouseEventArgs e)
-        {
-            _LossMousePoint = e.Location;
-
-            btn_ReportTheLossOf.Invalidate();
-        }
-
-        private void btn_ReportTheLossOf_MouseUp(object sender, MouseEventArgs e)
-        {
-            _isLossMouseDown = false;
-        }
-
-        private void btn_ReportTheLossOf_Paint(object sender, PaintEventArgs e)
-        {
-
-            Graphics g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            Rectangle rect = new Rectangle(e.ClipRectangle.X - 1, e.ClipRectangle.Y - 1, e.ClipRectangle.Width + 1, e.ClipRectangle.Height + 1);
-            Color leftcolor = btn_ReportTheLossOf.BackColor;
-            Color rightcolor = btn_ReportTheLossOf.BackColor;
-            Color forecolor = btn_ReportTheLossOf.ForeColor;
-
-            Rectangle leftrect = new Rectangle(rect.X, rect.Y, 101, rect.Height);
-            Rectangle rightrect = new Rectangle(100, rect.Y, 50, rect.Height);
-
-            if (!btn_ReportTheLossOf.Enabled)
-            {
-                forecolor = Color.White;
-                leftcolor = Color.FromArgb(160, 160, 160);
-                rightcolor = leftcolor;
-            }
-            else
-            {
-                if (_isLossMouseDown)
-                {
-                    leftcolor = btn_ReportTheLossOf.FlatAppearance.MouseDownBackColor;
-                    rightcolor = leftcolor;
-                }
-                else if (_isLossMouseEnter)
-                {
-                    leftcolor = btn_ReportTheLossOf.FlatAppearance.MouseOverBackColor;
-                    rightcolor = leftcolor;
-                }
-
-                if (leftrect.Contains(_LossMousePoint))
-                {
-                    rightcolor = btn_ReportTheLossOf.BackColor;
-                }
-                else if (rightrect.Contains(_LossMousePoint))
-                {
-                    leftcolor = btn_ReportTheLossOf.BackColor;
-                }
-            }
-
-            g.FillRectangle(new SolidBrush(leftcolor), leftrect);
-            g.FillRectangle(new SolidBrush(rightcolor), rightrect);
-
-            StringFormat sf = new StringFormat();
-            sf.Alignment = StringAlignment.Center;
-            sf.LineAlignment = StringAlignment.Center;
-
-            g.DrawString(btn_ReportTheLossOf.Text, btn_ReportTheLossOf.Font, new SolidBrush(forecolor), leftrect, sf);
-
-            g.DrawLine(new Pen(Color.Gray, 1), 100, rect.Y, 100, leftrect.Height);
-
-            leftcolor = _lossCount > 0 ? Color.FromArgb(240, 60, 0) : Color.FromArgb(160, 160, 160);
-
-            g.FillPie(new SolidBrush(leftcolor), new Rectangle(leftrect.Width + rightrect.Width / 2 - 12, rect.Height / 2 - 12, 24, 24), 0, 360);
-
-            g.DrawString(_lossCount.ToString(), btn_ReportTheLossOf.Font, new SolidBrush(forecolor), rightrect, sf);
-        }
-
         private void btn_Search_Click(object sender, EventArgs e)
         {
-            string searchcontent = tb_Search.Text.Trim();
-            if (searchcontent.Length == 0)
-                return;
-            string strwhere = string.Format(" and CardNumber='%{0}%' ", searchcontent);
-            ShowRecord(strwhere);
+            ShowRecord();
         }
 
         private void btn_ShowRecord_Click(object sender, EventArgs e)
         {
-            ShowRecord(string.Empty);
+            ShowRecord();
         }
 
         private void dgv_DataList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -1111,7 +1049,6 @@ namespace CBZN_TestTool
             if (_mPort != null && _mPort.IsOpen)
             {
                 btn_Registers.Enabled = true;
-                btn_ReportTheLossOf.Enabled = true;
                 if (dgv_DataList.SelectedRows.Count > 0)
                 {
                     int index = dgv_DataList.SelectedRows[0].Index;
@@ -1120,27 +1057,21 @@ namespace CBZN_TestTool
                     {
                         btn_Register.Enabled = true;
                         btn_Delay.Enabled = info.Cid > 0;
+                        btn_ReportTheLossOf.Enabled = true;
                     }
                     else
                     {
                         btn_Register.Enabled = false;
                         btn_Delay.Enabled = false;
+                        btn_ReportTheLossOf.Enabled = false;
                     }
                 }
             }
         }
 
-        private void Dr_ViceCardUpdate(int rowindex, CardInfo info)
-        {
-            if (rowindex > -1 && rowindex < dgv_DataList.RowCount)
-            {
-                UpdateRowData<CardInfo>(info, dgv_DataList.Rows[rowindex]);
-            }
-        }
-
         private void ShowReadCardInfo(CardInfo info)
         {
-            DefaultShow ds = delegate
+            dgv_DataList.BeginInvoke(new EventHandler(delegate
             {
                 if (_dicDataList.ContainsKey(info.CardNumber)) return;
                 DataTable dt = dgv_DataList.DataSource as DataTable ?? GetDataTableHead<CardInfo>(dgv_DataList);
@@ -1148,8 +1079,7 @@ namespace CBZN_TestTool
                 DataRow dr = dt.Rows[dt.Rows.Count - 1];
                 UpdateRowData<CardInfo>(info, dr);
                 _dicDataList.Add(info.CardNumber, info.CardType);
-            };
-            dgv_DataList.BeginInvoke(ds);
+            }));
         }
 
         private void tb_Page_KeyPress(object sender, KeyPressEventArgs e)
@@ -1176,12 +1106,23 @@ namespace CBZN_TestTool
             }
         }
 
-        private void ShowRecord(string where)
+        private string GetSearchWhere()
+        {
+            string searchcontent = tb_Search.Text.Trim();
+            StringBuilder sbwhere = new StringBuilder(" and CardType > -1 ");
+            if (searchcontent.Length != 0)
+            {
+                sbwhere.AppendFormat(" and CardNumber like '%{0}%' ", searchcontent);
+            }
+            return sbwhere.ToString();
+        }
+
+        private void ShowRecord()
         {
             try
             {
-                _strSearchWhere = " and CardType > -1 " + where;
-                int count = DbHelper.Db.GetCount<CardInfo>(_strSearchWhere);
+                string where = GetSearchWhere();
+                int count = DbHelper.Db.GetCount<CardInfo>(where);
                 GetShowPage(count, l_RecordCount);
                 int page = GetShowPage(count, l_RecordCount);
                 _pageCount = page;
@@ -1193,9 +1134,274 @@ namespace CBZN_TestTool
             }
         }
 
-        private void tb_Search_KeyDown(object sender, KeyEventArgs e)
+        /// <summary>
+        /// 挂失关闭事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_LossClose_Click(object sender, EventArgs e)
         {
-            btn_Search_Click(null, null);
+            if (_mPort.IsOpen && _lossCards.Count > 0 && !btn_Enter.Enabled)
+            {
+                MessageBox.Show("当前挂失操作未完成", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                if (_lossCards.Count > 0)
+                {
+                    if (MessageBox.Show("确认是否关闭当前操作内容.", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                    {
+                        dgv_LossList.Rows.Clear();
+                        _lossCards.Clear();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                p_ReportTheLossOf.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// 挂失容器标题重绘事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void p_LossTitle_Paint(object sender, PaintEventArgs e)
+        {
+            using (Graphics g = e.Graphics)
+            {
+                StringFormat sf = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString("挂失列表", p_LossTitle.Font, Brushes.White, new Rectangle(0, 0, p_LossTitle.Width, p_LossTitle.Height), sf);//绘制标题
+            }
+        }
+
+        /// <summary>
+        /// 挂失全选选择事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cb_Selected_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_Selected.CheckState == CheckState.Indeterminate) return;
+            cb_Selected.Tag = cb_Selected.Checked;
+            for (int i = 0; i < dgv_LossList.RowCount; i++)
+            {
+                dgv_LossList["c_LossSelected", i].Value = cb_Selected.Checked;
+            }
+            if (dgv_LossList.RowCount > 0)
+            {
+                btn_Remove.Enabled = cb_Selected.Checked;
+            }
+            cb_Selected.Tag = null;
+        }
+
+        /// <summary>
+        /// 挂失全选鼠标按下事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cb_Selected_MouseDown(object sender, MouseEventArgs e)
+        {
+            cb_Selected.ThreeState = false;
+        }
+
+        /// <summary>
+        /// DGV 单元格内容发生变化事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgv_LossList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (cb_Selected.Tag != null) return;
+            int count = 0;
+            for (int i = 0; i < dgv_LossList.RowCount; i++)
+            {
+                bool check = Convert.ToBoolean(dgv_LossList["c_LossSelected", i].Value);
+                if (check)
+                    count++;
+            }
+            cb_Selected.ThreeState = true;
+            if (count == 0)
+                cb_Selected.CheckState = CheckState.Unchecked;
+            else if (count == dgv_LossList.RowCount)
+                cb_Selected.CheckState = CheckState.Checked;
+            else
+                cb_Selected.CheckState = CheckState.Indeterminate;
+            btn_Remove.Enabled = count > 0;
+        }
+
+        /// <summary>
+        /// DGV 单元格状态因其内容更改而更改时事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgv_LossList_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgv_LossList.IsCurrentCellDirty)
+            {
+                dgv_LossList.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        /// <summary>
+        /// DGV 单元格格式发生变化事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgv_LossList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgv_LossList.Columns[e.ColumnIndex].Name == "c_LossCardType")
+            {
+                if (CRegex.IsDecimal(e.Value))//验证内容是否为十进制内容
+                {
+                    int cardtype = HexadecimalConversion.ObjToInt(e.Value);
+                    switch ((CardType)cardtype)
+                    {
+                        case Bll.CardType.SingleCard:
+                            e.Value = "单卡";
+                            break;
+
+                        case Bll.CardType.CombinationCard:
+                            e.Value = "组合卡";
+                            break;
+
+                        case Bll.CardType.LPRCard:
+                            e.Value = "车牌识别卡";
+                            break;
+
+                        case Bll.CardType.ViceCard:
+                            e.Value = "副卡";
+                            break;
+
+                        case Bll.CardType.CancellationCard:
+                            e.Value = "注销卡";
+                            break;
+
+                        case Bll.CardType.PasswordMistake:
+                            e.Value = "卡片密码错误";
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// DGV 移除行事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgv_LossList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            btn_Enter.Enabled = dgv_LossList.RowCount > 0;
+        }
+
+        /// <summary>
+        /// DGV 添加行事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgv_LossList_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            btn_Enter.Enabled = dgv_LossList.RowCount > 0;
+        }
+
+        /// <summary>
+        /// 挂失容器重绘事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void p_ReportTheLossOf_Paint(object sender, PaintEventArgs e)
+        {
+            //绘制边框
+            using (Graphics g = e.Graphics)
+            {
+                g.DrawRectangle(new Pen(Brushes.Gray, 1), 0, 0, Width - 1, Height - 1);
+            }
+        }
+
+        /// <summary>
+        /// 挂失容器隐藏或显示事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void p_ReportTheLossOf_VisibleChanged(object sender, EventArgs e)
+        {
+            if (p_ReportTheLossOf.Visible)
+            {
+                foreach (CardInfo item in _lossCards)
+                {
+                    dgv_LossList.Rows.Add(new object[] { false, item.CardNumber, item.CardType, item.CardTime });
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移除挂失
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_Remove_Click(object sender, EventArgs e)
+        {
+            for (int i = dgv_LossList.RowCount - 1; i >= 0; i--)
+            {
+                bool check = Convert.ToBoolean(dgv_LossList["c_LossSelected", i].Value);
+                if (!check) continue;
+                MainForm._lossCards.RemoveAt(i);
+                dgv_LossList.Rows.RemoveAt(i);
+            }
+            btn_Remove.Enabled = false;
+            cb_Selected.CheckState = CheckState.Unchecked;
+        }
+
+        /// <summary>
+        /// 确认挂失
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_Enter_Click(object sender, EventArgs e)
+        {
+            btn_Enter.Enabled = false;
+            try
+            {
+                List<LossParameter> lossparams = new List<LossParameter>();
+                foreach (CardInfo item in _lossCards)
+                {
+                    item.CardCount = DataCombination.SetCount(item.CardCount);
+                    item.CardReportLoss = 1;
+
+                    FunctionByteParameter function = new FunctionByteParameter()
+                    {
+                        Loss = item.CardReportLoss,
+                        InOutState = item.InOutState,
+                        ParkingRestrictions = item.ParkingRestrictions,
+                        RegistrationType = (CardType)item.CardType,
+                        Synchronous = item.Synchronous,
+                        ViceCardCount = item.ViceCardCount
+                    };
+
+                    LossParameter param = new LossParameter()
+                    {
+                        CardNumber = item.CardNumber,
+                        Function = function,
+                        Time = item.CardTime
+                    };
+                    lossparams.Add(param);
+                }
+
+                byte[] by = DataCombination.CombinationLoss(lossparams);
+                _mPort.Write(by);
+            }
+            catch (Exception ex)
+            {
+                btn_Enter.Enabled = true;
+                MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         #endregion 卡片操作
@@ -1282,7 +1488,7 @@ namespace CBZN_TestTool
 
         private void ShowEncryptionMessage(string message, bool isend, int command)
         {
-            DefaultShow ds = delegate
+            this.Invoke(new EventHandler(delegate
             {
                 if (dgv_pwd.RowCount >= 30)
                     dgv_pwd.Rows.RemoveAt(0);
@@ -1344,8 +1550,7 @@ namespace CBZN_TestTool
                         }
                         break;
                 }
-            };
-            this.Invoke(ds);
+            }));
         }
 
         private void ShowHideEncryptionTap(Button btn)
@@ -2165,16 +2370,19 @@ namespace CBZN_TestTool
 
             if (btn_FrequencySearch.Tag == null)
             {
-                Thread thread = new Thread(ThreadSearchFrequency) { Name = "frequencysearch" };
-                thread.Start();
+                _tSearchFrequency = new Thread(ThreadSearchFrequency) { Name = "frequencysearch" };
+                _tSearchFrequency.Start();
+
                 btn_FrequencySearch.Text = @"终 止";
                 btn_FrequencySearch.Tag = true;
                 _isReadCard = false;
             }
             else
             {
-                _isThreadClose = true;
-
+                if (_tSearchFrequency != null)
+                {
+                    _tSearchFrequency.Abort();
+                }
                 btn_FrequencySearch.Text = @"搜 索";
                 btn_FrequencySearch.Tag = null;
             }
@@ -2408,40 +2616,36 @@ namespace CBZN_TestTool
 
         private void QueryFrequncy(int frequncy)
         {
-            DefaultShow ds = delegate
+            dgv_WirelessDescription.Invoke(new EventHandler(delegate
             {
                 frequncy = 64 - (frequncy / 2);
                 ShowWirelessMessage(string.Format("查询模块频率为:{0} 组", frequncy));
-            };
-            dgv_WirelessDescription.Invoke(ds);
+            }));
         }
 
         private void QueryWireless(long id)
         {
-            DefaultShow ds = delegate
+            dgv_WirelessDescription.Invoke(new EventHandler(delegate
             {
                 ShowWirelessMessage(string.Format("查询模块ID为:{0:X8}", id));
-            };
-            dgv_WirelessDescription.Invoke(ds);
+            }));
         }
 
         private void ShowIcCardContent(IcCardParameter info)
         {
-            DefaultShow ds = delegate
+            dgv_WirelessDescription.Invoke(new EventHandler(delegate
             {
                 string message = string.Format("IC卡号：{0} 车牌号码：{1} 时间：{2}", info.IcNumber, info.Plate, info.Time);
                 WirelessAddRow(message);
-            };
-            dgv_WirelessDescription.Invoke(ds);
+            }));
         }
 
         private void ShowWirelessMessage(string message)
         {
-            DefaultShow ds = delegate
+            dgv_WirelessDescription.Invoke(new EventHandler(delegate
             {
                 WirelessAddRow(message);
-            };
-            dgv_WirelessDescription.Invoke(ds);
+            }));
         }
 
         private void ThreadSearchFrequency()
@@ -2449,62 +2653,61 @@ namespace CBZN_TestTool
             bool isend;
             int frequency = 0;
             bool isback = false;
-            DefaultShow ds;
-            for (int i = 1; i <= 64; i++)
+            try
             {
-                isend = false;
-
-                if (_isThreadClose)
+                for (int i = 1; i <= 64; i++)
                 {
-                    break;
-                }
-                ds = delegate
-               {
-                   pb_FrequencySearch.PerformStep();
-               };
-                pb_FrequencySearch.Invoke(ds);
+                    isend = false;
 
-                OpenModule();
+                    dgv_WirelessDescription.Invoke(new EventHandler(delegate
+                    {
+                        pb_FrequencySearch.PerformStep();
+                    }));
 
-                #region 频率
+                    OpenModule();
 
-                ShowWirelessMessage(string.Format("设置模块第 {0} 组频率", i));
-                ModuleSetFrequency(i);
-                if (!_isModuleSet)
-                {
-                    ShowWirelessMessage("第二次设置模块频率");
+                    #region 频率
+
+                    ShowWirelessMessage(string.Format("设置模块第 {0} 组频率", i));
                     ModuleSetFrequency(i);
                     if (!_isModuleSet)
                     {
-                        ShowWirelessMessage("第三次设置模块频率");
+                        ShowWirelessMessage("第二次设置模块频率");
                         ModuleSetFrequency(i);
                         if (!_isModuleSet)
                         {
-                            ShowWirelessMessage(string.Format("第 {0} 组频率设置失败，进行下一组设置", i));
-                            isend = true;
+                            ShowWirelessMessage("第三次设置模块频率");
+                            ModuleSetFrequency(i);
+                            if (!_isModuleSet)
+                            {
+                                ShowWirelessMessage(string.Format("第 {0} 组频率设置失败，进行下一组设置", i));
+                                isend = true;
+                            }
                         }
                     }
-                }
 
-                #endregion 频率
+                    #endregion 频率
 
-                #region 回传
+                    #region 回传
 
-                if (!isend && !isback)
-                {
-                    ModuleSetComesBack(1);
-                    if (!_isModuleSet)
+                    if (!isend && !isback)
                     {
-                        ShowWirelessMessage("第二次设置模块回传功能");
                         ModuleSetComesBack(1);
                         if (!_isModuleSet)
                         {
-                            ShowWirelessMessage("第三次设置模块回传功能");
+                            ShowWirelessMessage("第二次设置模块回传功能");
                             ModuleSetComesBack(1);
                             if (!_isModuleSet)
                             {
-                                ShowWirelessMessage("模块回传功能设置失败，退出设置");
-                                isend = true;
+                                ShowWirelessMessage("第三次设置模块回传功能");
+                                ModuleSetComesBack(1);
+                                if (!_isModuleSet)
+                                {
+                                    ShowWirelessMessage("模块回传功能设置失败，退出设置");
+                                    isend = true;
+                                }
+                                else
+                                    isback = true;
                             }
                             else
                                 isback = true;
@@ -2512,65 +2715,68 @@ namespace CBZN_TestTool
                         else
                             isback = true;
                     }
-                    else
-                        isback = true;
-                }
 
-                #endregion 回传
+                    #endregion 回传
 
-                CloseModule();
+                    CloseModule();
 
-                #region 测试
+                    #region 测试
 
-                if (!isend)
-                {
-                    ShowWirelessMessage("测试");
-                    ModuleTest();
-                    if (!_isModuleSet)
+                    if (!isend)
                     {
-                        ShowWirelessMessage("第二次测试");
+                        ShowWirelessMessage("测试");
                         ModuleTest();
                         if (!_isModuleSet)
                         {
-                            ShowWirelessMessage("第三次测试");
+                            ShowWirelessMessage("第二次测试");
                             ModuleTest();
                             if (!_isModuleSet)
                             {
-                                ShowWirelessMessage("测试失败");
-                                isend = true;
+                                ShowWirelessMessage("第三次测试");
+                                ModuleTest();
+                                if (!_isModuleSet)
+                                {
+                                    ShowWirelessMessage("测试失败");
+                                    isend = true;
+                                }
                             }
                         }
                     }
-                }
 
-                #endregion 测试
+                    #endregion 测试
 
-                if (!isend)
-                {
-                    frequency = i;
-                    break;
+                    if (!isend)
+                    {
+                        frequency = i;
+                        break;
+                    }
                 }
             }
+            finally
+            {
+                CloseModule();
 
-            ds = delegate
-           {
-               if (frequency > 0)
-               {
-                   btn_FrequencySearch.Text = @"搜 索";
-                   btn_FrequencySearch.Tag = null;
-                   ud_WirelessFrequency.Value = frequency;
-                   ShowWirelessMessage(string.Format("频率搜索成功，当前使用第 {0} 组频率", frequency));
-               }
-               else
-               {
-                   ShowWirelessMessage("频率搜索失败，请查看ID是否正确或连接设备是否打开。");
-               }
-               btn_Query.Enabled = true;
-               btn_WirelessSet.Enabled = true;
-               btn_Test.Enabled = true;
-               btn_TemporaryReadCard.Enabled = true;
-           };
-            pb_FrequencySearch.Invoke(ds);
+                dgv_WirelessDescription.Invoke(new EventHandler(delegate
+                {
+                    if (frequency > 0)
+                    {
+                        btn_FrequencySearch.Text = @"搜 索";
+                        btn_FrequencySearch.Tag = null;
+                        ud_WirelessFrequency.Value = frequency;
+                        ShowWirelessMessage(string.Format("频率搜索成功，当前使用第 {0} 组频率", frequency));
+                    }
+                    else
+                    {
+                        ShowWirelessMessage("频率搜索失败，请查看ID是否正确或连接设备是否打开。");
+                    }
+                    btn_Query.Enabled = true;
+                    btn_WirelessSet.Enabled = true;
+                    btn_Test.Enabled = true;
+                    btn_TemporaryReadCard.Enabled = true;
+                }));
+
+                _tSearchFrequency = null;
+            }
         }
 
         private void ThreadSetModule()
@@ -2711,7 +2917,7 @@ namespace CBZN_TestTool
             }
             finally
             {
-                DefaultShow ds = delegate
+                dgv_WirelessDescription.Invoke(new EventHandler(delegate
                 {
                     btn_WirelessSet.Enabled = true;
                     btn_FrequencySearch.Enabled = true;
@@ -2720,8 +2926,7 @@ namespace CBZN_TestTool
                     btn_TemporaryReadCard.Enabled = true;
 
                     btn_WirelessSet.Image = !isend ? Properties.Resources.check : Properties.Resources.block;
-                };
-                btn_WirelessSet.Invoke(ds);
+                }));
             }
         }
 

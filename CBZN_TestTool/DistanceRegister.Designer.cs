@@ -69,10 +69,9 @@
             this.btn_Enter = new NewControl.NewButton();
             this.btn_Canel = new NewControl.NewButton();
             this.p_Bundled = new System.Windows.Forms.Panel();
-            this.btn_Remove = new NewControl.NewButton();
             this.btn_Add = new NewControl.NewButton();
+            this.btn_Remove = new NewControl.NewButton();
             this.cb_AllSelectedBundled = new System.Windows.Forms.CheckBox();
-            this.l_BundledTitle = new System.Windows.Forms.Label();
             this.dgv_BundledList = new System.Windows.Forms.DataGridView();
             this.c_selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.c_LockState = new System.Windows.Forms.DataGridViewImageColumn();
@@ -80,18 +79,10 @@
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label8 = new System.Windows.Forms.Label();
-            this.p_Plate = new System.Windows.Forms.Panel();
-            this.p_Provinces = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cb_ShowProvinces = new System.Windows.Forms.CheckBox();
-            this.btn_PlateAdd = new NewControl.NewButton();
-            this.tb_Plate = new System.Windows.Forms.TextBox();
-            this.clb_BundledSelected = new System.Windows.Forms.CheckedListBox();
             this.p_Title.SuspendLayout();
             this.p_CardPartition.SuspendLayout();
             this.p_Bundled.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BundledList)).BeginInit();
-            this.p_Plate.SuspendLayout();
             this.SuspendLayout();
             // 
             // p_Title
@@ -477,6 +468,7 @@
             this.cb_AllSelected.Text = "全选或反选";
             this.cb_AllSelected.UseVisualStyleBackColor = true;
             this.cb_AllSelected.CheckedChanged += new System.EventHandler(this.cb_AllSelected_CheckedChanged);
+            this.cb_AllSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cb_AllSelected_MouseDown);
             // 
             // label7
             // 
@@ -498,7 +490,7 @@
             this.btn_Enter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Enter.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Enter.ForeColor = System.Drawing.Color.White;
-            this.btn_Enter.Location = new System.Drawing.Point(255, 503);
+            this.btn_Enter.Location = new System.Drawing.Point(255, 448);
             this.btn_Enter.Name = "btn_Enter";
             this.btn_Enter.Size = new System.Drawing.Size(100, 35);
             this.btn_Enter.TabIndex = 7;
@@ -518,7 +510,7 @@
             this.btn_Canel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Canel.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Canel.ForeColor = System.Drawing.Color.White;
-            this.btn_Canel.Location = new System.Drawing.Point(361, 503);
+            this.btn_Canel.Location = new System.Drawing.Point(361, 448);
             this.btn_Canel.Name = "btn_Canel";
             this.btn_Canel.Size = new System.Drawing.Size(100, 35);
             this.btn_Canel.TabIndex = 8;
@@ -529,20 +521,35 @@
             // 
             // p_Bundled
             // 
-            this.p_Bundled.Controls.Add(this.btn_Remove);
             this.p_Bundled.Controls.Add(this.btn_Add);
+            this.p_Bundled.Controls.Add(this.btn_Remove);
             this.p_Bundled.Controls.Add(this.cb_AllSelectedBundled);
-            this.p_Bundled.Controls.Add(this.l_BundledTitle);
             this.p_Bundled.Controls.Add(this.dgv_BundledList);
             this.p_Bundled.Controls.Add(this.label8);
-            this.p_Bundled.Controls.Add(this.p_Plate);
-            this.p_Bundled.Controls.Add(this.clb_BundledSelected);
             this.p_Bundled.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.p_Bundled.Location = new System.Drawing.Point(20, 200);
             this.p_Bundled.Name = "p_Bundled";
-            this.p_Bundled.Size = new System.Drawing.Size(440, 297);
+            this.p_Bundled.Size = new System.Drawing.Size(440, 238);
             this.p_Bundled.TabIndex = 6;
             this.p_Bundled.Paint += new System.Windows.Forms.PaintEventHandler(this.p_Bundled_Paint);
+            // 
+            // btn_Add
+            // 
+            this.btn_Add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Add.FlatAppearance.BorderSize = 0;
+            this.btn_Add.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
+            this.btn_Add.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
+            this.btn_Add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Add.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_Add.ForeColor = System.Drawing.Color.White;
+            this.btn_Add.Location = new System.Drawing.Point(337, 12);
+            this.btn_Add.Name = "btn_Add";
+            this.btn_Add.Size = new System.Drawing.Size(100, 35);
+            this.btn_Add.TabIndex = 17;
+            this.btn_Add.TabStop = false;
+            this.btn_Add.Text = "添 加";
+            this.btn_Add.UseVisualStyleBackColor = false;
+            this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
             // btn_Remove
             // 
@@ -552,54 +559,27 @@
             this.btn_Remove.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
             this.btn_Remove.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
             this.btn_Remove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Remove.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_Remove.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_Remove.ForeColor = System.Drawing.Color.White;
-            this.btn_Remove.Location = new System.Drawing.Point(14, 8);
+            this.btn_Remove.Location = new System.Drawing.Point(4, 12);
             this.btn_Remove.Name = "btn_Remove";
-            this.btn_Remove.Size = new System.Drawing.Size(75, 23);
-            this.btn_Remove.TabIndex = 1;
+            this.btn_Remove.Size = new System.Drawing.Size(100, 35);
+            this.btn_Remove.TabIndex = 16;
             this.btn_Remove.TabStop = false;
             this.btn_Remove.Text = "移 除";
             this.btn_Remove.UseVisualStyleBackColor = false;
             this.btn_Remove.Click += new System.EventHandler(this.btn_Remove_Click);
             // 
-            // btn_Add
-            // 
-            this.btn_Add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Add.Enabled = false;
-            this.btn_Add.FlatAppearance.BorderSize = 0;
-            this.btn_Add.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_Add.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_Add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Add.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_Add.ForeColor = System.Drawing.Color.White;
-            this.btn_Add.Location = new System.Drawing.Point(14, 159);
-            this.btn_Add.Name = "btn_Add";
-            this.btn_Add.Size = new System.Drawing.Size(75, 23);
-            this.btn_Add.TabIndex = 3;
-            this.btn_Add.TabStop = false;
-            this.btn_Add.Text = "添 加";
-            this.btn_Add.UseVisualStyleBackColor = false;
-            this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
-            // 
             // cb_AllSelectedBundled
             // 
             this.cb_AllSelectedBundled.AutoSize = true;
-            this.cb_AllSelectedBundled.Location = new System.Drawing.Point(9, 41);
+            this.cb_AllSelectedBundled.Location = new System.Drawing.Point(8, 68);
             this.cb_AllSelectedBundled.Name = "cb_AllSelectedBundled";
             this.cb_AllSelectedBundled.Size = new System.Drawing.Size(15, 14);
             this.cb_AllSelectedBundled.TabIndex = 3;
             this.cb_AllSelectedBundled.UseVisualStyleBackColor = true;
             this.cb_AllSelectedBundled.CheckedChanged += new System.EventHandler(this.cb_AllSelectedBundled_CheckedChanged);
-            // 
-            // l_BundledTitle
-            // 
-            this.l_BundledTitle.AutoSize = true;
-            this.l_BundledTitle.Location = new System.Drawing.Point(186, 165);
-            this.l_BundledTitle.Name = "l_BundledTitle";
-            this.l_BundledTitle.Size = new System.Drawing.Size(56, 17);
-            this.l_BundledTitle.TabIndex = 2;
-            this.l_BundledTitle.Text = "捆绑选择";
+            this.cb_AllSelectedBundled.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cb_AllSelectedBundled_MouseDown);
             // 
             // dgv_BundledList
             // 
@@ -608,6 +588,7 @@
             this.dgv_BundledList.AllowUserToResizeColumns = false;
             this.dgv_BundledList.AllowUserToResizeRows = false;
             this.dgv_BundledList.BackgroundColor = System.Drawing.Color.White;
+            this.dgv_BundledList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_BundledList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgv_BundledList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgv_BundledList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
@@ -619,6 +600,7 @@
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgv_BundledList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv_BundledList.ColumnHeadersHeight = 40;
             this.dgv_BundledList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_BundledList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_selected,
@@ -635,14 +617,15 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv_BundledList.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgv_BundledList.EnableHeadersVisualStyles = false;
-            this.dgv_BundledList.Location = new System.Drawing.Point(0, 35);
+            this.dgv_BundledList.Location = new System.Drawing.Point(1, 53);
             this.dgv_BundledList.MultiSelect = false;
             this.dgv_BundledList.Name = "dgv_BundledList";
             this.dgv_BundledList.RowHeadersVisible = false;
-            this.dgv_BundledList.RowTemplate.Height = 23;
+            this.dgv_BundledList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgv_BundledList.RowTemplate.Height = 36;
             this.dgv_BundledList.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgv_BundledList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_BundledList.Size = new System.Drawing.Size(440, 116);
+            this.dgv_BundledList.Size = new System.Drawing.Size(438, 183);
             this.dgv_BundledList.TabIndex = 0;
             this.dgv_BundledList.TabStop = false;
             this.dgv_BundledList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_BundledList_CellFormatting);
@@ -653,14 +636,15 @@
             // 
             this.c_selected.HeaderText = "";
             this.c_selected.Name = "c_selected";
-            this.c_selected.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.c_selected.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.c_selected.Width = 30;
             // 
             // c_LockState
             // 
             this.c_LockState.HeaderText = "解锁状态";
-            this.c_LockState.Image = global::CBZN_TestTool.Properties.Resources.block;
             this.c_LockState.Name = "c_LockState";
+            this.c_LockState.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.c_LockState.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.c_LockState.Width = 80;
             // 
             // c_Number
@@ -693,105 +677,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(186, 15);
+            this.label8.Location = new System.Drawing.Point(186, 20);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(56, 17);
             this.label8.TabIndex = 0;
             this.label8.Text = "捆绑列表";
-            // 
-            // p_Plate
-            // 
-            this.p_Plate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.p_Plate.Controls.Add(this.p_Provinces);
-            this.p_Plate.Controls.Add(this.label5);
-            this.p_Plate.Controls.Add(this.cb_ShowProvinces);
-            this.p_Plate.Controls.Add(this.btn_PlateAdd);
-            this.p_Plate.Controls.Add(this.tb_Plate);
-            this.p_Plate.Location = new System.Drawing.Point(0, 185);
-            this.p_Plate.Name = "p_Plate";
-            this.p_Plate.Size = new System.Drawing.Size(440, 112);
-            this.p_Plate.TabIndex = 4;
-            this.p_Plate.Paint += new System.Windows.Forms.PaintEventHandler(this.p_Plate_Paint);
-            this.p_Plate.Resize += new System.EventHandler(this.p_Plate_Resize);
-            // 
-            // p_Provinces
-            // 
-            this.p_Provinces.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.p_Provinces.Location = new System.Drawing.Point(10, 60);
-            this.p_Provinces.Name = "p_Provinces";
-            this.p_Provinces.Size = new System.Drawing.Size(420, 50);
-            this.p_Provinces.TabIndex = 10;
-            this.p_Provinces.VisibleChanged += new System.EventHandler(this.p_Provinces_VisibleChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(20, 18);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 17);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "车牌号码：";
-            // 
-            // cb_ShowProvinces
-            // 
-            this.cb_ShowProvinces.AutoSize = true;
-            this.cb_ShowProvinces.Location = new System.Drawing.Point(344, 22);
-            this.cb_ShowProvinces.Name = "cb_ShowProvinces";
-            this.cb_ShowProvinces.Size = new System.Drawing.Size(75, 21);
-            this.cb_ShowProvinces.TabIndex = 9;
-            this.cb_ShowProvinces.Text = "显示省份";
-            this.cb_ShowProvinces.UseVisualStyleBackColor = true;
-            this.cb_ShowProvinces.CheckedChanged += new System.EventHandler(this.cb_ShowProvinces_CheckedChanged);
-            // 
-            // btn_PlateAdd
-            // 
-            this.btn_PlateAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_PlateAdd.Enabled = false;
-            this.btn_PlateAdd.FlatAppearance.BorderSize = 0;
-            this.btn_PlateAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(159)))), ((int)(((byte)(241)))));
-            this.btn_PlateAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(95)))), ((int)(((byte)(185)))));
-            this.btn_PlateAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_PlateAdd.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_PlateAdd.ForeColor = System.Drawing.Color.White;
-            this.btn_PlateAdd.Location = new System.Drawing.Point(234, 8);
-            this.btn_PlateAdd.Name = "btn_PlateAdd";
-            this.btn_PlateAdd.Size = new System.Drawing.Size(100, 35);
-            this.btn_PlateAdd.TabIndex = 8;
-            this.btn_PlateAdd.TabStop = false;
-            this.btn_PlateAdd.Text = "添 加";
-            this.btn_PlateAdd.UseVisualStyleBackColor = false;
-            this.btn_PlateAdd.Click += new System.EventHandler(this.btn_PlateAdd_Click);
-            // 
-            // tb_Plate
-            // 
-            this.tb_Plate.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.tb_Plate.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_Plate.Location = new System.Drawing.Point(94, 12);
-            this.tb_Plate.MaxLength = 8;
-            this.tb_Plate.Name = "tb_Plate";
-            this.tb_Plate.Size = new System.Drawing.Size(140, 29);
-            this.tb_Plate.TabIndex = 0;
-            this.tb_Plate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_Plate.TextChanged += new System.EventHandler(this.tb_Plate_TextChanged);
-            this.tb_Plate.Enter += new System.EventHandler(this.tb_Plate_Enter);
-            this.tb_Plate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_Plate_KeyDown);
-            this.tb_Plate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_Plate_KeyPress);
-            this.tb_Plate.Leave += new System.EventHandler(this.tb_Plate_Leave);
-            // 
-            // clb_BundledSelected
-            // 
-            this.clb_BundledSelected.CheckOnClick = true;
-            this.clb_BundledSelected.ColumnWidth = 146;
-            this.clb_BundledSelected.FormattingEnabled = true;
-            this.clb_BundledSelected.Location = new System.Drawing.Point(0, 185);
-            this.clb_BundledSelected.MultiColumn = true;
-            this.clb_BundledSelected.Name = "clb_BundledSelected";
-            this.clb_BundledSelected.Size = new System.Drawing.Size(440, 112);
-            this.clb_BundledSelected.TabIndex = 2;
-            this.clb_BundledSelected.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clb_BundledSelected_ItemCheck);
-            this.clb_BundledSelected.VisibleChanged += new System.EventHandler(this.clb_BundledSelected_VisibleChanged);
             // 
             // DistanceRegister
             // 
@@ -800,7 +690,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btn_Canel;
-            this.ClientSize = new System.Drawing.Size(480, 550);
+            this.ClientSize = new System.Drawing.Size(480, 495);
             this.Controls.Add(this.btn_Canel);
             this.Controls.Add(this.btn_Enter);
             this.Controls.Add(this.cb_CardPartition);
@@ -816,8 +706,8 @@
             this.Controls.Add(this.tb_CardNumber);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.p_Title);
-            this.Controls.Add(this.p_CardPartition);
             this.Controls.Add(this.p_Bundled);
+            this.Controls.Add(this.p_CardPartition);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -840,8 +730,6 @@
             this.p_Bundled.ResumeLayout(false);
             this.p_Bundled.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BundledList)).EndInit();
-            this.p_Plate.ResumeLayout(false);
-            this.p_Plate.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -887,17 +775,9 @@
         private System.Windows.Forms.Panel p_Bundled;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridView dgv_BundledList;
-        private System.Windows.Forms.Label l_BundledTitle;
         private System.Windows.Forms.CheckBox cb_AllSelectedBundled;
-        private System.Windows.Forms.CheckedListBox clb_BundledSelected;
-        private NewControl.NewButton btn_Add;
         private NewControl.NewButton btn_Remove;
-        private System.Windows.Forms.Panel p_Plate;
-        private System.Windows.Forms.TextBox tb_Plate;
-        private NewControl.NewButton btn_PlateAdd;
-        private System.Windows.Forms.CheckBox cb_ShowProvinces;
-        private System.Windows.Forms.Panel p_Provinces;
-        private System.Windows.Forms.Label label5;
+        private NewControl.NewButton btn_Add;
         private System.Windows.Forms.DataGridViewCheckBoxColumn c_selected;
         private System.Windows.Forms.DataGridViewImageColumn c_LockState;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_Number;

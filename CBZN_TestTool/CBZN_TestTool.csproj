@@ -56,12 +56,6 @@
     <Compile Include="BatchRegister.Designer.cs">
       <DependentUpon>BatchRegister.cs</DependentUpon>
     </Compile>
-    <Compile Include="CardLoss.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CardLoss.Designer.cs">
-      <DependentUpon>CardLoss.cs</DependentUpon>
-    </Compile>
     <Compile Include="DeviceEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +86,18 @@
     <Compile Include="DelayParam.Designer.cs">
       <DependentUpon>DelayParam.cs</DependentUpon>
     </Compile>
+    <Compile Include="InputLicensePlate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputLicensePlate.Designer.cs">
+      <DependentUpon>InputLicensePlate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViceCardBundled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViceCardBundled.Designer.cs">
+      <DependentUpon>ViceCardBundled.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViceCardDelay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,9 +127,6 @@
     <EmbeddedResource Include="BatchRegister.resx">
       <DependentUpon>BatchRegister.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CardLoss.resx">
-      <DependentUpon>CardLoss.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DeviceEdit.resx">
       <DependentUpon>DeviceEdit.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,6 +141,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DelayParam.resx">
       <DependentUpon>DelayParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputLicensePlate.resx">
+      <DependentUpon>InputLicensePlate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViceCardBundled.resx">
+      <DependentUpon>ViceCardBundled.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ViceCardDelay.resx">
       <DependentUpon>ViceCardDelay.cs</DependentUpon>

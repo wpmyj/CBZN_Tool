@@ -118,8 +118,7 @@ namespace CBZN_TestTool
                     {
                         sw.WriteLine("00{0:X2}<{1:X2},{2},{3:X2}>", key.Key, key.Value.Length, key.Value,
                          DataValidation.Xor(key.Value));
-                    }
-                    sw.Close();
+                    } 
                 }
                 Close();
             }

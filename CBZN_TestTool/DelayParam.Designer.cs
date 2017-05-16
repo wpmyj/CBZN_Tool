@@ -517,6 +517,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DelayParam_FormClosed);
             this.Load += new System.EventHandler(this.DelayParam_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.SingleCardDelay_Paint);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DelayParam_KeyUp);
             this.Resize += new System.EventHandler(this.DelayParam_Resize);
             this.p_Title.ResumeLayout(false);
             this.p_CardPartition.ResumeLayout(false);

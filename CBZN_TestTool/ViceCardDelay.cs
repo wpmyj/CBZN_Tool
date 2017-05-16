@@ -56,6 +56,7 @@ namespace CBZN_TestTool
             if (param.AuxiliaryCommand == 0)
             {
                 DbHelper.Db.Update<CardInfo>(_mBundledViceCard);
+                _mCardInfo.CardTime = GetViceCardMaxtime();
                 DbHelper.Db.Update<CardInfo>(_mCardInfo);
                 OnDelayDataChange(_mCardInfo, _mBundledViceCard);
                 Close();
@@ -64,6 +65,17 @@ namespace CBZN_TestTool
             {
                 MessageBox.Show("请确认定距卡是否放置在读卡区域内", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private DateTime GetViceCardMaxtime()
+        {
+            DateTime now = DateTime.MinValue;
+            foreach (CardInfo item in _mBundledViceCard)
+            {
+                if (item.CardTime.Date > now.Date)
+                    now = item.CardTime;
+            }
+            return now;
         }
 
         private void dgv_BundledList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -386,10 +398,14 @@ namespace CBZN_TestTool
         private void cb_Select_CheckedChanged(object sender, EventArgs e)
         {
             if (cb_Select.CheckState == CheckState.Indeterminate) return;
+            cb_Select.Tag = cb_Select.Checked;
             for (int i = 0; i < dgv_BundledList.RowCount; i++)
             {
                 dgv_BundledList.Rows[i].Cells[0].Value = cb_Select.Checked;
             }
+            if (dgv_BundledList.RowCount > 0)
+                btn_BatchDelay.Enabled = cb_Select.Checked;
+            cb_Select.Tag = null;
         }
 
         private void dgv_BundledList_CurrentCellDirtyStateChanged(object sender, EventArgs e)
@@ -401,24 +417,35 @@ namespace CBZN_TestTool
         private void dgv_BundledList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex != 0) return;
-            object obj = dgv_BundledList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-            bool flag = Convert.ToBoolean(obj);
-            if (flag != cb_Select.Checked)
-                cb_Select.CheckState = CheckState.Indeterminate;
-            btn_BatchDelay.Enabled = GetChecked();
-        }
-
-        private bool GetChecked()
-        {
+            if (cb_Select.Tag != null) return;
+            int count = 0;
             for (int i = 0; i < dgv_BundledList.RowCount; i++)
             {
-                object obj = dgv_BundledList.Rows[i].Cells[0].Value;
-                bool check = Convert.ToBoolean(obj);
+                bool check = Convert.ToBoolean(dgv_BundledList["cSelected", i].Value);
                 if (check)
-                    return true;
+                    count++;
             }
-            return false;
+            cb_Select.ThreeState = true;
+            if (count == 0)
+                cb_Select.CheckState = CheckState.Unchecked;
+            else if (count == dgv_BundledList.RowCount)
+                cb_Select.CheckState = CheckState.Checked;
+            else
+                cb_Select.CheckState = CheckState.Indeterminate;
+            btn_BatchDelay.Enabled = count > 0;
         }
 
+        private void ViceCardDelay_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
+
+        private void cb_Select_MouseDown(object sender, MouseEventArgs e)
+        {
+            cb_Select.ThreeState = false;
+        }
     }
 }

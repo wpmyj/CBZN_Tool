@@ -9,7 +9,6 @@ namespace CBZN_TestTool
     public partial class DelayParam : Form
     {
 
-        private delegate void DelegateHandler();
         public PortHelper _mPort { get; set; }
         public CardInfo _mCardInfo { get; set; }
 
@@ -276,14 +275,14 @@ namespace CBZN_TestTool
             {
                 _tiEffect = new System.Timers.Timer(1);
                 _tiEffect.AutoReset = true;
-                _tiEffect.Elapsed += new System.Timers.ElapsedEventHandler(_tiEffect_Elapsed);
+                _tiEffect.Elapsed += _tiEffect_Elapsed;
             }
             _tiEffect.Start();
         }
 
         void _tiEffect_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            DelegateHandler dh = delegate
+            this.Invoke(new EventHandler(delegate
             {
                 if (cb_CardPartition.SelectedIndex == 0)
                 {
@@ -306,8 +305,7 @@ namespace CBZN_TestTool
                     }
                     Height += 15;
                 }
-            };
-            this.Invoke(dh);
+            }));
         }
 
         private void CloseEffect()
@@ -348,6 +346,13 @@ namespace CBZN_TestTool
             Invalidate(new Rectangle(0, cb_CardPartition.Bottom, Width - 1, Height - 1));
         }
 
+        private void DelayParam_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
     }
 
     public struct DelayParamValue

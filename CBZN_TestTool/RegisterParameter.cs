@@ -61,27 +61,30 @@ namespace CBZN_TestTool
 
         void ShowEffect(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (cb_CardPartition.SelectedIndex == 0)
+            this.Invoke(new EventHandler(delegate
             {
-                if (this.Height <= 210)
+                if (cb_CardPartition.SelectedIndex == 0)
                 {
-                    this.Height = 210;
-                    CloseEffect();
-                    return;
+                    if (this.Height <= 210)
+                    {
+                        this.Height = 210;
+                        CloseEffect();
+                        return;
+                    }
+                    this.Height -= 15;
                 }
-                this.Height -= 15;
-            }
-            else
-            {
-                if (this.Height >= 370)
+                else
                 {
-                    this.Height = 370;
-                    p_CardPartition.Visible = true;
-                    CloseEffect();
-                    return;
+                    if (this.Height >= 370)
+                    {
+                        this.Height = 370;
+                        p_CardPartition.Visible = true;
+                        CloseEffect();
+                        return;
+                    }
+                    this.Height += 15;
                 }
-                this.Height += 15;
-            }
+            }));
         }
 
         private void CloseEffect()
