@@ -135,15 +135,15 @@ namespace CBZN_TestTool
             InitializeComponent();
         }
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
+        //protected override CreateParams CreateParams
+        //{
+        //    get
+        //    {
+        //        CreateParams cp = base.CreateParams;
+        //        cp.ExStyle |= 0x02000000;
+        //        return cp;
+        //    }
+        //}
 
         private void btn_Close_Click(object sender, EventArgs e)
         {
@@ -2118,7 +2118,7 @@ namespace CBZN_TestTool
                             break;
 
                         case 2:
-                            e.Value = "学习控制器开闸";
+                            e.Value = "学习遥控器开闸";
                             break;
                         case 3:
                             e.Value = "继电器开闸";

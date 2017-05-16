@@ -245,7 +245,7 @@
             this.cb_OpenModel.Items.AddRange(new object[] {
             "畅泊：串口开闸",
             "畅泊：无线开闸",
-            "学习控制器开闸",
+            "学习遥控器开闸",
             "继电器开闸"});
             this.cb_OpenModel.Location = new System.Drawing.Point(355, 100);
             this.cb_OpenModel.Name = "cb_OpenModel";

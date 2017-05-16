@@ -283,5 +283,27 @@ namespace CBZN_TestTool
             WinApi.ReleaseCapture();
             WinApi.SendMessage(Handle, WinApi.WM_SYSCOMMAND, WinApi.SC_MOVE + WinApi.HTCAPTION, 0);
         }
+
+        /// <summary>
+        /// 单元格鼠标按下事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgv_ViceList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (e.Button == MouseButtons.Left)
+            {
+                string vicecardnumber = dgv_ViceList["c_ViceCardNumber", e.RowIndex].Value.ToString();
+                foreach (CardInfo item in _bundledViceCard)
+                {
+                    if (item.CardNumber == vicecardnumber)
+                    {
+                        MessageBox.Show($"定距卡:{vicecardnumber}已经绑定,无法重复绑定.", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
