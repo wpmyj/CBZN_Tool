@@ -95,6 +95,7 @@
             this.cb_Path.Name = "cb_Path";
             this.cb_Path.Size = new System.Drawing.Size(295, 28);
             this.cb_Path.TabIndex = 13;
+            this.cb_Path.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_Path.DropDown += new System.EventHandler(this.cb_Path_DropDown);
             // 
             // btn_Enter

@@ -10,7 +10,10 @@ namespace Model
         public Int64 Cid { get; set; }
 
         public string CardNumber { get; set; }
-
+        /// <summary>
+        /// 定距卡类型 -1 车牌号码 0 单卡 1 组合卡 2 车牌识别卡 3 副卡
+        /// </summary>
+        /// <returns></returns>
         public int CardType { get; set; }
 
         public DateTime CardTime { get; set; }

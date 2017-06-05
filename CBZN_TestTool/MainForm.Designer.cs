@@ -1461,7 +1461,7 @@
             this.p_DistanceInterface.Controls.Add(this.gb_Distance);
             this.p_DistanceInterface.Location = new System.Drawing.Point(0, 45);
             this.p_DistanceInterface.Name = "p_DistanceInterface";
-            this.p_DistanceInterface.Size = new System.Drawing.Size(250, 462);
+            this.p_DistanceInterface.Size = new System.Drawing.Size(250, 562);
             this.p_DistanceInterface.TabIndex = 2;
             this.p_DistanceInterface.Paint += new System.Windows.Forms.PaintEventHandler(this.p_DistanceInterface_Paint);
             // 
@@ -1612,7 +1612,7 @@
             this.p_TemporaryInterface.Controls.Add(this.gb_Temporary);
             this.p_TemporaryInterface.Location = new System.Drawing.Point(0, 45);
             this.p_TemporaryInterface.Name = "p_TemporaryInterface";
-            this.p_TemporaryInterface.Size = new System.Drawing.Size(250, 462);
+            this.p_TemporaryInterface.Size = new System.Drawing.Size(250, 562);
             this.p_TemporaryInterface.TabIndex = 3;
             this.p_TemporaryInterface.Visible = false;
             this.p_TemporaryInterface.Paint += new System.Windows.Forms.PaintEventHandler(this.p_TemporaryInterface_Paint);
@@ -1772,6 +1772,7 @@
             // cb_AllSelected
             // 
             this.cb_AllSelected.AutoSize = true;
+            this.cb_AllSelected.Enabled = false;
             this.cb_AllSelected.Location = new System.Drawing.Point(7, 64);
             this.cb_AllSelected.Name = "cb_AllSelected";
             this.cb_AllSelected.Size = new System.Drawing.Size(15, 14);

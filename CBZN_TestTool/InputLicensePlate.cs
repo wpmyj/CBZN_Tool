@@ -13,9 +13,26 @@ namespace CBZN_TestTool
 {
     public partial class InputLicensePlate : Form
     {
-        public InputLicensePlate()
+
+        private string _strLicensePlate;
+
+        public InputLicensePlate(string strlicenseplate)
         {
             InitializeComponent();
+
+            this.Load += Inputlicenseplate_Load;
+
+            _strLicensePlate = strlicenseplate;
+        }
+
+        /// <summary>
+        /// 窗体加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Inputlicenseplate_Load(object sender, EventArgs e)
+        {
+            tb_LicensePlate.Text = _strLicensePlate;
         }
 
         /// <summary>

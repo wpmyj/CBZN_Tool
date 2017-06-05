@@ -191,8 +191,8 @@ namespace CBZN_TestTool
                 Time = time
             };
 
-            this.Tag = rp;
-            Close();
+            MainForm.Rparam = rp;
+            this.DialogResult = DialogResult.OK;
         }
 
         private void p_Title_Paint(object sender, PaintEventArgs e)

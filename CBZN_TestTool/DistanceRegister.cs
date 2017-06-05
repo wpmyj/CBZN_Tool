@@ -8,14 +8,17 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+
 namespace CBZN_TestTool
 {
     public partial class DistanceRegister : Form
     {
+        private Label _lMessage;
         public static bool IsShow;
         private static DistanceRegister _instance;
-
-        private int _lockindex;
+        /// <summary>
+        /// 当前解锁的副卡
+        /// </summary>
         private CardInfo _mViceCard;
         private System.Timers.Timer _timer;
 
@@ -90,9 +93,11 @@ namespace CBZN_TestTool
 
             if (_mCardInfo.CardType == 1)//组合卡
             {
+                int index = -1;
                 //解锁副卡
                 foreach (CardInfo item in _mBundledCardinfo)
                 {
+                    index++;
                     if (_mViceCard != null && item == _mViceCard)
                     {
                         if (item.CardNumber.Equals(parameter.CardNumber))
@@ -101,12 +106,12 @@ namespace CBZN_TestTool
                             {
                                 item.CardLock = 0;
                                 Dal.DbHelper.Db.Update<CardInfo>(item);
-                                dgv_BundledList["c_LockState", _lockindex].Value = Properties.Resources.check;
+                                dgv_BundledList["c_LockState", index].Value = Properties.Resources.check;
                                 //dgv_BundledList.Rows[_lockindex].DefaultCellStyle.ForeColor = Color.Green;
                             }
                             else
                             {
-                                dgv_BundledList["c_LockState", _lockindex].Value = Properties.Resources.block;
+                                dgv_BundledList["c_LockState", index].Value = Properties.Resources.block;
                                 //dgv_BundledList.Rows[_lockindex].DefaultCellStyle.ForeColor = Color.Red;
                             }
                         }
@@ -114,9 +119,9 @@ namespace CBZN_TestTool
                         continue;
                     }
                     if (_mViceCard != null) continue;
-                    _lockindex++;
                     if (item.CardLock != 1) continue;
                     _mViceCard = item;
+                    CreateMessageLabel();
                     TypeParameter typeparameter = new TypeParameter()
                     {
                         Lock = 0,
@@ -135,10 +140,46 @@ namespace CBZN_TestTool
                         _mPort.Write(by);
                     return;
                 }
+                foreach (CardInfo item in _mViceCardInfo)
+                {
+                    if (item.CardLock == 1)
+                    {
+                        if (_lMessage != null)
+                        {
+                            this.Controls.Remove(_lMessage);
+                            _lMessage.Dispose();
+                            _lMessage = null;
+                        }
+                        btn_Enter.Enabled = true;
+                        MessageBox.Show("解锁副卡失败，将新添加的副卡放置在发行器可读写区域内", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
             }
 
             btn_Enter.Enabled = true;
             Close();
+        }
+
+        /// <summary>
+        /// 创建提示解锁副卡内容
+        /// </summary>
+        private void CreateMessageLabel()
+        {
+            if (_lMessage != null) return;
+            _lMessage = new Label()
+            {
+                Size = new Size(Width, 100),
+                Location = new Point(0, (Height - 100) / 2),
+                BackColor = Color.Gray,
+                ForeColor = Color.White,
+                Text = "解锁副卡中，将新添加的副卡放置在发行器可读写区域内",
+                AutoSize = true,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("微软雅黑", 10.5F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(134)))
+            };
+            this.Controls.Add(_lMessage);
+            _lMessage.BringToFront();
         }
 
         /// <summary>
@@ -232,7 +273,7 @@ namespace CBZN_TestTool
                         by = DataCombination.CombinationDistanceCard(distancecontent, singlecarddata);
                         break;
 
-                    case 1:
+                    case 1: //组合卡
                         List<ViceCardData> vicecarddatas = new List<ViceCardData>();
                         foreach (CardInfo item in _mBundledCardinfo)
                         {
@@ -245,10 +286,22 @@ namespace CBZN_TestTool
                             };
                             vicecarddatas.Add(vicecard);
                         }
+                        foreach (CardInfo item in _mBoundAdd)
+                        {
+                            item.CardCount = DataCombination.SetCount(item.CardCount);
+                            ViceCardData vicecard = new ViceCardData()
+                            {
+                                ViceNumber = item.CardNumber,
+                                Time = item.CardTime,
+                                Partition = item.CardPartition,
+                                Count = item.CardCount
+                            };
+                            vicecarddatas.Add(vicecard);
+                        }
                         by = DataCombination.CombinationDistanceCard(distancecontent, vicecarddatas);
                         break;
 
-                    default:
+                    default: //车牌识别卡
                         List<PlateCardData> platecarddatas = new List<PlateCardData>();
                         foreach (CardInfo item in _mBundledCardinfo)
                         {
@@ -260,12 +313,22 @@ namespace CBZN_TestTool
                             };
                             platecarddatas.Add(platecarddata);
                         }
+                        foreach (CardInfo item in _mBoundAdd)
+                        {
+                            PlateCardData platecarddata = new PlateCardData()
+                            {
+                                Plate = item.CardNumber,
+                                Time = item.CardTime,
+                                Partition = item.CardPartition
+                            };
+                            platecarddatas.Add(platecarddata);
+                        }
+
                         by = DataCombination.CombinationDistanceCard(distancecontent, platecarddatas);
                         break;
                 }
                 if (_mPort.IsOpen)
                     _mPort.Write(by);
-                _lockindex = 0;
             }
             catch (Exception ex)
             {
@@ -329,10 +392,20 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void PartitionCheckedChanged(object sender, EventArgs e)
         {
+            if (!IsShow) return;
             if (cb_AllSelected.Tag != null) return;
             Control c = sender as Control;
+            SetSelectedState(c.Parent as Panel);
+        }
+
+        /// <summary>
+        /// 设置车场分区全选状态
+        /// </summary>
+        /// <param name="p"></param>
+        private void SetSelectedState(Panel p)
+        {
             int count = 0;
-            foreach (Control item in c.Parent.Controls)
+            foreach (Control item in p.Controls)
             {
                 if (!(item is CheckBox)) continue;
                 if (item == cb_AllSelected) continue;
@@ -449,7 +522,7 @@ namespace CBZN_TestTool
                 //将副卡集合中的数据添加到删除副卡集合中
                 if (_mBundledCardinfo.Count > 0)
                 {
-                    _mBoundDel.AddRange(_mBundledCardinfo.ToArray());
+                    _mBoundDel.AddRange(_mBundledCardinfo);
                     //清空副卡集合
                     _mBundledCardinfo.Clear();
                 }
@@ -590,7 +663,6 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void DistanceRegister_Load(object sender, EventArgs e)
         {
-            IsShow = true;
             //初始化添加副卡集合
             _mBoundAdd = new List<CardInfo>();
             //初始化删除副卡集合
@@ -614,6 +686,16 @@ namespace CBZN_TestTool
             //显示主卡车场分区
             if (cb_CardPartition.Enabled)
                 cb_CardPartition.SelectedIndex = _mCardInfo.CardPartition > 0 ? 1 : 0;
+        }
+
+        /// <summary>
+        /// 窗体显示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DistanceRegister_Shown(object sender, EventArgs e)
+        {
+            IsShow = true;
         }
 
         /// <summary>
@@ -667,22 +749,7 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void p_Bundled_Paint(object sender, PaintEventArgs e)
         {
-            using (Graphics g = e.Graphics)
-            {
-                int height = 5;
-                int left = cb_CardType.Left - p_Bundled.Left;
-                Point[] points = {
-                                    new Point(0,height),
-                                    new Point(left+(cb_CardType.Width/2-height),height),
-                                    new Point(left+(cb_CardType.Width/2),0),
-                                    new Point(left+(cb_CardType.Width/2+height),height),
-                                    new Point(p_Bundled.Width-1,height),
-                                    new Point(p_Bundled.Width-1,p_Bundled.Height-1),
-                                    new Point(0,p_Bundled.Height-1),
-                                    new Point(0,height)
-                                 };
-                g.DrawLines(new Pen(Brushes.Gray, 1), points);
-            }
+            DrawPanelBorder(e.Graphics, cb_CardType, p_Bundled);
         }
 
         /// <summary>
@@ -692,22 +759,31 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void p_CardPartition_Paint(object sender, PaintEventArgs e)
         {
-            using (Graphics g = e.Graphics)
-            {
-                int height = 5;
-                int left = cb_CardPartition.Left - p_CardPartition.Left;
-                Point[] points = {
+            DrawPanelBorder(e.Graphics, cb_CardPartition, p_CardPartition);
+        }
+
+        /// <summary>
+        /// 绘制容器的边框
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="c"></param>
+        /// <param name="p"></param>
+        private void DrawPanelBorder(Graphics g, Control c, Panel p)
+        {
+            int height = 5;
+            int left = c.Left - p.Left;
+            Point[] points = {
                              new Point(0 , height),
-                             new Point(left + (cb_CardPartition.Width / 2 - height) , height),
-                             new Point(left + (cb_CardPartition.Width / 2) , 0),
-                             new Point(left + (cb_CardPartition.Width / 2 + height), height),
-                             new Point(p_CardPartition.Width - 1, height),
-                             new Point(p_CardPartition.Width - 1, p_CardPartition.Height - 1),
-                             new Point(0 , p_CardPartition.Height - 1),
+                             new Point(left + (c.Width / 2 - height) , height),
+                             new Point(left + (c.Width / 2) , 0),
+                             new Point(left + (c.Width / 2 + height), height),
+                             new Point(p.Width - 1, height),
+                             new Point(p.Width - 1, p.Height - 1),
+                             new Point(0 , p.Height - 1),
                              new Point(0 , height)
                              };
-                g.DrawLines(new Pen(Brushes.Gray, 1), points);
-            }
+            g.DrawLines(new Pen(Brushes.Gray, 1), points);
+            g.Dispose();
         }
 
         /// <summary>
@@ -767,6 +843,7 @@ namespace CBZN_TestTool
                         cb.Checked = true;
                 }
             }
+            SetSelectedState(p_CardPartition);
         }
 
         /// <summary>
@@ -882,7 +959,6 @@ namespace CBZN_TestTool
             List<CardInfo> vicecardupdate = new List<CardInfo>();
             foreach (CardInfo item in _mBoundAdd)
             {
-                item.CardCount = DataCombination.SetCount(item.CardCount);
                 if (item.Cid == 0)//添加副卡记录
                 {
                     vicecardadd.Add(item);
@@ -996,7 +1072,7 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void btn_Add_Click(object sender, EventArgs e)
         {
-            if (cb_CardType.SelectedIndex == 1)
+            if (cb_CardType.SelectedIndex == 1)//组合卡
             {
                 List<CardInfo> newvicecardinfo = new List<CardInfo>();
                 newvicecardinfo.AddRange(_mBundledCardinfo);
@@ -1005,37 +1081,79 @@ namespace CBZN_TestTool
                 {
                     if (vicecardbundled.ShowDialog() != DialogResult.OK) return;
                     newvicecardinfo = vicecardbundled.Tag as List<CardInfo>;
+                    //将副卡添加到集合中
                     _mBoundAdd.AddRange(newvicecardinfo);
+                    //显示新添加的副卡
                     foreach (CardInfo item in newvicecardinfo)
                     {
                         dgv_BundledList.Rows.Add(new object[] { false, item.CardLock, item.CardNumber, item.CardTime, item.CardPartition });
                     }
                 }
             }
-            else
+            else//车牌识别卡
             {
-                using (InputLicensePlate inputlicenseplate = new InputLicensePlate())
-                {
-                    if (inputlicenseplate.ShowDialog() != DialogResult.OK) return;
-                    string licenseplate = inputlicenseplate.Tag as string;
-                    CardInfo info = DbHelper.Db.FirstDefault<CardInfo>($" and CardNumber='{licenseplate}' ");
-                    if (info == null)
-                    {
-                        info = new CardInfo()
-                        {
-                            CardNumber = licenseplate,
-                            CardType = -1,
-                            CardTime = DateTime.Now,
-                            CardDistance = 4,
-                            CardLock = 0,
-                            CardPartition = 0,
-                            CardReportLoss = 0,
-                        };
-                    }
-                    _mBoundAdd.Add(info);
-                    dgv_BundledList.Rows.Add(new object[] { false, info.CardLock, info.CardNumber, info.CardTime, info.CardPartition });
-                }
+                AddLicensePlateViceCard(string.Empty);
             }
+        }
+
+        /// <summary>
+        /// 添加车牌识别副卡
+        /// </summary>
+        /// <param name="licenseplate"></param>
+        private void AddLicensePlateViceCard(string licenseplate)
+        {
+            using (InputLicensePlate inputlicenseplate = new InputLicensePlate(licenseplate))
+            {
+                if (inputlicenseplate.ShowDialog() != DialogResult.OK) return;
+                licenseplate = inputlicenseplate.Tag as string;
+                if (GetLicensePlateExists(licenseplate))
+                {
+                    if (MessageBox.Show($"车牌号码{licenseplate}已经存在捆绑列表中,不能重复添加,是否进行修改.", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                    {
+                        AddLicensePlateViceCard(licenseplate);
+                    }
+                    return;
+                }
+                //查询当前车牌号是否已经注册过
+                CardInfo info = DbHelper.Db.FirstDefault<CardInfo>($" and CardNumber='{licenseplate}' ");
+                if (info == null)
+                {
+                    info = new CardInfo()
+                    {
+                        CardNumber = licenseplate,
+                        CardType = -1,
+                        CardTime = DateTime.Now,
+                        CardDistance = 4,
+                        CardLock = 0,
+                        CardPartition = 0,
+                        CardReportLoss = 0,
+                    };
+                }
+                //将车牌号码添加到集合中
+                _mBoundAdd.Add(info);
+                //显示当前车牌号码
+                dgv_BundledList.Rows.Add(new object[] { false, info.CardLock, info.CardNumber, info.CardTime, info.CardPartition });
+            }
+        }
+
+        /// <summary>
+        /// 获取当前车牌号码是已经存在
+        /// </summary>
+        /// <param name="licenseplate"></param>
+        /// <returns></returns>
+        private bool GetLicensePlateExists(string licenseplate)
+        {
+            foreach (CardInfo item in _mViceCardInfo)
+            {
+                if (item.CardNumber.Equals(licenseplate))
+                    return true;
+            }
+            foreach (CardInfo item in _mBoundAdd)
+            {
+                if (item.CardNumber.Equals(licenseplate))
+                    return true;
+            }
+            return false;
         }
     }
 }

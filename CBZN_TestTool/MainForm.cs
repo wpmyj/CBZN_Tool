@@ -108,7 +108,7 @@ namespace CBZN_TestTool
         /// <summary>
         /// 批量注册参数
         /// </summary>
-        private RegisterParam? _registerParam;
+        public static RegisterParam? Rparam;
         /// <summary>
         /// 定时器连接端口
         /// </summary>
@@ -120,7 +120,7 @@ namespace CBZN_TestTool
         /// <summary>
         /// 线程用于延期显示刷新按键
         /// </summary>
-        private Thread _tDelayThread;
+        private Thread _tTimeOutThread;
         /// <summary>
         /// 线程用于无线模式搜索频率
         /// </summary>
@@ -173,7 +173,7 @@ namespace CBZN_TestTool
             ShowHideTap(sender as Button);
             if (dgv_Device.DataSource as DataTable == null)
             {
-                System.Timers.Timer ti_DelayShowDeviceRecord = new System.Timers.Timer(250);
+                System.Timers.Timer ti_DelayShowDeviceRecord = new System.Timers.Timer(100);
                 ti_DelayShowDeviceRecord.AutoReset = false;
                 ti_DelayShowDeviceRecord.Elapsed += new System.Timers.ElapsedEventHandler(ti_DelayShowDeviceRecord_Elapsed);
                 ti_DelayShowDeviceRecord.Start();
@@ -452,11 +452,7 @@ namespace CBZN_TestTool
                                     {
                                         btn_Read.Invoke(new EventHandler(delegate
                                         {
-                                            if (_tDelayThread != null)
-                                            {
-                                                _tDelayThread.Abort();
-                                                _tDelayThread = null;
-                                            }
+                                            StopTimeOutThread();
                                             btn_Read.Enabled = true;
                                             dgv_DataList_SelectionChanged(null, null);
                                             l_RecordCount.Text = string.Format("总共 {0} 条记录", dgv_DataList.RowCount);
@@ -499,7 +495,7 @@ namespace CBZN_TestTool
                                             }
                                         }
                                         ShowReadCardInfo(cardinfo);
-                                        CreateDelayThread();
+                                        CreateTimeOutThread();
                                     }
 
                                     #endregion 读所有卡的flash
@@ -543,14 +539,21 @@ namespace CBZN_TestTool
                                     {
                                         if (distanceparameter.AuxiliaryCommand == 0)//挂失完成
                                         {
-                                            LossComplete();
+                                            //启用一个线程更新列表中的显示
+                                            Thread tUpdateLossContent = new Thread(UpdateLossContent);
+                                            tUpdateLossContent.IsBackground = true;
+                                            tUpdateLossContent.Start();
                                             dgv_LossList.Rows.Clear();
                                             btn_Enter.Enabled = true;
+                                            cb_AllSelected.Enabled = true;
                                             p_ReportTheLossOf.Visible = false;
                                         }
                                         else //挂失失败
                                         {
                                             btn_Enter.Enabled = true;
+                                            cb_AllSelected.Enabled = true;
+                                            if (cb_AllSelected.CheckState != CheckState.Unchecked)
+                                                btn_Remove.Enabled = true;
                                             MessageBox.Show("定距卡挂失失败，请确认挂失卡是否放置在发行器上。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                         }
                                     }
@@ -763,7 +766,7 @@ namespace CBZN_TestTool
                 byte[] by = PortAgreement.GetReadAllCard();
                 _mPort.Write(by);
 
-                CreateDelayThread();
+                CreateTimeOutThread();
             }
             catch (Exception ex)
             {
@@ -772,16 +775,23 @@ namespace CBZN_TestTool
             }
         }
 
-        private void CreateDelayThread()
+        private void StopTimeOutThread()
         {
-            if (_tDelayThread != null)
-                _tDelayThread.Abort();
-            _tDelayThread = new Thread(DelayShowReadControl);
-            _tDelayThread.IsBackground = true;
-            _tDelayThread.Start();
+            if (_tTimeOutThread != null)
+            {
+                _tTimeOutThread.Abort();
+            }
         }
 
-        private void DelayShowReadControl()
+        private void CreateTimeOutThread()
+        {
+            StopTimeOutThread();
+            _tTimeOutThread = new Thread(TimeOutWait);
+            _tTimeOutThread.IsBackground = true;
+            _tTimeOutThread.Start();
+        }
+
+        private void TimeOutWait()
         {
             try
             {
@@ -789,8 +799,9 @@ namespace CBZN_TestTool
 
                 btn_Read.Enabled = _mPort.IsOpen;
             }
-            catch
+            finally
             {
+                _tTimeOutThread = null;
             }
         }
 
@@ -842,11 +853,7 @@ namespace CBZN_TestTool
                     br.DicRegisterList = registerlist;
                     br.Port = _mPort;
                     br.Registercomplete += br_Registercomplete;
-                    br.RegisterParam = _registerParam;
                     br.ShowDialog();
-                    if (br.Tag == null) return;
-                    RegisterParam rp = (RegisterParam)br.Tag;
-                    _registerParam = rp;
                 }
             }
             else
@@ -904,7 +911,7 @@ namespace CBZN_TestTool
             return false;
         }
 
-        private void LossComplete()
+        private void UpdateLossContent()
         {
             DbHelper.Db.Update<CardInfo>(_lossCards);
             Dictionary<int, CardInfo> dic = GetDataInfo<CardInfo>(dgv_DataList);
@@ -1298,7 +1305,11 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void dgv_LossList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            btn_Enter.Enabled = dgv_LossList.RowCount > 0;
+            if (dgv_LossList.RowCount == 0)
+            {
+                btn_Enter.Enabled = false;
+                cb_AllSelected.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -1308,7 +1319,8 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void dgv_LossList_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            btn_Enter.Enabled = dgv_LossList.RowCount > 0;
+            btn_Enter.Enabled = _mPort.IsOpen;
+            cb_AllSelected.Enabled = true;
         }
 
         /// <summary>
@@ -1367,6 +1379,8 @@ namespace CBZN_TestTool
         private void btn_Enter_Click(object sender, EventArgs e)
         {
             btn_Enter.Enabled = false;
+            cb_AllSelected.Enabled = false;
+            btn_Remove.Enabled = false;
             try
             {
                 List<LossParameter> lossparams = new List<LossParameter>();
@@ -1400,6 +1414,9 @@ namespace CBZN_TestTool
             catch (Exception ex)
             {
                 btn_Enter.Enabled = true;
+                cb_AllSelected.Enabled = true;
+                if (cb_AllSelected.CheckState != CheckState.Unchecked)
+                    btn_Remove.Enabled = true;
                 MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1979,6 +1996,7 @@ namespace CBZN_TestTool
                         MessageBoxIcon.Asterisk) != DialogResult.OK) return;
                 DbHelper.Db.Del<DeviceInfo>(did);
                 dgv_Device.Rows.RemoveAt(index);
+                GetListSelected();
             }
             catch (Exception ex)
             {
@@ -2262,10 +2280,15 @@ namespace CBZN_TestTool
             if (e.ColumnIndex != 0) return;
             if (cb_AllSelected.Tag != null) return;
 
+            GetListSelected();
+        }
+
+        private void GetListSelected()
+        {
             int count = 0;
             for (int i = 0; i < dgv_Device.RowCount; i++)
             {
-                if (Convert.ToBoolean(dgv_Device.Rows[e.RowIndex].Cells[e.ColumnIndex].Value))
+                if (Convert.ToBoolean(dgv_Device.Rows[i].Cells["c_Selected"].Value))
                 {
                     count++;
                 }
@@ -2301,6 +2324,11 @@ namespace CBZN_TestTool
         {
             btn_DeviceEdit.Enabled = true;
             btn_DeviceDel.Enabled = true;
+            if (cb_AllSelected.CheckState != CheckState.Unchecked)
+            {
+                cb_AllSelected.CheckState = CheckState.Unchecked;
+            }
+            cb_AllSelected.Enabled = true;
         }
 
         private void dgv_Device_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)

@@ -1,4 +1,6 @@
-﻿namespace CBZN_TestTool
+﻿using System;
+
+namespace CBZN_TestTool
 {
     partial class DistanceRegister
     {
@@ -721,6 +723,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DistanceRegister_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DistanceRegister_FormClosed);
             this.Load += new System.EventHandler(this.DistanceRegister_Load);
+            this.Shown+=new System.EventHandler(this.DistanceRegister_Shown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.DistanceRegister_Paint);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DistanceRegister_KeyUp);
             this.Resize += new System.EventHandler(this.DistanceRegister_Resize);

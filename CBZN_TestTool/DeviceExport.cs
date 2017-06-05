@@ -118,7 +118,7 @@ namespace CBZN_TestTool
                     {
                         sw.WriteLine("00{0:X2}<{1:X2},{2},{3:X2}>", key.Key, key.Value.Length, key.Value,
                          DataValidation.Xor(key.Value));
-                    } 
+                    }
                 }
                 Close();
             }
@@ -198,6 +198,14 @@ namespace CBZN_TestTool
 
         private void cb_Path_DropDown(object sender, EventArgs e)
         {
+            if (cb_Path.Items.Count != DriveInfo.GetDrives().Length)
+            {
+                GetDriveLetter();
+            }
+        }
+
+        private void GetDriveLetter()
+        {
             cb_Path.Items.Clear();
             DriveInfo[] driveinfos = DriveInfo.GetDrives();
             foreach (DriveInfo item in driveinfos)
@@ -256,6 +264,7 @@ namespace CBZN_TestTool
 
         private void DeviceExport_Load(object sender, EventArgs e)
         {
+            GetDriveLetter();
         }
 
         private void DeviceExport_MouseDown(object sender, MouseEventArgs e)

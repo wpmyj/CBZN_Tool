@@ -10,7 +10,6 @@ namespace CBZN_TestTool
 {
     public partial class BatchRegister : Form
     {
-        public RegisterParam? RegisterParam { get; set; }
 
         public delegate void RegisterCompleteHandler(int index, CardInfo info);
         public event RegisterCompleteHandler Registercomplete;
@@ -49,7 +48,7 @@ namespace CBZN_TestTool
 
         private void BatchRegister_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!btn_Enter.Enabled)
+            if (Port.IsOpen && !btn_Enter.Enabled)
             {
                 MessageBox.Show(@"正在批量发行定距卡，无法退出操作，请稍后。", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 e.Cancel = true;
@@ -73,7 +72,7 @@ namespace CBZN_TestTool
 
         private void PortOpenAndCloseChange(object e, bool flag)
         {
-            btn_Enter.Enabled = flag;
+            btn_Enter.Enabled = MainForm.Rparam != null ? flag : false;
         }
 
         private void BatchRegister_Paint(object sender, PaintEventArgs e)
@@ -113,7 +112,7 @@ namespace CBZN_TestTool
         private void BatchRegister_Shown(object sender, EventArgs e)
         {
             IsShow = true;
-            if (RegisterParam == null)
+            if (MainForm.Rparam == null)
             {
                 SetReisterParam();
             }
@@ -131,12 +130,7 @@ namespace CBZN_TestTool
             using (RegisterParameter rp = new RegisterParameter())
             {
                 rp.ShowDialog();
-                if (rp.Tag != null)
-                {
-                    RegisterParam param = (RegisterParam)rp.Tag;
-                    RegisterParam = param;
-                    this.Tag = param;
-                }
+                btn_Enter.Enabled = MainForm.Rparam != null;
             }
         }
 
@@ -153,9 +147,9 @@ namespace CBZN_TestTool
                     item.Value.CardReportLoss = 0;
                     item.Value.CardType = 0;
                     item.Value.ParkingRestrictions = 0;
-                    item.Value.CardDistance = RegisterParam.Value.Distance;
-                    item.Value.CardPartition = RegisterParam.Value.Paratition;
-                    item.Value.CardTime = RegisterParam.Value.Time;
+                    item.Value.CardDistance = MainForm.Rparam.Value.Distance;
+                    item.Value.CardPartition = MainForm.Rparam.Value.Paratition;
+                    item.Value.CardTime = MainForm.Rparam.Value.Time;
                     item.Value.CardCount = DataCombination.SetCount(item.Value.CardCount);
                 }
             }

@@ -15,12 +15,14 @@ namespace CBZN_TestTool
 {
     public partial class ViceCardBundled : Form
     {
-        bool _isShow;
+        bool _isAddRow;
         /// <summary>
         /// 选择添加的副卡列表
         /// </summary>
-        List<CardInfo> _mViceCardInfo;
-
+        List<CardInfo> _mAddViceCard;
+        /// <summary>
+        /// 已捆绑的副卡集合
+        /// </summary>
         List<CardInfo> _bundledViceCard;
 
         public ViceCardBundled(List<CardInfo> bundledvicecard)
@@ -55,11 +57,34 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void ViceCardBundled_Load(object sender, EventArgs e)
         {
-            _mViceCardInfo = new List<CardInfo>();
+            _mAddViceCard = new List<CardInfo>();
+            _isAddRow = true;
             foreach (CardInfo item in DistanceRegister.Instance._mViceCardInfo)
             {
-                dgv_ViceList.Rows.Add(new object[] { false, item.CardNumber, string.Empty });
+                bool check = GetViceCardExists(item.CardNumber);
+                dgv_ViceList.Rows.Add(new object[] { check, item.CardNumber, string.Empty });
             }
+            _isAddRow = false;
+        }
+
+        /// <summary>
+        /// 获取当前副卡是否已经存在捆绑集合中
+        /// </summary>
+        /// <param name="vicecardnumber"></param>
+        /// <returns></returns>
+        private bool GetViceCardExists(string vicecardnumber)
+        {
+            foreach (CardInfo item in _mAddViceCard)
+            {
+                if (item.CardNumber.Equals(vicecardnumber))
+                    return true;
+            }
+            foreach (CardInfo item in _bundledViceCard)
+            {
+                if (item.CardNumber.Equals(vicecardnumber))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -69,7 +94,7 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void ViceCardBundled_Shown(object sender, EventArgs e)
         {
-            _isShow = true;
+
         }
 
         /// <summary>
@@ -109,34 +134,31 @@ namespace CBZN_TestTool
             {
                 where = $" and CardNumber like '%{content}%' ";
             }
-            //获取搜索副卡内容
-            List<CardInfo> vicecardinfos = DbHelper.Db.ToList<CardInfo>(" and CardType=3 " + where);
-            //移除旧的搜索副卡内容
-            for (int i = dgv_ViceList.RowCount - 1; i >= DistanceRegister.Instance._mViceCardInfo.Count; i--)
+            try
             {
-                dgv_ViceList.Rows.RemoveAt(i);
+                _isAddRow = true;
+                //获取搜索副卡内容
+                List<CardInfo> vicecardinfos = DbHelper.Db.ToList<CardInfo>(" and CardType=3 " + where);
+                //移除旧的搜索副卡内容
+                for (int i = dgv_ViceList.RowCount - 1; i >= DistanceRegister.Instance._mViceCardInfo.Count; i--)
+                {
+                    dgv_ViceList.Rows.RemoveAt(i);
+                }
+                //添加新的搜索副卡内容
+                foreach (CardInfo item in vicecardinfos)
+                {
+                    bool check = GetViceCardExists(item.CardNumber);
+                    dgv_ViceList.Rows.Add(new object[] { check, item.CardNumber, string.Empty });
+                }
             }
-            //添加新的搜索副卡内容
-            foreach (CardInfo item in vicecardinfos)
+            catch (Exception ex)
             {
-                if (GetCardExists(item)) continue;
-                dgv_ViceList.Rows.Add(new object[] { false, item.CardNumber, string.Empty });
+                MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        /// <summary>
-        /// 获取副卡列表中是否存在相同的副卡
-        /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        private bool GetCardExists(CardInfo info)
-        {
-            foreach (CardInfo item in DistanceRegister.Instance._mViceCardInfo)
+            finally
             {
-                if (item.CardNumber == info.CardNumber)
-                    return true;
+                _isAddRow = false;
             }
-            return false;
         }
 
         /// <summary>
@@ -216,7 +238,7 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void dgv_ViceList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (!_isShow) return;
+            if (_isAddRow) return;
             bool check = Convert.ToBoolean(dgv_ViceList["c_Selected", e.RowIndex].Value);
             object vicecardnumber = dgv_ViceList["c_ViceCardNumber", e.RowIndex].Value;
             if (check)
@@ -230,20 +252,20 @@ namespace CBZN_TestTool
                         info.CardTime = DateTime.Now;
                     }
                 }
-                _mViceCardInfo.Add(info);
+                _mAddViceCard.Add(info);
             }
             else
             {
-                foreach (CardInfo item in _mViceCardInfo)
+                foreach (CardInfo item in _mAddViceCard)
                 {
                     if (item.CardNumber.Equals(vicecardnumber))
                     {
-                        _mViceCardInfo.Remove(item);
+                        _mAddViceCard.Remove(item);
                         break;
                     }
                 }
             }
-            btn_Enter.Enabled = _mViceCardInfo.Count > 0;
+            btn_Enter.Enabled = _mAddViceCard.Count > 0;
         }
 
         /// <summary>
@@ -253,12 +275,12 @@ namespace CBZN_TestTool
         /// <param name="e"></param>
         private void btn_Enter_Click(object sender, EventArgs e)
         {
-            if (_bundledViceCard.Count + _mViceCardInfo.Count > 4)
+            if (_bundledViceCard.Count + _mAddViceCard.Count > 4)
             {
                 MessageBox.Show("副卡绑定最多 4 张,请重新选择", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            this.Tag = _mViceCardInfo;
+            this.Tag = _mAddViceCard;
             this.DialogResult = DialogResult.OK;
         }
 
@@ -299,7 +321,7 @@ namespace CBZN_TestTool
                 {
                     if (item.CardNumber == vicecardnumber)
                     {
-                        MessageBox.Show($"定距卡:{vicecardnumber}已经绑定,无法重复绑定.", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"定距卡:{vicecardnumber}已经绑定,不能修改当前选项.", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                 }
